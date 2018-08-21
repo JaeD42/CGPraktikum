@@ -1,19 +1,21 @@
 
 import pygame
+import numpy as np
 from Connection import Connection
 
 class MassPoint:
 
     def __init__(self,pos,weight,radius=5,moveable=True):
-        self.pos=[float(i) for i in pos]
+        self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
         self.weight=weight
         self.connections = []
         self.radius=radius
         self.moveable=moveable
+        self.add_force = [0.0,0.0]
 
-    def connect_to(self,other_point,length,strength):
-        c = Connection(self,other_point,length,strength)
+    def connect_to(self,other_point,length,strength,can_collide=False):
+        c = Connection(self,other_point,length,strength,can_collide=can_collide)
         self.connections.append(c)
         other_point.connections.append(c)
         return c
@@ -41,6 +43,10 @@ class MassPoint:
         if gravity:
             self.v[1] += dt*gravity/self.weight
 
+        self.v[0] += dt*self.add_force[0]/self.weight
+        self.v[1] += dt*self.add_force[1]/self.weight
+        self.add_force = [0.0,0.0]
+
         self.pos[0] += dt*self.v[0]
         self.pos[1] += dt*self.v[1]
 
@@ -54,11 +60,11 @@ class MassPoint:
         return self.pos
 
 
-def create_bridge(start_pos,width,height,num_points,weight=5,D=50):
+def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=50):
     points = []
     upper_points = []
     cur = start_pos[:]
-
+    width = end_pos[0]-start_pos[0]
     lH = width/(num_points-1)
     lV = height
 
@@ -76,7 +82,7 @@ def create_bridge(start_pos,width,height,num_points,weight=5,D=50):
 
     connections = []
     for i in range(1,num_points):
-        connections.append(points[i].connect_to(points[i-1],lH+1,D))
+        connections.append(points[i].connect_to(points[i-1],lH+1,D,can_collide=True))
 
 
 

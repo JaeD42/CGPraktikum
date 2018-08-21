@@ -2,7 +2,7 @@ import numpy as np
 import pygame
 class Connection:
 
-    def __init__(self,point1,point2,length,strength,max_force = -1):
+    def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
         self.p1 = point1
         self.p2 = point2
         self.correct_length = float(length)
@@ -13,6 +13,11 @@ class Connection:
         pos1 = self.p1.get_pos()
         pos2 = self.p2.get_pos()
         self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
+        self.dir = pos2-pos1
+        self.len = np.sqrt(np.dot(self.dir,self.dir))
+        self.dir = self.dir/self.len
+        self.can_collide=can_collide
+        self.line_width = 1
 
     #positive force: drags points to middle
     #negative force: push points away
@@ -23,7 +28,17 @@ class Connection:
 
         pos1 = self.p1.get_pos()
         pos2 = self.p2.get_pos()
-        self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
+        self.center = (pos1+pos2)/2
+        self.dir = pos2-pos1
+        self.len = np.sqrt(np.dot(self.dir,self.dir))
+        self.dir = self.dir/self.len
+
+
+        if abs(self.force)>self.max_force:
+            self.p1.connections.remove(self)
+            self.p2.connections.remove(self)
+            return True
+        return False
 
     def get_color(self,start=[0,255,0],end=[255,0,0]):
         m = self.max_force
@@ -35,10 +50,30 @@ class Connection:
 
         return tuple(col)
 
+    def check_weight(self,coord,weight,g=9.81):
+        if self.can_collide:
+
+            position_on_connection = np.dot(np.array(coord)-self.center,self.dir)/self.len
+            #-1 when at point 1,1 when at point 2
+            if abs(position_on_connection)<0.5:
+                self.line_width=5
+                percent_of_force_for_p2 = (position_on_connection+0.5)
+                self.p2.add_force[1]+=weight*g*percent_of_force_for_p2
+                self.p1.add_force[1]+=weight*g*(1-percent_of_force_for_p2)
+
+
+
+    def check_train(self,train,g=9.81):
+        self.line_width=1
+        if self.can_collide:
+            coords = train.mass_coordinates
+            weights = train.point_weights
+            for i in range(len(coords)):
+                self.check_weight(coords[i],weights[i],g)
 
 
     def draw(self,surface,zoom=1,translation=[0,0]):
-        pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation))
+        pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
 
     def get_center(self):
         return self.center
