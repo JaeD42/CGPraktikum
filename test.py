@@ -14,15 +14,6 @@ from Points import MassPoint, create_bridge
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
 
-#game constants
-#screen
-SCREEN_WIDTH        = 1300
-SCREEN_HEIGHT       = 600
-SCREENRECT          = Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-FPS                 = 30
-ZOOM                = 1.0
-TRANSLATE           = [0,0]
-
 #train
 TRAIN_WEIGHTS       = [20,30,30,20]
 TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.28]
