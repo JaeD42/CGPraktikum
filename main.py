@@ -38,6 +38,15 @@ def load_image(name, colorkey=None):
     return image
 
 
+def load_sound(name):
+    fullname = os.path.join(data_dir, name)
+    try:
+        sound = pygame.mixer.Sound(fullname)
+    except pygame.error:
+        print('Cannot load sound:', name)
+        raise SystemExit
+    return sound
+
 def main(winstyle = 0):
     global ZOOM,TRANSLATE,PAUSE
     pygame.init()
@@ -98,7 +107,7 @@ def main(winstyle = 0):
 
                 for p in points:
                     p.move(0.06)
-                train.move()
+                train.move(0.06)
 
             screen.fill((255,255,255))
 
