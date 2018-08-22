@@ -89,7 +89,7 @@ def main(winstyle = 0):
 
             bgmusic.play(-1)
 
-            if(soundtick >= 5):
+            if(soundtick >= 100):
                 train_sound.play(-1)
             ZOOM,TRANSLATE,PAUSE,running = calc_events()
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
