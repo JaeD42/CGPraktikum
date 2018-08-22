@@ -212,17 +212,18 @@ class Wagon():
             self.mass_coordinates[1]+= (self.width-len)/2 * normalized_dir
             self.mass_coordinates[0]-= (self.width-len)/2 * normalized_dir
 
-            self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - self.height/2 * [-1*normalized_dir[1],normalized_dir[0]])
+            self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - self.height/2 * [-1*normalized_dir[1],normalized_dir[0]]
             self.coordinates = 2*self.center - self.mass_coordinates[1]
 
 
 
     def move(self,dt,g=9.81):
+        pass
 
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.last_zoom==zoom and not self.orientation_changed:
-            continue
+            pass
         else:
             self.last_zoom = zoom
             self.orientation_changed = False
