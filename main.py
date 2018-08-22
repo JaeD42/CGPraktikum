@@ -37,15 +37,6 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image
 
-def load_sound(name):
-    fullname = os.path.join(data_dir, name)
-    try:
-        sound = pygame.mixer.Sound(fullname)
-    except pygame.error:
-        print('Cannot load sound:', name)
-        raise SystemExit
-    return sound
-
 
 def main(winstyle = 0):
     global ZOOM,TRANSLATE,PAUSE

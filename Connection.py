@@ -13,7 +13,7 @@ class Connection:
         pos1 = self.p1.get_pos()
         pos2 = self.p2.get_pos()
         self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
-        self.dir = pos2-pos1
+        self.dir = pos1-pos2
         self.len = np.sqrt(np.dot(self.dir,self.dir))
         self.dir = self.dir/self.len
         self.can_collide=can_collide
@@ -29,7 +29,7 @@ class Connection:
         pos1 = self.p1.get_pos()
         pos2 = self.p2.get_pos()
         self.center = (pos1+pos2)/2
-        self.dir = pos2-pos1
+        self.dir = pos1-pos2
         self.len = np.sqrt(np.dot(self.dir,self.dir))
         self.dir = self.dir/self.len
 
@@ -54,13 +54,18 @@ class Connection:
         if self.can_collide:
 
             position_on_connection = np.dot(np.array(coord)-self.center,self.dir)/self.len
-            distance_to_line = np.dot(np.array(coord)-self.center,[-self.dir[1],self.dir[0]])/self.len
-            #-1 when at point 1,1 when at point 2
-            if abs(position_on_connection)<0.5:
+            #-0.5 when at point 1,0.5 when at point 2
+
+            distance_to_line = np.dot(np.array(coord)-self.center,[-self.dir[1],self.dir[0]])
+
+
+            if abs(position_on_connection)<0.5 and abs(distance_to_line)<10:
                 self.line_width=5
                 percent_of_force_for_p2 = (position_on_connection+0.5)
                 self.p2.add_force[1]+=weight*g*percent_of_force_for_p2
                 self.p1.add_force[1]+=weight*g*(1-percent_of_force_for_p2)
+                return True
+            return False
 
 
 
@@ -70,7 +75,8 @@ class Connection:
             coords = train.mass_coordinates
             weights = train.point_weights
             for i in range(len(coords)):
-                self.check_weight(coords[i],weights[i],g)
+                if self.check_weight(coords[i],weights[i],g):
+                    train.is_on(self,i)
 
 
     def draw(self,surface,zoom=1,translation=[0,0]):
