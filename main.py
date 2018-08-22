@@ -3,7 +3,7 @@
 
 import random, os.path
 import numpy as np
-from train import train
+from train import Train
 
 #import basic pygame modules
 import pygame
