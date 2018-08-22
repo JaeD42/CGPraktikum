@@ -1,7 +1,11 @@
+
 #!/usr/bin/env python
 
 import random, os.path
 import numpy as np
+from train import Train
+from settings import *
+from events import calc_events
 
 #import basic pygame modules
 import pygame
@@ -12,20 +16,6 @@ from Points import MassPoint, create_bridge
 #see if we can load more than standard BMP
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
-
-#train
-TRAIN_WEIGHTS       = [20,30,30,20]
-TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.28]
-TRAIN_SPEED         = 10
-NODE_MASS           = 2
-GRAVITY             = 9.81
-
-#bridge
-BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
-BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
-BRIDGE_HEIGHT       = 70
-BRIDGE_NODES        = 6
-BRIDGE_STIFF        = 300
 
 
 
@@ -47,94 +37,24 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image
 
-class BoundingBox():
-    center = [] #achsen normiert, koordinaten des objekts
-    axes = []
-    lengths = []
-
-    dragging = False
-
-    def __init__(self, center, axes, lengths):
-        self.center = np.array(center)
-        self.axes = np.array(axes)
-        self.lengths = np.array(lengths)
-
-    def check_collision(self, point_coordinates):
-        point_centered = (np.array(point_coordinates) - self.center)
-        #test collision in direction of first axis of bounding box
-        if(np.abs(np.dot(point_centered, self.axes[0])) > self.lengths[0]):
-            return False
-        #test in second direction
-        if(np.abs(np.dot(point_centered, self.axes[1])) > self.lengths[1]):
-            return False
-
-        return True
-
-    def update(self, center, axes, lengths):
-        self.center = np.array(center)
-        self.axes = np.array(axes)
-        self.lengths = np.array(lengths)
-
-
-class Train():
-    v = []
-    image = None
-    width = None
-    height = None
-    coordinates = None
-    mass_coordinates = []
-    point_weights = []
-    orientation = None
-    bounding_box = None
-    speed = 0
-
-    dragging = False
-
-
-    def __init__(self, image, coordinates, weights, speed):
-        self.image = image
-        self.width = image.get_width()
-        self.height = image.get_height()
-        self.coordinates = coordinates #list
-        self.point_weights = weights
-        self.orientation = 0
-        self.speed = speed
-        self.v = [speed, 0] #todo
-
-        self.bounding_box = self.calculate_bb()
-
-        num_of_points = len(self.point_weights)
-        dist_between_points = int(self.width/(num_of_points-1))
-        for i in range(num_of_points):
-            self.mass_coordinates.append([self.coordinates[0] + i*dist_between_points,
-                                     self.coordinates[1]+self.height])
-
-
-    def calculate_bb(self):
-        #calculate bounding box
-        lengths = np.array([self.width / 2, self.height / 2])
-        axes = [np.array([np.sin(self.orientation), np.cos(self.orientation)]),
-                np.array([-np.cos(self.orientation), np.sin(self.orientation)])]
-        center = lengths + np.array([self.coordinates[0], self.coordinates[1]])
-        return BoundingBox(center, axes, lengths)
-
-    def move(self):#todo, soll auch drehen koennen
-        self.coordinates[0] += 0.1 * self.speed
-        for i in range(len(self.mass_coordinates)):
-            self.mass_coordinates[i][0] += 0.1 * self.speed
-        self.bounding_box = self.calculate_bb()
-
-    def draw(self,surface):
-        surface.blit(self.image,self.coordinates)
+def load_sound(name):
+    fullname = os.path.join(data_dir, name)
+    try:
+        sound = pygame.mixer.Sound(fullname)
+    except pygame.error:
+        print('Cannot load sound:', name)
+        raise SystemExit
+    return sound
 
 
 def main(winstyle = 0):
-    global ZOOM,TRANSLATE
+    global ZOOM,TRANSLATE,PAUSE
     pygame.init()
     if pygame.mixer and not pygame.mixer.get_init():
         print ('Warning, no sound')
         pygame.mixer = None
     pygame.display.set_caption("Choo Choo")
+    pygame.key.set_repeat(1000,10)
     running = True
 
 
@@ -145,51 +65,65 @@ def main(winstyle = 0):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
     bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
+    bgmusic = load_sound('Spring.wav')
+    bgmusic.set_volume(0.2)
+    train_sound = load_sound('train2.wav')
+    train_sound.set_volume(0.05)
+    soundtick = 0
+
+    #list of movable objects for collision check (mouse dragging)
+    movable_objects = []
 
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
-    img = pygame.transform.rotozoom(load_image('train.png'),0,0.2)
+    img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
     train = Train(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
     rectangle_draging=False
 
-
+    #create a bridge
     points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF)
 
     try:
         while running:
+            soundtick+=1
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
+            bgmusic.play(-1)
 
+            if(soundtick >= 5):
+                train_sound.play(-1)
+            ZOOM,TRANSLATE,PAUSE,running = calc_events()
+            #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
+            if not PAUSE:
+                broken_conns = []
+                for c in connections:
+                    broke = c.update_force()
+                    if broke:
+                        broken_conns.append(c)
+                        continue
+                    c.check_train(train)
 
-            fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
+                for c in broken_conns:
+                    connections.remove(c)
 
-            screen.blit(bg, (0,0))
+                for p in points:
+                    p.move(0.06)
+                train.move()
 
+            screen.fill((255,255,255))
 
+            screen.blit(pygame.transform.rotozoom(bg,0,ZOOM), [TRANSLATE[i]*ZOOM for i in range(2)])
 
             for c in connections:
-                c.update_force()
-                c.check_train(train)
+                c.draw(screen,ZOOM,TRANSLATE)
             for p in points:
-                p.move(0.06)
+                p.draw(screen,ZOOM,TRANSLATE)
 
-            for c in connections:
-                c.draw(screen)
-            for p in points:
-                p.draw(screen)
-
-
-            train.move()
-            train.draw(screen)
+            train.draw(screen,ZOOM,TRANSLATE)
 
             pygame.display.flip()
 
             # - constant game speed / FPS -
             clock.tick(FPS)
-
-
         pygame.quit()
     except SystemExit:
         pygame.quit()

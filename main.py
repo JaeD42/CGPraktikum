@@ -67,6 +67,9 @@ def main(winstyle = 0):
     bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
     bgmusic = load_sound('Spring.wav')
     bgmusic.set_volume(0.2)
+    train_sound = load_sound('train2.wav')
+    train_sound.set_volume(0.05)
+    soundtick = 0
 
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
@@ -82,8 +85,12 @@ def main(winstyle = 0):
 
     try:
         while running:
+            soundtick+=1
 
             bgmusic.play(-1)
+
+            if(soundtick >= 5):
+                train_sound.play(-1)
             ZOOM,TRANSLATE,PAUSE,running = calc_events()
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
             if not PAUSE:
