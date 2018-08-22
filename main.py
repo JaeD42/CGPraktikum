@@ -125,7 +125,7 @@ def main(winstyle = 0):
 
                 for p in points:
                     p.move(0.06)
-                train.move()
+                train.move(0.06)
 
 
             screen.fill((255,255,255))
