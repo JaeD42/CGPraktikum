@@ -1,4 +1,38 @@
-def calc_events():
+import pygame
+def calc_events(ZOOM,TRANSLATE,PAUSE):
+    running = True
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            (x,y) = pygame.mouse.get_pos()
+            pZOOM=ZOOM
+            if event.button == 4:
+                ZOOM+=0.01
+            elif event.button == 5:
+                ZOOM-=0.01
+
+            TRANSLATE[0]+=(x*pZOOM/ZOOM - x)
+            TRANSLATE[1]+=(y*pZOOM/ZOOM - y)
+
+
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                TRANSLATE[1]+=5
+            elif event.key == pygame.K_DOWN:
+                TRANSLATE[1]-=5
+            elif event.key == pygame.K_LEFT:
+                TRANSLATE[0]+=5
+            elif event.key == pygame.K_RIGHT:
+                TRANSLATE[0]-=5
+            elif event.key == pygame.K_SPACE:
+                PAUSE = not PAUSE
+    return ZOOM,TRANSLATE,PAUSE,running
+
+
+
+def calc_events2():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

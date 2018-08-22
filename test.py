@@ -1,4 +1,3 @@
-#asdsdasdasdsadsadsd
 #!/usr/bin/env python
 
 import random, os.path
