@@ -24,6 +24,26 @@ class BoundingBox():
 
         return True
 
+    def check_collision_return_location(self,point_coordinates):
+        point_centered = (np.array(point_coordinates) - self.center)
+        #test collision in direction of first axis of bounding box
+        ax1_pos = np.dot(point_centered, self.axes[0])
+        ax2_pos = np.dot(point_centered, self.axes[1])
+        col_pos = point_centered+ [ax1_pos,ax2_pos]
+
+        ax1_percentage = ax1_pos/self.lengths[0]
+        ax2_percentage = ax2_pos/self.lengths[1]
+
+
+        #test both axes
+        if(np.abs(ax1_pos) > self.lengths[0] or np.abs(ax2_pos)>self.lengths[1]):
+            return False,ax1_percentage,ax2_percentage,col_pos
+
+
+        return True,ax1_percentage,ax2_percentage,col_pos
+
+
+
     def update(self, center, axes, lengths):
         self.center = np.array(center)
         self.axes = np.array(axes)
@@ -31,18 +51,6 @@ class BoundingBox():
 
 
 class Train():
-    v = []
-    image = None
-    width = None
-    height = None
-    coordinates = None
-    mass_coordinates = []
-    point_weights = []
-    orientation = None
-    bounding_box = None
-    speed = 0
-    is_on_object = False
-    dragging = False
 
 
     def __init__(self, image, coordinates, weights, speed):
@@ -61,6 +69,7 @@ class Train():
 
         num_of_points = len(self.point_weights)
         dist_between_points = int(self.width/(num_of_points-1))
+        self.mass_coordinates = []
         for i in range(num_of_points):
             self.mass_coordinates.append([self.coordinates[0] + i*dist_between_points,
                                      self.coordinates[1]+self.height])
@@ -75,7 +84,7 @@ class Train():
         return BoundingBox(center, axes, lengths)
 
     def move(self,dt,g=9.81):#todo, soll auch drehen koennen
-        print(self.is_on_object)
+        #print(self.is_on_object)
         if not self.is_on_object and self.coordinates[0]>200:
             self.physics_v[1]+= dt*g/sum(self.point_weights)
         else:
@@ -136,3 +145,92 @@ class Train():
         self.orientation = np.arccos(connection.dir[0])
 #
         self.is_on_object=True
+
+
+class Wagon():
+
+    def __init__(self, image, coordinates, weights, speed):
+        self.image = image
+        self.last_img = image
+        self.width = image.get_width()
+        self.height = image.get_height()
+        self.coordinates = coordinates #links oben
+        self.center = [self.coordinates[0]+self.width/2.0,self.coordinates[1]+self.height/2.0]
+
+        self.point_weights = weights #max 2 gewichte (1 vorne, 1 hinten)
+        self.orientation = 0
+        self.speed = speed
+        self.v = [speed, 0]
+        self.physics_v = [0,0]
+
+        self.mass_coordinates = []
+        self.mass_coordinates.append([self.coordinates[0], #todo: nach innen setzen
+                                     self.coordinates[1]+self.height])
+
+        self.mass_coordinates.append([self.coordinates[0]+self.width,
+                                    self.coordinates[1]+self.height])
+        self.mass_coordinates = np.array(self.mass_coordinates)
+        self.last_zoom = 1
+        self.orientation_changed = False
+
+
+
+    def collision_mass_with_physics(self,bounding_box,index):
+
+        collision_found,ax1_perc,ax2_perc,coordinate = bounding_box.check_collision_return_location(self.mass_coordinates[index])
+
+        if collision_found:
+            self.mass_coordinates[index]+=[(1-ax2_perc)*bounding_box.axes[1][i] for i in range(2)]
+            return self.point_weights[index],ax1_perc
+
+        return 0,0
+
+    def collision_with_connection(self,connection):
+
+        w,perc = self.collision_mass_with_physics(connection.get_bounding_box(),0)
+
+        if w!=0:
+            connection.add_weight(w,perc)
+
+        w2,perc2 = self.collision_mass_with_physics(connection.get_bounding_box(),1)
+
+        if w2!=0:
+            connection.add_weight(w2,perc2)
+
+
+    def correct_position(self):
+        mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
+        new_orientation = np.atan(mass_dir[1]/mass_dir[0])
+        if new_orientation!=self.orientation:
+            self.orientation_changed=True
+            self.orientation=new_orientation
+
+
+        len = np.sqrt(np.dot(mass_dir,mass_dir))
+        normalized_dir = mass_dir/len
+        if len!=self.width:
+            self.mass_coordinates[1]+= (self.width-len)/2 * normalized_dir
+            self.mass_coordinates[0]-= (self.width-len)/2 * normalized_dir
+
+            self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - self.height/2 * [-1*normalized_dir[1],normalized_dir[0]])
+            self.coordinates = 2*self.center - self.mass_coordinates[1]
+
+
+
+    def move(self,dt,g=9.81):
+
+
+    def draw(self,surface,zoom=1,translation=[0,0]):
+        if self.last_zoom==zoom and not self.orientation_changed:
+            continue
+        else:
+            self.last_zoom = zoom
+            self.orientation_changed = False
+            self.last_img = pygame.transform.rotozoom(self.image,self.orientation*360/6.28,zoom)
+        surface.blit(self.last_img,[int((translation[i]+self.coordinates[i])*zoom) for i in range(2)])
+
+    def translate(self,dx,dy):
+        pass
+
+    def update_rotation(self):
+        pass
