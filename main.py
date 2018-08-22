@@ -28,7 +28,7 @@ PAUSE               = False
 
 #train
 TRAIN_WEIGHTS       = [2,3,3,2]
-TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.28]
+TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.355]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2
 GRAVITY             = 9.81
@@ -93,7 +93,7 @@ def main(winstyle = 0):
 
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
-    img = pygame.transform.rotozoom(load_image('train.png'),0,0.2)
+    img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
     train = Train(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
     rectangle_draging=False
 
