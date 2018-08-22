@@ -4,6 +4,7 @@
 import random, os.path
 import numpy as np
 from train import Train
+from events import calc_events
 
 #import basic pygame modules
 import pygame
@@ -23,6 +24,7 @@ SCREENRECT          = Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 FPS                 = 30
 ZOOM                = 1.0
 TRANSLATE           = [0,0]
+PAUSE=True
 
 #train
 TRAIN_WEIGHTS       = [2,3,3,2]
@@ -60,7 +62,7 @@ def load_image(name, colorkey=None):
 
 
 def main(winstyle = 0):
-    global ZOOM,TRANSLATE
+    global ZOOM,TRANSLATE,PAUSE
     pygame.init()
     if pygame.mixer and not pygame.mixer.get_init():
         print ('Warning, no sound')
@@ -92,57 +94,33 @@ def main(winstyle = 0):
         while running:
             pygame.mixer.music.play(-1)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    (x,y) = pygame.mouse.get_pos()
-                    pZOOM=ZOOM
-                    if event.button == 4:
-                        ZOOM+=0.01
-                    elif event.button == 5:
-                        ZOOM-=0.01
-
-                    TRANSLATE[0]+=(x*pZOOM/ZOOM - x)
-                    TRANSLATE[1]+=(y*pZOOM/ZOOM - y)
-
-
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        TRANSLATE[1]+=5
-                    elif event.key == pygame.K_DOWN:
-                        TRANSLATE[1]-=5
-                    elif event.key == pygame.K_LEFT:
-                        TRANSLATE[0]+=5
-                    elif event.key == pygame.K_RIGHT:
-                        TRANSLATE[0]-=5
-
-
-
+            ZOOM,TRANSLATE,PAUSE,running = calc_events(ZOOM,TRANSLATE,PAUSE)
 
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
+
+
+            if not PAUSE:
+                broken_conns = []
+                for c in connections:
+                    broke = c.update_force()
+                    if broke:
+                        broken_conns.append(c)
+                        continue
+
+                    c.check_train(train)
+
+                for c in broken_conns:
+                    connections.remove(c)
+
+
+                for p in points:
+                    p.move(0.06)
+                train.move()
+
 
             screen.fill((255,255,255))
 
             screen.blit(pygame.transform.rotozoom(bg,0,ZOOM), [TRANSLATE[i]*ZOOM for i in range(2)])
-
-
-            broken_conns = []
-            for c in connections:
-                broke = c.update_force()
-                if broke:
-                    broken_conns.append(c)
-                    continue
-
-                c.check_train(train)
-
-            for c in broken_conns:
-                connections.remove(c)
-
-
-            for p in points:
-                p.move(0.06)
 
             for c in connections:
                 c.draw(screen,ZOOM,TRANSLATE)
@@ -150,7 +128,7 @@ def main(winstyle = 0):
                 p.draw(screen,ZOOM,TRANSLATE)
 
 
-            train.move()
+
             train.draw(screen,ZOOM,TRANSLATE)
 
             pygame.display.flip()
