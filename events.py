@@ -1,5 +1,8 @@
 import pygame
-def calc_events(ZOOM,TRANSLATE,PAUSE):
+from settings import *
+
+def calc_events():
+    global ZOOM,TRANSLATE,PAUSE, ZOOM_FACTOR
     running = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -9,9 +12,9 @@ def calc_events(ZOOM,TRANSLATE,PAUSE):
             (x,y) = pygame.mouse.get_pos()
             pZOOM = ZOOM
             if event.button == 4:
-                ZOOM+=0.01
+                ZOOM+=ZOOM_FACTOR
             elif event.button == 5:
-                ZOOM=max(ZOOM-0.01,1)
+                ZOOM=max(ZOOM-ZOOM_FACTOR,1)
 
 
             xI = (x/pZOOM-TRANSLATE[0])
@@ -51,9 +54,9 @@ def calc_events2():
                     offset_x = rectangle.x - mouse_x
                     offset_y = rectangle.y - mouse_y
             elif event.button == 4:
-                ZOOM+=0.01
+                ZOOM+=ZOOM_FACTOR
             elif event.button == 5:
-                ZOOM-=0.01
+                ZOOM-=ZOOM_FACTOR
 
 
         elif event.type == pygame.MOUSEBUTTONUP:

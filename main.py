@@ -4,6 +4,7 @@
 import random, os.path
 import numpy as np
 from train import Train
+from settings import *
 from events import calc_events
 
 #import basic pygame modules
@@ -15,30 +16,6 @@ from Points import MassPoint, create_bridge
 #see if we can load more than standard BMP
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
-
-#game constants
-#screen
-SCREEN_WIDTH        = 1300
-SCREEN_HEIGHT       = 600
-SCREENRECT          = Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-FPS                 = 30
-ZOOM                = 1.0
-TRANSLATE           = [0,0]
-PAUSE               = False
-
-#train
-TRAIN_WEIGHTS       = [2,3,3,2]
-TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.355]
-TRAIN_SPEED         = 30
-NODE_MASS           = 2
-GRAVITY             = 9.81
-
-#bridge
-BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
-BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
-BRIDGE_HEIGHT       = 70
-BRIDGE_NODES        = 6
-BRIDGE_STIFF        = 300
 
 
 
@@ -91,24 +68,24 @@ def main(winstyle = 0):
     bgmusic = load_sound('Spring.wav')
     bgmusic.set_volume(0.2)
 
+    #list of movable objects for collision check (mouse dragging)
+    movable_objects = []
+
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
     img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
     train = Train(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
     rectangle_draging=False
 
-
+    #create a bridge
     points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF)
 
     try:
         while running:
+
             bgmusic.play(-1)
-
-            ZOOM,TRANSLATE,PAUSE,running = calc_events(ZOOM,TRANSLATE,PAUSE)
-
+            ZOOM,TRANSLATE,PAUSE,running = calc_events()
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
-
-
             if not PAUSE:
                 broken_conns = []
                 for c in connections:
@@ -116,17 +93,14 @@ def main(winstyle = 0):
                     if broke:
                         broken_conns.append(c)
                         continue
-
                     c.check_train(train)
 
                 for c in broken_conns:
                     connections.remove(c)
 
-
                 for p in points:
                     p.move(0.06)
                 train.move()
-
 
             screen.fill((255,255,255))
 
@@ -137,16 +111,12 @@ def main(winstyle = 0):
             for p in points:
                 p.draw(screen,ZOOM,TRANSLATE)
 
-
-
             train.draw(screen,ZOOM,TRANSLATE)
 
             pygame.display.flip()
 
             # - constant game speed / FPS -
             clock.tick(FPS)
-
-
         pygame.quit()
     except SystemExit:
         pygame.quit()
