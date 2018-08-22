@@ -37,15 +37,6 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image
 
-def load_sound(name):
-    fullname = os.path.join(data_dir, name)
-    try:
-        sound = pygame.mixer.Sound(fullname)
-    except pygame.error:
-        print('Cannot load sound:', name)
-        raise SystemExit
-    return sound
-
 
 def main(winstyle = 0):
     global ZOOM,TRANSLATE,PAUSE
@@ -65,8 +56,7 @@ def main(winstyle = 0):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
     bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
-    bgmusic = load_sound('Spring.wav')
-    bgmusic.set_volume(0.2)
+    pygame.mixer.music.load('Spring.mp3')
 
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []

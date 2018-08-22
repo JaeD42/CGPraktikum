@@ -125,11 +125,12 @@ class Train():
             dir_to_conn = np.array([-connection.dir[1],connection.dir[0]])
             weight_point = np.array(self.mass_coordinates[0])
             translate_values = -dir_to_conn*np.dot(weight_point-connection.center,dir_to_conn)
-            print(translate_values)
+            #print(translate_values)
             self.translate(translate_values[0],translate_values[1])
 
         if index == len(self.mass_coordinates)-1:
             #ToDO
+            pass
 
 
         self.orientation = np.arccos(connection.dir[0])
