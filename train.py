@@ -76,10 +76,10 @@ class Train():
         self.coordinates[0] += 0.1 * self.speed
         for i in range(len(self.mass_coordinates)):
             self.mass_coordinates[i][0] += 0.1 * self.speed
-        if self.coordinates[0]>SCREEN_WIDTH:
-            self.coordinates[0]-=SCREEN_WIDTH+self.width
+        if self.coordinates[0]>pygame.display.get_surface().get_width():
+            self.coordinates[0]-=pygame.display.get_surface().get_width()+self.width
             for i in range(len(self.mass_coordinates)):
-                self.mass_coordinates[i][0] -=SCREEN_WIDTH+self.width
+                self.mass_coordinates[i][0] -=pygame.display.get_surface().get_width()+self.width
 
         #self.bounding_box = self.calculate_bb()
 
