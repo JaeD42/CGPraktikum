@@ -1,3 +1,6 @@
+import numpy as np
+import pygame
+
 class BoundingBox():
     center = [] #achsen normiert, koordinaten des objekts
     axes = []
