@@ -7,14 +7,19 @@ def calc_events(ZOOM,TRANSLATE,PAUSE):
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (x,y) = pygame.mouse.get_pos()
-            pZOOM=ZOOM
+            pZOOM = ZOOM
             if event.button == 4:
                 ZOOM+=0.01
             elif event.button == 5:
-                ZOOM-=0.01
+                ZOOM=max(ZOOM-0.01,1)
 
-            TRANSLATE[0]+=(x*pZOOM/ZOOM - x)
-            TRANSLATE[1]+=(y*pZOOM/ZOOM - y)
+
+            xI = (x/pZOOM-TRANSLATE[0])
+            yI = (y/pZOOM-TRANSLATE[1])
+            #TRANSLATE[0]+=(x*pZOOM/ZOOM - x)
+            #TRANSLATE[1]+=(y*pZOOM/ZOOM - y)
+            TRANSLATE[0] = x/ZOOM-xI
+            TRANSLATE[1] = y/ZOOM-yI
 
 
         elif event.type == pygame.KEYDOWN:

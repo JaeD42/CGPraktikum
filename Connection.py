@@ -54,6 +54,7 @@ class Connection:
         if self.can_collide:
 
             position_on_connection = np.dot(np.array(coord)-self.center,self.dir)/self.len
+            distance_to_line = np.dot(np.array(coord)-self.center,[-self.dir[1],self.dir[0]])/self.len
             #-1 when at point 1,1 when at point 2
             if abs(position_on_connection)<0.5:
                 self.line_width=5
