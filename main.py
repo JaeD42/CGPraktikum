@@ -24,7 +24,7 @@ SCREENRECT          = Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 FPS                 = 30
 ZOOM                = 1.0
 TRANSLATE           = [0,0]
-PAUSE               = False
+PAUSE=True
 
 #train
 TRAIN_WEIGHTS       = [2,3,3,2]
@@ -60,15 +60,6 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image
 
-def load_sound(name):
-    fullname = os.path.join(data_dir, name)
-    try:
-        sound = pygame.mixer.Sound(fullname)
-    except pygame.error:
-        print('Cannot load sound:', name)
-        raise SystemExit
-    return sound
-
 
 def main(winstyle = 0):
     global ZOOM,TRANSLATE,PAUSE
@@ -88,8 +79,7 @@ def main(winstyle = 0):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
     bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
-    bgmusic = load_sound('Spring.wav')
-    bgmusic.set_volume(0.2)
+    pygame.mixer.music.load('Spring.mp3')
 
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
@@ -102,7 +92,7 @@ def main(winstyle = 0):
 
     try:
         while running:
-            bgmusic.play(-1)
+            pygame.mixer.music.play(-1)
 
             ZOOM,TRANSLATE,PAUSE,running = calc_events(ZOOM,TRANSLATE,PAUSE)
 
@@ -125,7 +115,7 @@ def main(winstyle = 0):
 
                 for p in points:
                     p.move(0.06)
-                train.move(0.06)
+                train.move()
 
 
             screen.fill((255,255,255))
