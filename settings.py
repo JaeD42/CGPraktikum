@@ -6,7 +6,8 @@ from pygame.locals import *
 SCREEN_WIDTH        = 1300
 SCREEN_HEIGHT       = 600
 SCREENRECT          = Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-FPS                 = 30
+SCREEN_MIDDLE       =[SCREEN_WIDTH/2,SCREEN_HEIGHT/2]
+FPS                 = 600
 ZOOM                = 1.0
 ZOOM_FACTOR         = 0.1
 TRANSLATE           = [0,0]
@@ -24,9 +25,13 @@ BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
 BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
 BRIDGE_NODES        = 6
-BRIDGE_STIFF        = 30
+BRIDGE_STIFF        = 200
 
 
 DEBUG               = False
 
-STEPSIZE            = 0.03
+STEPSIZE            = 0.02
+
+
+#pygame flags
+FLAGS = DOUBLEBUF

@@ -1,6 +1,7 @@
 
 import pygame
 import numpy as np
+from math import sqrt
 from Connection import Connection
 from settings import DEBUG
 
@@ -24,22 +25,22 @@ class MassPoint:
 
 
     def distance_to(self,other_point):
-        return ((self.pos[0]-other_point.pos[0])**2+(self.pos[1]-other_point.pos[1])**2)**0.5
-
+        return sqrt((self.pos[0]-other_point.pos[0])**2+(self.pos[1]-other_point.pos[1])**2)
 
     def move(self,dt,gravity=9.81):
         if not self.moveable:
             return
+
+        pre = dt/self.weight
         for connection in self.connections:
-            center = connection.get_center()
+            center = connection.center
             dir = [center[0]-self.pos[0],center[1]-self.pos[1]]
-            l = (dir[0]**2+dir[1]**2)**0.5
+            l = sqrt(dir[0]*dir[0]+dir[1]*dir[1])
 
 
+            self.v[0] += (connection.force*pre)*(dir[0]/l)
 
-            self.v[0] += dt*(connection.force/self.weight)*(dir[0]/l)
-
-            self.v[1] += dt*(connection.force/self.weight)*(dir[1]/l)
+            self.v[1] += (connection.force*pre)*(dir[1]/l)
 
 
         if gravity:

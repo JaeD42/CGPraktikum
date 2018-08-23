@@ -20,22 +20,20 @@ class Connection:
         self.dir = self.dir/self.len
         self.can_collide=can_collide
         self.line_width = 1
-        self.collision_width = 50
+        self.collision_width = 100
 
     #positive force: drags points to middle
     #negative force: push points away
+
     def update_force(self):
-        length = self.p1.distance_to(self.p2)
+        self.len = self.p1.distance_to(self.p2)
 
-        self.force = (length-self.correct_length)*self.strength
+        self.force = (self.len-self.correct_length)*self.strength
 
-        pos1 = self.p1.get_pos()
-        pos2 = self.p2.get_pos()
-        self.center = (pos1+pos2)/2
-        self.dir = pos1-pos2
-        self.len = np.sqrt(np.dot(self.dir,self.dir))
-        self.dir = self.dir/self.len
-
+        pos1 = self.p1.pos
+        pos2 = self.p2.pos
+        self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
+        self.dir = [(pos1[0]-pos2[0])/self.len,(pos1[1]-pos2[1])/self.len]
 
         if abs(self.force)>self.max_force:
             self.p1.connections.remove(self)
@@ -82,7 +80,7 @@ class Connection:
 
     def get_bounding_box(self):
         other_dir = np.array([-self.dir[1],self.dir[0]])
-        return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,[-self.dir[1],self.dir[0]]],[self.len/2,self.collision_width/2])
+        return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,other_dir],[self.len/2,self.collision_width/2])
 
 
     def check_train(self,train,g=9.81):
@@ -96,6 +94,7 @@ class Connection:
 
 
     def draw(self,surface,zoom=1,translation=[0,0]):
+
         pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
         self.line_width = 1
         #self.get_bounding_box().draw(surface)

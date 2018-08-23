@@ -6,7 +6,7 @@ import numpy as np
 from train import Train,Wagon
 from settings import *
 from events import calc_events
-
+from RotateTranslateImage import RTImage
 #import basic pygame modules
 import pygame
 from pygame.locals import *
@@ -61,10 +61,12 @@ def main(winstyle = 0):
     # Settings
     winstyle = 0  # |FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
-    screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
+    screen = pygame.display.set_mode(SCREENRECT.size, FLAGS, bestdepth)
+    screen.set_alpha(None)
+
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
-    bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
+    bg = RTImage(pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)))
     bgmusic = load_sound('Spring.wav')
     bgmusic.set_volume(0.2)
     train_sound = load_sound('train2.wav')
@@ -81,11 +83,12 @@ def main(winstyle = 0):
     rectangle_draging=False
 
     #create a bridge
-    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 1000)
+    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 1700)
 
     BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*10, max_force = 10000)
-    add_point = MassPoint((SCREEN_WIDTH,200),5,moveable=False)
+    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
+    conn = connections2[2]
+    add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
     add_conn = add_point.connect_to_quick(points2[4],can_collide=True)
 
     points.extend(points2)
@@ -94,7 +97,7 @@ def main(winstyle = 0):
     connections.append(add_conn)
 
 
-    print(BRIDGE_END)
+    #print(BRIDGE_END)
     try:
         while running:
             soundtick+=1
@@ -122,9 +125,12 @@ def main(winstyle = 0):
                     p.move(STEPSIZE)
                 train.move(STEPSIZE)
 
-            screen.fill((255,255,255))
+            #conn.add_weight(weight=abs(np.sin(soundtick/10))*100,perc=0.5)
+            #print(abs(np.sin(soundtick/10))*100)
 
-            screen.blit(pygame.transform.rotozoom(bg,0,ZOOM), [TRANSLATE[i]*ZOOM for i in range(2)])
+            #screen.fill((255,255,255))
+
+            screen.blit(*bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
 
             for c in connections:
                 c.draw(screen,ZOOM,TRANSLATE)
