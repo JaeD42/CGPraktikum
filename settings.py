@@ -27,4 +27,6 @@ BRIDGE_NODES        = 6
 BRIDGE_STIFF        = 30
 
 
-DEBUG               = True
+DEBUG               = False
+
+STEPSIZE            = 0.03

@@ -2,6 +2,7 @@
 import pygame
 import numpy as np
 from Connection import Connection
+from settings import DEBUG
 
 class MassPoint:
 
@@ -46,7 +47,8 @@ class MassPoint:
 
         self.v[0] += dt*self.add_force[0]/self.weight
         self.v[1] += dt*self.add_force[1]/self.weight
-        self.prev_force = self.add_force[:]
+        if DEBUG:
+            self.prev_force = self.add_force[:]
         self.add_force = [0.0,0.0]
 
         self.pos[0] += dt*self.v[0]

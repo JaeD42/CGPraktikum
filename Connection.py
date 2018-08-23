@@ -1,6 +1,7 @@
 import numpy as np
 import pygame
 from BoundingBox import BoundingBox
+from settings import DEBUG
 class Connection:
 
     def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
@@ -43,14 +44,15 @@ class Connection:
         return False
 
     def get_color(self,start=[0,255,0],end=[255,0,0]):
-        m = self.max_force
-        if m==-1:
-            m=100
-        fac = min(float(abs(self.force))/m,1)
-        col = [int(fac*end[i]+(1-fac)*start[i]) for i in range(3)]
-
-
-        return tuple(col)
+        if DEBUG:
+            m = self.max_force
+            if m==-1:
+                m=100
+            fac = min(float(abs(self.force))/m,1)
+            col = [int(fac*end[i]+(1-fac)*start[i]) for i in range(3)]
+            return tuple(col)
+        else:
+            return [0,255,0]
 
     def check_weight(self,coord,weight,g=9.81):
         if self.can_collide:
@@ -74,7 +76,8 @@ class Connection:
         self.p2.add_force[1]+=weight*g*percent_of_force_for_p2
         self.p1.add_force[1]+=weight*g*(1-percent_of_force_for_p2)
 
-        self.line_width = 5
+        if DEBUG:
+            self.line_width = 5
 
 
     def get_bounding_box(self):

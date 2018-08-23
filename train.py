@@ -210,5 +210,6 @@ class Wagon():
             self.last_img = pygame.transform.rotozoom(self.image,self.orientation*360/6.28,zoom)
         offset = [self.last_img.get_width()/2,self.last_img.get_height()/2]
         surface.blit(self.last_img,[int((translation[i]+self.center[i]-offset[i])*zoom) for i in range(2)])
-        pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[0]],5)
-        pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[1]],5)
+        if DEBUG:
+            pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[0]],5)
+            pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[1]],5)

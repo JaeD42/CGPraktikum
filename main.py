@@ -119,8 +119,8 @@ def main(winstyle = 0):
                     connections.remove(c)
 
                 for p in points:
-                    p.move(0.06)
-                train.move(0.06)
+                    p.move(STEPSIZE)
+                train.move(STEPSIZE)
 
             screen.fill((255,255,255))
 
