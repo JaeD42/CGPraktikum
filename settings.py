@@ -13,8 +13,8 @@ TRANSLATE           = [0,0]
 PAUSE               = False
 
 #train
-TRAIN_WEIGHTS       = [2,3,3,2]
-TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.355]
+TRAIN_WEIGHTS       = [40,40,3,2]
+TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.305]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2
 GRAVITY             = 9.81
@@ -25,3 +25,6 @@ BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
 BRIDGE_NODES        = 6
 BRIDGE_STIFF        = 30
+
+
+DEBUG               = True

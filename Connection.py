@@ -8,7 +8,6 @@ class Connection:
         self.p2 = point2
         self.correct_length = float(length)
         self.strength = strength
-        print(self.strength)
         self.force = 0
         self.max_force = max_force
         self.color = pygame.Color(255,255,0,1)
@@ -20,7 +19,7 @@ class Connection:
         self.dir = self.dir/self.len
         self.can_collide=can_collide
         self.line_width = 1
-        self.collision_width = 10
+        self.collision_width = 50
 
     #positive force: drags points to middle
     #negative force: push points away
@@ -71,7 +70,7 @@ class Connection:
             return False
 
     def add_weight(self,weight,perc,g=9.81):
-        percent_of_force_for_p2 = (perc+1.0)/2
+        percent_of_force_for_p2 = 1-(perc+1.0)/2
         self.p2.add_force[1]+=weight*g*percent_of_force_for_p2
         self.p1.add_force[1]+=weight*g*(1-percent_of_force_for_p2)
 
@@ -80,7 +79,7 @@ class Connection:
 
     def get_bounding_box(self):
         other_dir = np.array([-self.dir[1],self.dir[0]])
-        return BoundingBox(np.array(self.center)+self.collision_width/2*other_dir,[self.dir,[-self.dir[1],self.dir[0]]],[self.len,self.collision_width])
+        return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,[-self.dir[1],self.dir[0]]],[self.len/2,self.collision_width/2])
 
 
     def check_train(self,train,g=9.81):

@@ -63,7 +63,7 @@ def main(winstyle = 0):
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, winstyle, bestdepth)
     clock = pygame.time.Clock()
-    font = pygame.font.Font(None, 30)
+    font = pygame.font.Font(None, 20)
     bg = pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
     bgmusic = load_sound('Spring.wav')
     bgmusic.set_volume(0.2)
@@ -81,12 +81,18 @@ def main(winstyle = 0):
     rectangle_draging=False
 
     #create a bridge
-    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 100)
+    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 1000)
 
     BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*10)
+    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*10, max_force = 10000)
+    add_point = MassPoint((SCREEN_WIDTH,200),5,moveable=False)
+    add_conn = add_point.connect_to_quick(points2[4],can_collide=True)
+
     points.extend(points2)
     connections.extend(connections2)
+    points.append(add_point)
+    connections.append(add_conn)
+
 
     print(BRIDGE_END)
     try:
@@ -126,6 +132,10 @@ def main(winstyle = 0):
                 p.draw(screen,ZOOM,TRANSLATE)
 
             train.draw(screen,ZOOM,TRANSLATE)
+
+            if DEBUG:
+                fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
+                screen.blit(fps, (50, 50))
 
             pygame.display.flip()
 

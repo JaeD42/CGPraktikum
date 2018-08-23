@@ -13,6 +13,7 @@ class MassPoint:
         self.radius=radius
         self.moveable=moveable
         self.add_force = [0.0,0.0]
+        self.prev_force = [0.0,0.0]
 
     def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
         c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
@@ -45,13 +46,14 @@ class MassPoint:
 
         self.v[0] += dt*self.add_force[0]/self.weight
         self.v[1] += dt*self.add_force[1]/self.weight
+        self.prev_force = self.add_force[:]
         self.add_force = [0.0,0.0]
 
         self.pos[0] += dt*self.v[0]
         self.pos[1] += dt*self.v[1]
 
     def draw(self,surface,zoom=1,translation=[0,0]):
-        pygame.draw.circle(surface,(0,0,255),self.get_int_pos(zoom,translation),int(self.radius*zoom))
+        pygame.draw.circle(surface,(min(self.prev_force[1],255),0,255),self.get_int_pos(zoom,translation),int(self.radius*zoom))
 
     def get_int_pos(self,zoom,translation):
         return [int((translation[i]+self.pos[i])*zoom) for i in range(2)]
@@ -59,8 +61,11 @@ class MassPoint:
     def get_pos(self):
         return self.pos
 
+    def connect_to_quick(self,other_point,strength=300,can_collide=False,max_force=1000):
+        return self.connect_to(other_point,self.distance_to(other_point),strength,can_collide,max_force)
 
-def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=300, max_force = 1000):
+
+def create_bridge(start_pos,end_pos,height,num_points,weight=4,D=300, max_force = 1000):
     points = []
     upper_points = []
     cur = start_pos[:]

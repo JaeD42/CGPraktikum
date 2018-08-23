@@ -134,12 +134,15 @@ class Wagon():
         collision_found,ax1_perc,ax2_perc,coordinate = bounding_box.check_collision_return_location(self.mass_coordinates[index])
 
         if collision_found:
-            print(ax2_perc)
-            self.mass_coordinates[index]-=[(1+ax2_perc)/2*bounding_box.axes[1][i]*bounding_box.lengths[1] for i in range(2)]
+            if ax2_perc<0:
+                self.mass_coordinates[index]-=[(1+ax2_perc)*bounding_box.axes[1][i]*bounding_box.lengths[1] for i in range(2)]
+            else:
+                self.mass_coordinates[index]-=[(1+ax2_perc)*bounding_box.axes[1][i]*bounding_box.lengths[1] for i in range(2)]
 
             self.physics_v_mass[index]=[0,0]
 
             return self.point_weights[index],ax1_perc
+
 
         return 0,0
 
@@ -161,6 +164,7 @@ class Wagon():
     def correct_position(self):
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
         new_orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
+
         if new_orientation!=self.orientation:
             self.orientation_changed=True
             self.orientation=new_orientation
@@ -181,19 +185,21 @@ class Wagon():
 
     def move(self,dt,g=9.81):
 
-        for i in range(2):
-            if self.mass_coordinates[i][0]>BRIDGE_START[0]:
-                print("here")
-                self.physics_v_mass[i][1]+=dt*g
+
         #self.physics_v_mass[1][1]+=dt*g
 
         self.v[0] = np.cos(self.orientation)*self.speed
-        self.v[1] = np.sin(self.orientation)*self.speed
+        self.v[1] = -1*np.sin(self.orientation)*self.speed
         self.mass_coordinates[0] += (np.array(self.physics_v_mass[0]) + self.v)*dt
         self.mass_coordinates[1] += (np.array(self.physics_v_mass[1]) + self.v)*dt
 
         self.correct_position()
 
+        for i in range(2):
+            if not ((self.mass_coordinates[i][0]<BRIDGE_START[0] or self.mass_coordinates[i][0]>BRIDGE_END[0]) and abs(self.mass_coordinates[i][1]-BRIDGE_START[1])<10):
+                self.physics_v_mass[i][1]+=dt*g
+            else:
+                self.physics_v_mass[i][1] = 0
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.last_zoom==zoom and not self.orientation_changed:
