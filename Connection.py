@@ -1,5 +1,6 @@
 import numpy as np
 import pygame
+from BoundingBox import BoundingBox
 class Connection:
 
     def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
@@ -7,6 +8,7 @@ class Connection:
         self.p2 = point2
         self.correct_length = float(length)
         self.strength = strength
+        print(self.strength)
         self.force = 0
         self.max_force = max_force
         self.color = pygame.Color(255,255,0,1)
@@ -18,6 +20,7 @@ class Connection:
         self.dir = self.dir/self.len
         self.can_collide=can_collide
         self.line_width = 1
+        self.collision_width = 10
 
     #positive force: drags points to middle
     #negative force: push points away
@@ -67,6 +70,17 @@ class Connection:
                 return True
             return False
 
+    def add_weight(self,weight,perc,g=9.81):
+        percent_of_force_for_p2 = (perc+1.0)/2
+        self.p2.add_force[1]+=weight*g*percent_of_force_for_p2
+        self.p1.add_force[1]+=weight*g*(1-percent_of_force_for_p2)
+
+        self.line_width = 5
+
+
+    def get_bounding_box(self):
+        other_dir = np.array([-self.dir[1],self.dir[0]])
+        return BoundingBox(np.array(self.center)+self.collision_width/2*other_dir,[self.dir,[-self.dir[1],self.dir[0]]],[self.len,self.collision_width])
 
 
     def check_train(self,train,g=9.81):
@@ -81,6 +95,8 @@ class Connection:
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
+        self.line_width = 1
+        #self.get_bounding_box().draw(surface)
 
     def get_center(self):
         return self.center

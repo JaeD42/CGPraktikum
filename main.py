@@ -3,7 +3,7 @@
 
 import random, os.path
 import numpy as np
-from train import Train
+from train import Train,Wagon
 from settings import *
 from events import calc_events
 
@@ -77,12 +77,18 @@ def main(winstyle = 0):
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
     img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
-    train = Train(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
+    train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
     rectangle_draging=False
 
     #create a bridge
-    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF)
+    points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 100)
 
+    BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
+    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*10)
+    points.extend(points2)
+    connections.extend(connections2)
+
+    print(BRIDGE_END)
     try:
         while running:
             soundtick+=1
@@ -100,7 +106,8 @@ def main(winstyle = 0):
                     if broke:
                         broken_conns.append(c)
                         continue
-                    c.check_train(train)
+                    train.collision_with_connection(c)
+                    #c.check_train(train)
 
                 for c in broken_conns:
                     connections.remove(c)

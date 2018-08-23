@@ -1,6 +1,6 @@
 
 #!/usr/bin/env python
-
+from settings import *
 import random, os.path
 
 #import basic pygame modules
@@ -11,13 +11,7 @@ from pygame.locals import *
 if not pygame.image.get_extended():
     raise SystemExit("Sorry, extended image module required")
 
-#game constants
-TRAIN_WEIGHT        = 200
-TRAIN_START_COORD   = [0,20]
-TRAIN_SPEED         = 10
-NODE_MASS           = 2
-GRAVITY             = 9.81
-SCREENRECT          = Rect(0, 0, 640, 480)
+
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir, 'data')
@@ -38,27 +32,8 @@ def load_image(name, colorkey=None):
     #   , image.get_rect()
 
 
-class Train():
-    speed = None
-    image = None
-    coordinates = None
-    weight = None
 
-    def __init__(self, image, coordinates, weight, speed):
-        self.image = image
-        self.coordinates = coordinates #list
-        self.weight = weight
-        self.speed = speed
 
-    def move(self):
-        self.coordinates[0] = self.coordinates[0]+0.1*speed
-
-    def draw(self,surface):
-        surface.blit(self.image,self.coordinates)
-
-from Points import MassPoint,create_bridge
-from Connection import Connection
-import time
 def main(winstyle = 0):
     pygame.init()
     if pygame.mixer and not pygame.mixer.get_init():
@@ -81,30 +56,29 @@ def main(winstyle = 0):
     #for i in range(4):
     #    connections.append(points[i].connect_to(points[i+1],60,10))
 
-    points,connections = create_bridge([100,300],200,50,8)
 
-
+    img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
+    width = img.get_width()
+    height = img.get_height()
+    diag = (width**2+height**2)**0.5 /2
 
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 30)
+
     running = True
+    i=0
+    import numpy as np
     try:
         while running:
-            screen.fill((0,0,0))
-            #train.draw(screen)
-            for c in connections:
-                c.update_force()
-            for p in points:
-                p.update_pos(0.06)
+            i+=1
+            print(i)
+            screen.fill((255,255,255))
 
-            for c in connections:
-                c.draw(screen)
-            for p in points:
-                p.draw(screen)
-
-            fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
-            screen.blit(fps, (50, 50))
+            rot_in_deg = float(i+135)/360*2*3.1415
+            rotated = pygame.transform.rotozoom(img,i,1)
+            screen.blit(rotated,[300-rotated.get_width()/2,300-rotated.get_height()/2])
+            pygame.draw.circle(screen,(255,0,0),[300,300],5)
 
             pygame.display.flip()
             for event in pygame.event.get():

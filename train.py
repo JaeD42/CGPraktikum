@@ -1,54 +1,7 @@
 import numpy as np
 import pygame
-
-class BoundingBox():
-    center = [] #achsen normiert, koordinaten des objekts
-    axes = []
-    lengths = []
-
-    dragging = False
-
-    def __init__(self, center, axes, lengths):
-        self.center = np.array(center)
-        self.axes = np.array(axes)
-        self.lengths = np.array(lengths)
-
-    def check_collision(self, point_coordinates):
-        point_centered = (np.array(point_coordinates) - self.center)
-        #test collision in direction of first axis of bounding box
-        if(np.abs(np.dot(point_centered, self.axes[0])) > self.lengths[0]):
-            return False
-        #test in second direction
-        if(np.abs(np.dot(point_centered, self.axes[1])) > self.lengths[1]):
-            return False
-
-        return True
-
-    def check_collision_return_location(self,point_coordinates):
-        point_centered = (np.array(point_coordinates) - self.center)
-        #test collision in direction of first axis of bounding box
-        ax1_pos = np.dot(point_centered, self.axes[0])
-        ax2_pos = np.dot(point_centered, self.axes[1])
-        col_pos = point_centered+ [ax1_pos,ax2_pos]
-
-        ax1_percentage = ax1_pos/self.lengths[0]
-        ax2_percentage = ax2_pos/self.lengths[1]
-
-
-        #test both axes
-        if(np.abs(ax1_pos) > self.lengths[0] or np.abs(ax2_pos)>self.lengths[1]):
-            return False,ax1_percentage,ax2_percentage,col_pos
-
-
-        return True,ax1_percentage,ax2_percentage,col_pos
-
-
-
-    def update(self, center, axes, lengths):
-        self.center = np.array(center)
-        self.axes = np.array(axes)
-        self.lengths = np.array(lengths)
-
+from BoundingBox import BoundingBox
+from settings import *
 
 class Train():
 
@@ -161,7 +114,7 @@ class Wagon():
         self.orientation = 0
         self.speed = speed
         self.v = [speed, 0]
-        self.physics_v = [0,0]
+        self.physics_v_mass = [[0,0],[0,0]]
 
         self.mass_coordinates = []
         self.mass_coordinates.append([self.coordinates[0], #todo: nach innen setzen
@@ -170,6 +123,7 @@ class Wagon():
         self.mass_coordinates.append([self.coordinates[0]+self.width,
                                     self.coordinates[1]+self.height])
         self.mass_coordinates = np.array(self.mass_coordinates)
+
         self.last_zoom = 1
         self.orientation_changed = False
 
@@ -180,12 +134,18 @@ class Wagon():
         collision_found,ax1_perc,ax2_perc,coordinate = bounding_box.check_collision_return_location(self.mass_coordinates[index])
 
         if collision_found:
-            self.mass_coordinates[index]+=[(1-ax2_perc)*bounding_box.axes[1][i] for i in range(2)]
+            print(ax2_perc)
+            self.mass_coordinates[index]-=[(1+ax2_perc)/2*bounding_box.axes[1][i]*bounding_box.lengths[1] for i in range(2)]
+
+            self.physics_v_mass[index]=[0,0]
+
             return self.point_weights[index],ax1_perc
 
         return 0,0
 
     def collision_with_connection(self,connection):
+        if not connection.can_collide:
+            return
 
         w,perc = self.collision_mass_with_physics(connection.get_bounding_box(),0)
 
@@ -200,7 +160,7 @@ class Wagon():
 
     def correct_position(self):
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
-        new_orientation = np.atan(mass_dir[1]/mass_dir[0])
+        new_orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
         if new_orientation!=self.orientation:
             self.orientation_changed=True
             self.orientation=new_orientation
@@ -212,13 +172,27 @@ class Wagon():
             self.mass_coordinates[1]+= (self.width-len)/2 * normalized_dir
             self.mass_coordinates[0]-= (self.width-len)/2 * normalized_dir
 
-            self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - self.height/2 * [-1*normalized_dir[1],normalized_dir[0]]
+
+
+            self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - [self.height/2 *-1*normalized_dir[1],self.height/2 *normalized_dir[0]]
             self.coordinates = 2*self.center - self.mass_coordinates[1]
 
 
 
     def move(self,dt,g=9.81):
-        pass
+
+        for i in range(2):
+            if self.mass_coordinates[i][0]>BRIDGE_START[0]:
+                print("here")
+                self.physics_v_mass[i][1]+=dt*g
+        #self.physics_v_mass[1][1]+=dt*g
+
+        self.v[0] = np.cos(self.orientation)*self.speed
+        self.v[1] = np.sin(self.orientation)*self.speed
+        self.mass_coordinates[0] += (np.array(self.physics_v_mass[0]) + self.v)*dt
+        self.mass_coordinates[1] += (np.array(self.physics_v_mass[1]) + self.v)*dt
+
+        self.correct_position()
 
 
     def draw(self,surface,zoom=1,translation=[0,0]):
@@ -228,10 +202,7 @@ class Wagon():
             self.last_zoom = zoom
             self.orientation_changed = False
             self.last_img = pygame.transform.rotozoom(self.image,self.orientation*360/6.28,zoom)
-        surface.blit(self.last_img,[int((translation[i]+self.coordinates[i])*zoom) for i in range(2)])
-
-    def translate(self,dx,dy):
-        pass
-
-    def update_rotation(self):
-        pass
+        offset = [self.last_img.get_width()/2,self.last_img.get_height()/2]
+        surface.blit(self.last_img,[int((translation[i]+self.center[i]-offset[i])*zoom) for i in range(2)])
+        pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[0]],5)
+        pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[1]],5)

@@ -14,8 +14,8 @@ class MassPoint:
         self.moveable=moveable
         self.add_force = [0.0,0.0]
 
-    def connect_to(self,other_point,length,strength,can_collide=False):
-        c = Connection(self,other_point,length,strength,can_collide=can_collide)
+    def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
+        c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
         self.connections.append(c)
         other_point.connections.append(c)
         return c
@@ -60,10 +60,11 @@ class MassPoint:
         return self.pos
 
 
-def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=50):
+def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=300, max_force = 1000):
     points = []
     upper_points = []
     cur = start_pos[:]
+
     width = end_pos[0]-start_pos[0]
     lH = width/(num_points-1)
     lV = height
@@ -73,7 +74,7 @@ def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=50):
     for i in range(num_points):
         points.append(MassPoint(cur,weight))
         cur[0]+=lH
-    cur = start_pos
+    cur = start_pos[:]
     cur[1]-=height
     cur[0]+=lH
     for i in range(num_points-2):
@@ -82,18 +83,18 @@ def create_bridge(start_pos,end_pos,height,num_points,weight=5,D=50):
 
     connections = []
     for i in range(1,num_points):
-        connections.append(points[i].connect_to(points[i-1],lH+1,D,can_collide=True))
+        connections.append(points[i].connect_to(points[i-1],lH+1,D,can_collide=True,max_force=max_force))
 
 
 
     for i in range(1,num_points-1):
-        connections.append(points[i].connect_to(upper_points[i-1],lV,D))
+        connections.append(points[i].connect_to(upper_points[i-1],lV,D,max_force=max_force))
 
-        connections.append(points[i+1].connect_to(upper_points[i-1],lD,D))
-        connections.append(points[i-1].connect_to(upper_points[i-1],lD,D))
+        connections.append(points[i+1].connect_to(upper_points[i-1],lD,D,max_force=max_force))
+        connections.append(points[i-1].connect_to(upper_points[i-1],lD,D,max_force=max_force))
 
     for i in range(1,num_points-2):
-        connections.append(upper_points[i].connect_to(upper_points[i-1],lH,D))
+        connections.append(upper_points[i].connect_to(upper_points[i-1],lH,D,max_force=max_force))
 
     points[0].moveable=False
     points[-1].moveable=False
