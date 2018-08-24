@@ -2,16 +2,17 @@ import numpy as np
 import pygame
 from BoundingBox import BoundingBox
 from settings import DEBUG
-from RotateTranslateImage import RTImage
+from RotateTranslateImage import RTImage_Connection
+from load_data import load_image
+from settings import *
 class Connection:
 
-    def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False, img = None):
+    def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
         self.p1 = point1
         self.p2 = point2
-        if img!=None:
-            self.img = RTImage(img)
-        else:
-            self.img = None
+        self.img_Collide = RTImage_Connection(pygame.transform.rotozoom(load_image(BALKEN_UNTEN),0,0.1),length)
+        self.img_not_Collide = RTImage_Connection(pygame.transform.rotozoom(load_image(BALKEN),0,0.1),length)
+
         self.correct_length = float(length)
         self.strength = strength
         self.force = 0
@@ -114,9 +115,16 @@ class Connection:
         return bb.check_collision(pos)
 
     def draw(self,surface,zoom=1,translation=[0,0]):
-        if not DEBUG and self.img!=None:
-            orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
-            surface.blit(*self.image.get_img(self.center,57.295*self.orientation,zoom,translation))
+
+        if self.can_collide:
+            d_img = self.img_Collide
+        else:
+            d_img = self.img_not_Collide
+
+        if not DEBUG:
+            p = self.get_perpendicular()
+            orientation = np.arctan(p[0]/p[1])
+            surface.blit(*d_img.get_img(self.center,self.len,57.295*orientation,zoom,translation))
         else:
             col = list(self.get_color())
             if not self.can_collide:
