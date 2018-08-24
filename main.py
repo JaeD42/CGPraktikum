@@ -64,13 +64,27 @@ def main(winstyle = 0):
     screen = pygame.display.set_mode(SCREENRECT.size, FLAGS, bestdepth)
     screen.set_alpha(None)
 
+    #SOUND
+    # initialize pygame.mixer
+    pygame.mixer.init(frequency = 44100, size = -16, channels = 1, buffer = 2**12)
+
+    # create separate Channel objects for simultaneous playback
+    channel1 = pygame.mixer.Channel(0) # argument must be int
+    channel2 = pygame.mixer.Channel(1)
+    channel1.set_volume(0.3)
+    channel2.set_volume(0.3)
+
+    bgmusic = load_sound('Spring.wav')
+    bgmusic.set_volume(0.3)
+    train_sound = load_sound('train2.wav')
+    train_sound.set_volume(0.7)
+    duration = train_sound.get_length() # duration of thunder in secon
+    channel1.play(bgmusic, loops = -1)
+    channel2.play(train_sound, loops = -1)
+
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
     bg = RTImage(pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)))
-    bgmusic = load_sound('Spring.wav')
-    bgmusic.set_volume(0.2)
-    train_sound = load_sound('train2.wav')
-    train_sound.set_volume(0.05)
     soundtick = 0
 
     #list of movable objects for collision check (mouse dragging)
@@ -100,12 +114,9 @@ def main(winstyle = 0):
     #print(BRIDGE_END)
     try:
         while running:
-            soundtick+=1
 
-            bgmusic.play(-1)
 
-            if(soundtick >= 100):
-                train_sound.play(-1)
+
             ZOOM,TRANSLATE,PAUSE,running = calc_events()
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
             if not PAUSE:
