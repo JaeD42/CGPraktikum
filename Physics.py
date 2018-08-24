@@ -28,6 +28,10 @@ class Physics:
         self.connections.remove(connection)
 
 
+    def get_point_wrong_coords(self,coordinates,ZOOM,TRANSLATE):
+        coords = [coordinates[0]/ZOOM-TRANSLATE[0],coordinates[1]/ZOOM-TRANSLATE[1]]
+        return self.get_point(coords)
+
     def get_point(self,coordinates):
         loc = (coordinates[0]/self.grid_size,coordinates[1]/self.grid_size)
         if not loc in self.grid:
