@@ -52,7 +52,7 @@ FLAGS               = DOUBLEBUF
 
 #Sound and images
 BGMUSIC             = 'Spring.wav'
-TRAIN_SOUND         = 'train_whistle.wav'
+TRAIN_SOUND         = 'train_whistle_short.wav'
 BGMUSIC_VOL         = 0.2
 TRAIN_SOUND_VOL     = 0.3
 

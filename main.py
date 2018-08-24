@@ -47,8 +47,9 @@ def main(winstyle = 0):
     # create separate Channel objects for simultaneous playback
     channel1 = pygame.mixer.Channel(0) # argument must be int
     channel2 = pygame.mixer.Channel(1)
-    channel1.set_volume(0.3)
-    channel2.set_volume(0.3)
+    channel1.set_volume(0.1)
+    channel2.set_volume(0.1)
+    soundtick = 0
 
     bgmusic = load_sound(BGMUSIC)
     bgmusic.set_volume(BGMUSIC_VOL)
@@ -59,8 +60,8 @@ def main(winstyle = 0):
     wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
     duration = train_sound.get_length() # duration of thunder in secon
+    print(duration)
     channel1.play(bgmusic, loops = -1)
-    channel2.play(train_sound, loops = -1)
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
@@ -92,6 +93,13 @@ def main(winstyle = 0):
             physics.update_physics(STEPSIZE)
             physics.move(STEPSIZE)
             physics.draw(screen,ZOOM,TRANSLATE)
+
+            soundtick += 1
+
+            if(soundtick % 1000 == 1):
+                if(not channel2.get_busy()):
+                    channel2.play(train_sound)
+
 
             if DEBUG:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
