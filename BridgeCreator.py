@@ -133,4 +133,4 @@ class BridgeCreator():
             p.draw(screen,ZOOM,TRANSLATE)
 
     def get_hover_object(self,pos):
-        
+        pass

@@ -115,13 +115,15 @@ class Connection:
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         if not DEBUG and self.img!=None:
-            pygame.
-        col = list(self.get_color())
-        if not self.can_collide:
-            col.append(122)
+            orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
+            surface.blit(*self.image.get_img(self.center,57.295*self.orientation,zoom,translation))
+        else:
+            col = list(self.get_color())
+            if not self.can_collide:
+                col.append(122)
 
-        pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
-        self.line_width = 1
+            pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
+            self.line_width = 1
         #self.get_bounding_box().draw(surface)
 
     def get_center(self):
