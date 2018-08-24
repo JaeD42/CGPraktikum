@@ -4,6 +4,10 @@ from load_data import *
 
 
 #game constants
+#game
+MAX_SCORE           = 3000
+COST                = 100    
+
 #screen
 SCREEN_WIDTH        = 1300
 SCREEN_HEIGHT       = 600
@@ -27,7 +31,7 @@ GRAVITY             = 9.81
 BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
 BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
-BRIDGE_NODES        = 6
+BRIDGE_NODES        = 2
 BRIDGE_STIFF        = 200
 
 #grid
