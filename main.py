@@ -20,40 +20,14 @@ if not pygame.image.get_extended():
 
 
 
-main_dir = os.path.split(os.path.abspath(__file__))[0]
-data_dir = os.path.join(main_dir, 'data')
-
-#load image of an object
-def load_image(name, colorkey=None):
-    fullname = os.path.join(data_dir, name)
-    try:
-        image = pygame.image.load(fullname)
-    except pygame.error:
-        print('Cannot load image:', name)
-        raise SystemExit
-    image = image.convert_alpha()
-    if colorkey is not None:
-        if colorkey is -1:
-            colorkey = image.get_at((0,0))
-        image.set_colorkey(colorkey, RLEACCEL)
-    return image
-
-
-def load_sound(name):
-    fullname = os.path.join(data_dir, name)
-    try:
-        sound = pygame.mixer.Sound(fullname)
-    except pygame.error:
-        print('Cannot load sound:', name)
-        raise SystemExit
-    return sound
-
 def main(winstyle = 0):
     global ZOOM,TRANSLATE,PAUSE
+
     pygame.init()
     if pygame.mixer and not pygame.mixer.get_init():
         print ('Warning, no sound')
         pygame.mixer = None
+
     pygame.display.set_caption("Choo Choo")
     pygame.key.set_repeat(1000,10)
     running = True
@@ -75,17 +49,21 @@ def main(winstyle = 0):
     channel1.set_volume(0.3)
     channel2.set_volume(0.3)
 
-    bgmusic = load_sound('Spring.wav')
-    bgmusic.set_volume(0.3)
-    train_sound = load_sound('train2.wav')
-    train_sound.set_volume(0.7)
+    bgmusic = load_sound(BGMUSIC)
+    bgmusic.set_volume(BGMUSIC_VOL)
+    train_sound = load_sound(TRAIN_SOUND)
+    train_sound.set_volume(TRAIN_SOUND_VOL)
+
+    bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
+    wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
+
     duration = train_sound.get_length() # duration of thunder in secon
     channel1.play(bgmusic, loops = -1)
     channel2.play(train_sound, loops = -1)
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
-    bg = RTImage(pygame.transform.scale(load_image('landscape3.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)))
+
     soundtick = 0
 
     #list of movable objects for collision check (mouse dragging)
@@ -93,10 +71,7 @@ def main(winstyle = 0):
 
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
-    img1 = pygame.transform.rotozoom(load_image('train_lastwagon.png'),0,0.2)
-    img2 = pygame.transform.rotozoom(load_image('train_wagon.png'),0,0.2)
-    img3 = pygame.transform.rotozoom(load_image('train_firstwagon.png'),0,0.2)
-    wagon_imgs = [img1, img2, img3]
+
 
     train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
     #train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)

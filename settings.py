@@ -1,5 +1,7 @@
 import pygame
-from pygame.locals import *
+import os
+from load_data import *
+
 
 #game constants
 #screen
@@ -38,4 +40,13 @@ STEPSIZE            = 0.02
 
 
 #pygame flags
-FLAGS = DOUBLEBUF
+FLAGS               = DOUBLEBUF
+
+#Sound and images
+BGMUSIC             = 'Spring.wav'
+TRAIN_SOUND         = 'train_whistle.wav'
+BGMUSIC_VOL         = 0.2
+TRAIN_SOUND_VOL     = 0.3
+
+BG                  = 'landscape3.png'
+WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
