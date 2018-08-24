@@ -67,7 +67,12 @@ class MassPoint:
     def connect_to_quick(self,other_point,strength=300,can_collide=False,max_force=1000):
         return self.connect_to(other_point,self.distance_to(other_point),strength,can_collide,max_force)
 
-
+    def is_connected_to(self,other_point):
+        for c in self.connections:
+            if c.p1==other_point or c.p2==other_point:
+                return True
+        return False
+        
 def create_bridge(start_pos,end_pos,height,num_points,weight=4,D=300, max_force = 1000):
     points = []
     upper_points = []
