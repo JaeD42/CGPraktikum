@@ -14,7 +14,8 @@ TRANSLATE           = [0,0]
 PAUSE               = False
 
 #train
-TRAIN_WEIGHTS       = [40,40,3,2]
+NUMBER_OF_WAGONS    = 5
+TRAIN_WEIGHTS       = [[5,5]]*5
 TRAIN_START_COORD   = [0,SCREEN_HEIGHT*0.305]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2
@@ -31,7 +32,7 @@ BRIDGE_STIFF        = 200
 GRID_SIZE           = 50
 
 
-DEBUG               = False
+DEBUG               = True
 
 STEPSIZE            = 0.02
 

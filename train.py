@@ -22,9 +22,15 @@ class Train():
                 wagon_length = imgs[0].get_width() + (number_of_wagons - 2) * imgs[1].get_width()
                 coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
                 self.wagons.append(Wagon(imgs[2], coord, weights[number_of_wagons - 1], speed))
-            wagon_length = imgs[0].get_width() + (i-1) * imgs[1].get_width()
-            coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
-            self.wagons.append(Wagon(imgs[1], coord, weights[i - 1], speed))
+            else:
+                wagon_length = imgs[0].get_width() + (i-1) * imgs[1].get_width()
+                coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
+                self.wagons.append(Wagon(imgs[1], coord, weights[i - 1], speed))
+
+    def collision_with_connection(self,connection):
+        for i in range(self.number_of_wagons):
+            self.wagons[i].collision_with_connection(connection)
+
 
     def move(self,dt,g=9.81):#todo, soll auch drehen koennen
         for i in range(self.number_of_wagons):
