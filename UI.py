@@ -1,6 +1,7 @@
 
 from settings import *
 from Physics import Physics
+from train import Train
 class UI():
 
     physics = None
@@ -51,11 +52,11 @@ class UI():
 
 
     def handle_events(self):
-        global ZOOM,TRANSLATE,PAUSE
-        running = True
+        global ZOOM,TRANSLATE,PAUSE, RUNNING
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                RUNNING = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -94,7 +95,8 @@ class UI():
                     PAUSE = not PAUSE
                     self.build_mode = False
                     self.create_physics()
-        return ZOOM,TRANSLATE,PAUSE,running
+        return RUNNING
+
 
 
     def left_down(self):
@@ -123,9 +125,9 @@ class UI():
 
 
     def selected_second(self,pos):
-        if self.get_grid_pos(pos)==self.get_grid_pos(self.first_pos):
+        if self.BC.get_grid_pos(pos)==self.BC.get_grid_pos(self.first_pos):
             if self.first_is_point:
-                pass
+                self.BC.check_which_point_image_coords(pos).change_moveable()
             else:
                 if self.build_mode:
                     self.BC.add_point(pos)
@@ -139,8 +141,18 @@ class UI():
         self.first_is_point = False
 
     def create_physics(self):
+        self.build_mode = False
         points = self.BC.points
         connections = self.BC.connections
         bg = self.BC.bg
-        train
-        self.physics = Physics(connections,points,train,bg)
+        self.physics = Physics(connections,points,Train.get_standard_train(),bg)
+
+    def step(self,dt,screen):
+        r = self.handle_events()
+        if self.build_mode:
+            self.BC.draw(screen,ZOOM,TRANSLATE)
+        else:
+            self.physics.update_physics(dt)
+            self.physics.move(dt)
+            self.physics.draw(screen,ZOOM,TRANSLATE)
+        return r

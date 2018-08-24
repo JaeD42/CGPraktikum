@@ -22,6 +22,7 @@ ZOOM                = 1.0
 ZOOM_FACTOR         = 0.1
 TRANSLATE           = [0,0]
 PAUSE               = False
+RUNNING             = True
 
 #train
 NUMBER_OF_WAGONS    = 5
@@ -39,7 +40,7 @@ BRIDGE_NODES        = 5
 BRIDGE_STIFF        = 200
 
 #grid
-GRID_SIZE           = 50
+GRID_SIZE           = 100
 
 
 DEBUG               = True
