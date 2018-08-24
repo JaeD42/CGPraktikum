@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 import random, os.path
+from Physics import Physics
 import numpy as np
 from train import Train,Wagon
 from settings import *
@@ -111,6 +112,7 @@ def main(winstyle = 0):
     connections.append(add_conn)
 
 
+    physics = Physics(connections,points,train,bg)
     #print(BRIDGE_END)
     try:
         while running:
@@ -119,36 +121,10 @@ def main(winstyle = 0):
 
             ZOOM,TRANSLATE,PAUSE,running = calc_events()
             #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
-            if not PAUSE:
-                broken_conns = []
-                for c in connections:
-                    broke = c.update_force()
-                    if broke:
-                        broken_conns.append(c)
-                        continue
-                    train.collision_with_connection(c)
-                    #c.check_train(train)
+            physics.update_physics(STEPSIZE)
+            physics.move(STEPSIZE)
+            physics.draw(screen,ZOOM,TRANSLATE)
 
-                for c in broken_conns:
-                    connections.remove(c)
-
-                for p in points:
-                    p.move(STEPSIZE)
-                train.move(STEPSIZE)
-
-            #conn.add_weight(weight=abs(np.sin(soundtick/10))*100,perc=0.5)
-            #print(abs(np.sin(soundtick/10))*100)
-
-            #screen.fill((255,255,255))
-
-            screen.blit(*bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
-
-            for c in connections:
-                c.draw(screen,ZOOM,TRANSLATE)
-            for p in points:
-                p.draw(screen,ZOOM,TRANSLATE)
-
-            train.draw(screen,ZOOM,TRANSLATE)
 
             if DEBUG:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
