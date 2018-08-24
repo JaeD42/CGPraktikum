@@ -92,6 +92,10 @@ class Connection:
                 if self.check_weight(coords[i],weights[i],g):
                     train.is_on(self,i)
 
+    def remove():
+        self.p1.connections.remove(self)
+        self.p2.connections.remove(self)
+
 
     def draw(self,surface,zoom=1,translation=[0,0]):
 
