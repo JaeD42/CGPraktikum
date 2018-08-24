@@ -59,3 +59,5 @@ TRAIN_SOUND_VOL     = 0.3
 
 BG                  = 'landscape3.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
+BALKEN              = 'balken.png'
+BALKEN_UNTEN        = 'balken_unten.png'
