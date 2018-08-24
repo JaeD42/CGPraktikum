@@ -27,6 +27,9 @@ BRIDGE_HEIGHT       = 70
 BRIDGE_NODES        = 6
 BRIDGE_STIFF        = 200
 
+#grid
+GRID_SIZE           = 50
+
 
 DEBUG               = False
 
