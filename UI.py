@@ -1,5 +1,6 @@
 
 from settings import *
+from Physics import Physics
 class UI():
 
     physics = None
@@ -11,8 +12,10 @@ class UI():
     def __init__(self, bridge_creator):
         self.BC = bridge_creator
         self.first_pos = (0,0)
-        self.first_selected = True
+        self.first_selected = False
+        self.first_is_point = False
         self.second_pos = (0,0)
+        self.build_mode = True
 
 
 
@@ -64,15 +67,15 @@ class UI():
 
 
                 elif event.button == self.LEFT_MOUSE: #Left Click
-                    pass
+                    self.left_down()
                 elif event.button == self.RIGHT_MOUSE: #Right Click
-                    pass
+                    self.right_down()
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == self.LEFT_MOUSE: #Left Release
-                    pass
+                    self.left_up()
                 elif event.button == self.RIGHT_MOUSE: #Right Release
-                    pass
+                    self.right_up()
 
 
 
@@ -89,18 +92,55 @@ class UI():
                     TRANSLATE[0]-=5
                 if event.key == pygame.K_SPACE:
                     PAUSE = not PAUSE
+                    self.build_mode = False
+                    self.create_physics()
         return ZOOM,TRANSLATE,PAUSE,running
 
 
+    def left_down(self):
+        pos = pygame.mouse.get_pos()
+        self.selected(pos)
+
+    def left_up(self):
+        pos = pygame.mouse.get_pos()
+        self.selected_second(pos)
+
+    def right_down(self):
+        pass
+
+    def right_up(self):
+        pass
 
     def selected(self,pos):
-        pass
+        p = self.BC.check_which_point_image_coords(pos)
+        self.first_selected = True
+        self.first_pos = pos[:]
+        if p!=None:
+            self.first_is_point = True
+        else:
+            self.first_is_point = False
+
+
 
     def selected_second(self,pos):
+        if self.get_grid_pos(pos)==self.get_grid_pos(self.first_pos):
+            if self.first_is_point:
+                pass
+            else:
+                if self.build_mode:
+                    self.BC.add_point(pos)
+        else:
+            if self.first_is_point:
+                if self.build_mode:
+                    self.BC.add_connection(self.first_pos,pos)
+            else:
+                pass
+        self.first_selected = False
+        self.first_is_point = False
 
-        if selbestellewieclick
-            self.create_point()
-
-        if nichtselbestelle und zwei punkte:
-            self.create_connection(beide_punkte)
-        pass
+    def create_physics(self):
+        points = self.BC.points
+        connections = self.BC.connections
+        bg = self.BC.bg
+        train
+        self.physics = Physics(connections,points,train,bg)

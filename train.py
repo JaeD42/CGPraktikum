@@ -27,6 +27,14 @@ class Train():
                 coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
                 self.wagons.append(Wagon(imgs[1], coord, weights[i - 1], speed))
 
+    @staticmethod
+    def get_standard_train():
+        from load_data import load_image
+        wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
+        train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
+        return train
+
+
     def collision_with_connection(self,connection):
         for i in range(self.number_of_wagons):
             self.wagons[i].collision_with_connection(connection)

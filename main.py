@@ -57,7 +57,7 @@ def main(winstyle = 0):
     train_sound.set_volume(TRAIN_SOUND_VOL)
 
     bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
-    wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
+    #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
     duration = train_sound.get_length() # duration of thunder in secon
     print(duration)
@@ -69,7 +69,7 @@ def main(winstyle = 0):
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
 
-    train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
+    train = Train.get_standard_train()
     #create a bridge
     points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
 

@@ -9,11 +9,11 @@ class BridgeCreator():
     removed_connections = []
 
 
-    def __init__(self):
+    def __init__(self,back_ground):
         self.points, self.connections = create_bridge()
         self.cost = COST
         self.grid_size = GRID_SIZE
-
+        self.bg = back_ground
         self.grid = {}
 
         for p in self.points:
@@ -98,3 +98,15 @@ class BridgeCreator():
             return None
         else:
             return self.grid[pos]
+
+    def check_which_point_image_coords(self,coord):
+        pos = self.get_grid_pos(coord)
+        return self.check_which_point(pos)
+
+    def draw(self,screen, ZOOM, TRANSLATE):
+        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
+
+        for c in self.connections:
+            c.draw(screen,ZOOM,TRANSLATE)
+        for p in self.points:
+            p.draw(screen,ZOOM,TRANSLATE)
