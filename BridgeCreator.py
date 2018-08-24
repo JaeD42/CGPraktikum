@@ -48,7 +48,7 @@ class BridgeCreator():
 
         #if not, add in self.connections and to points
 
-    def delete_point(self, coord):
+    def delete_point(self, coord1):
         grid_pos = self.get_grid_pos(coord)
         if(self.grid[grid_pos]):
             p = self.grid[grid_pos]
@@ -60,7 +60,18 @@ class BridgeCreator():
                 self.connections.remove(i)
                 i.remove()
 
-    def delete_connection(self, coord):
+    def delete_connection(self, coord1, coord2):
+        grid_pos1 = self.get_grid_pos(coord1)
+        grid_pos2 = self.get_grid_pos(coord2)
+        p1 = self.grid[grid_pos1]
+        p2 = self.grid[grid_pos2]
+        if(not(p1 and p2)):
+            return
+
+        check, c = p1.get_connection_to(p2)
+        if(check):
+            self.connections.remove(c)
+            c.remove()
 
     def change_point_mass(self, coord):
         pass
