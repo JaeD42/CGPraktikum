@@ -79,10 +79,14 @@ class BridgeCreator():
     def change_point_movable(self, coord):
         pass
 
+    def get_grid_pos_phys(self,coordinated):
+        loc = ((coordinates[0]+self.grid_size/2)/self.grid_size, (coordinates[1]+self.grid_size/2)/self.grid_size)
+        return loc
+
     #get the position in grid coordinates
     def get_grid_pos(self, coord):
         coord = [coordinates[0]/ZOOM-TRANSLATE[0],coordinates[1]/ZOOM-TRANSLATE[1]]
-        loc = ((coordinates[0]+self.grid_size/2)/self.grid_size, (coordinates[1]+self.grid_size/2)/self.grid_size)
+        loc = ((coord[0]+self.grid_size/2)/self.grid_size, (coord[1]+self.grid_size/2)/self.grid_size)
         return loc
 
     def get_coordinates(self, grid_pos):

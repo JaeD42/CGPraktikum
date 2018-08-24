@@ -10,6 +10,9 @@ class UI():
 
     def __init__(self, bridge_creator):
         self.BC = bridge_creator
+        self.first_pos = (0,0)
+        self.first_selected = True
+        self.second_pos = (0,0)
 
 
 
