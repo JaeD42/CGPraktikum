@@ -58,6 +58,9 @@ def main(winstyle = 0):
     train_sound = load_sound(TRAIN_SOUND)
     train_sound.set_volume(TRAIN_SOUND_VOL)
 
+    balken = pygame.transform.rotozoom(load_image(BALKEN),0,0.2)
+    balken_u = pygame.transform.rotozoom(load_image(BALKEN_UNTEN),0,0.2)
+
     bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
     #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
@@ -75,22 +78,6 @@ def main(winstyle = 0):
     Interface = UI(BC)
 
 
-    #train = Train.get_standard_train()
-    #create a bridge
-    #points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
-
-    #BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-    #points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
-    #conn = connections2[2]
-    #add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
-    #add_conn = add_point.connect_to_quick(points2[4],can_collide=True)
-
-    #points.extend(points2)
-    #connections.extend(connections2)
-    #points.append(add_point)
-    #connections.append(add_conn)
-
-
     #physics = Physics(connections,points,train,bg)
     #print(BRIDGE_END)
     running = True
@@ -105,6 +92,8 @@ def main(winstyle = 0):
                     channel2.play(train_sound)
 
 
+            screen.blit(balken, (300,300))
+            screen.blit(balken_u, (400,400))
             if DEBUG:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
                 screen.blit(fps, (50, 50))
