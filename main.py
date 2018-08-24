@@ -58,8 +58,11 @@ def main(winstyle = 0):
     train_sound = load_sound(TRAIN_SOUND)
     train_sound.set_volume(TRAIN_SOUND_VOL)
 
-    balken = pygame.transform.rotozoom(load_image(BALKEN),0,0.2)
-    balken_u = pygame.transform.rotozoom(load_image(BALKEN_UNTEN),0,0.2)
+    balken = load_image(BALKEN)
+    balken = pygame.transform.rotozoom(pygame.transform.scale(balken, (balken.get_width(), int(balken.get_height()*0.3))), 0, 0.2)
+    balken_u = load_image(BALKEN_UNTEN)
+    balken_u = pygame.transform.rotozoom(pygame.transform.scale(balken, (balken.get_width(), int(balken.get_height()*0.5))), 0, 0.1)
+
 
     bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
     #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
