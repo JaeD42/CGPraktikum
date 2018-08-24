@@ -64,14 +64,8 @@ def main(winstyle = 0):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
 
-    soundtick = 0
-
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
-
-    #Load images, assign to sprite classes
-    #(do this before the classes are used, after screen setup)
-
 
     train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
     #train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
@@ -96,24 +90,19 @@ def main(winstyle = 0):
     #print(BRIDGE_END)
     try:
         while running:
-
-
-
             ZOOM,TRANSLATE,PAUSE,running = calc_events()
-            #fps = font.render("FPS:"+str(int(clock.get_fps()))+"  Zoom:"+str(ZOOM), True, pygame.Color('black'))
             physics.update_physics(STEPSIZE)
             physics.move(STEPSIZE)
             physics.draw(screen,ZOOM,TRANSLATE)
-
 
             if DEBUG:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
                 screen.blit(fps, (50, 50))
 
             pygame.display.flip()
-
             # - constant game speed / FPS -
             clock.tick(FPS)
+
         pygame.quit()
     except SystemExit:
         pygame.quit()
