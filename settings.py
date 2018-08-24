@@ -43,7 +43,7 @@ BRIDGE_STIFF        = 200
 GRID_SIZE           = 100
 
 
-DEBUG               = True
+DEBUG               = False
 
 STEPSIZE            = 0.02
 

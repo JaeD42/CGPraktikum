@@ -14,6 +14,7 @@ class BridgeCreator():
         self.connections = []
         #self.points, self.connections = create_bridge()
 
+
         points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
 
         BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
@@ -29,7 +30,7 @@ class BridgeCreator():
 
         self.points = points
         self.connections = connections
-
+        
 
         self.cost = COST
         self.grid_size = GRID_SIZE

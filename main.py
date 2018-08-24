@@ -95,8 +95,6 @@ def main(winstyle = 0):
                     channel2.play(train_sound)
 
 
-            screen.blit(balken, (300,300))
-            screen.blit(balken_u, (400,400))
             if DEBUG:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
                 screen.blit(fps, (50, 50))
