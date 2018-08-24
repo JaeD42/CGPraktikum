@@ -92,8 +92,13 @@ def main(winstyle = 0):
 
     #Load images, assign to sprite classes
     #(do this before the classes are used, after screen setup)
-    img = pygame.transform.rotozoom(load_image('train_silhouette.png'),0,0.2)
-    train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
+    img1 = pygame.transform.rotozoom(load_image('train_lastwagon.png'),0,0.2)
+    img2 = pygame.transform.rotozoom(load_image('train_wagon.png'),0,0.2)
+    img3 = pygame.transform.rotozoom(load_image('train_firstwagon.png'),0,0.2)
+    wagon_imgs = [img1, img2, img3]
+
+    train = Train(5, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
+    #train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
     rectangle_draging=False
 
     #create a bridge

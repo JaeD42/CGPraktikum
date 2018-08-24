@@ -6,99 +6,34 @@ from settings import *
 
 class Train():
 
+    wagons = []
 
-    def __init__(self, image, coordinates, weights, speed):
-        self.image = image
-        self.width = image.get_width()
-        self.height = image.get_height()
-        self.coordinates = coordinates #list
-        self.coordinates[0]+=200
-        self.point_weights = weights
-        self.orientation = 0
-        self.speed = speed
-        self.v = [speed, 0] #todo
-        self.physics_v = [0,0]
+    #imgs[2] = first wagon image
+    #imgs[1] = middle wagon image
+    #imgs[0] = last wagon image
+    def __init__(self, number_of_wagons, imgs, start_coordinates, weights, speed):
+        self.number_of_wagons = number_of_wagons
+        self.start_coordinates = start_coordinates
 
-        self.bounding_box = self.calculate_bb()
-
-        num_of_points = len(self.point_weights)
-        dist_between_points = int(self.width/(num_of_points-1))
-        self.mass_coordinates = []
-        for i in range(num_of_points):
-            self.mass_coordinates.append([self.coordinates[0] + i*dist_between_points,
-                                     self.coordinates[1]+self.height])
-
-
-    def calculate_bb(self):
-        #calculate bounding box
-        lengths = np.array([self.width / 2, self.height / 2])
-        axes = [np.array([np.sin(self.orientation), np.cos(self.orientation)]),
-                np.array([-np.cos(self.orientation), np.sin(self.orientation)])]
-        center = lengths + np.array([self.coordinates[0], self.coordinates[1]])
-        return BoundingBox(center, axes, lengths)
+        for i in range(number_of_wagons):
+            if(i==0):
+                self.wagons.append(Wagon(imgs[0], start_coordinates, weights[0], speed))
+            elif(i==number_of_wagons-1):
+                wagon_length = imgs[0].get_width() + (number_of_wagons - 2) * imgs[1].get_width()
+                coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
+                self.wagons.append(Wagon(imgs[2], coord, weights[number_of_wagons - 1], speed))
+            wagon_length = imgs[0].get_width() + (i-1) * imgs[1].get_width()
+            coord = [start_coordinates[0]+ wagon_length, start_coordinates[1]]
+            self.wagons.append(Wagon(imgs[1], coord, weights[i - 1], speed))
 
     def move(self,dt,g=9.81):#todo, soll auch drehen koennen
-        #print(self.is_on_object)
-        if not self.is_on_object and self.coordinates[0]>200:
-            self.physics_v[1]+= dt*g/sum(self.point_weights)
-        else:
-            self.physics_v[1]=0
-
-        self.v[0] = np.cos(self.orientation)*self.speed + self.physics_v[0]
-        self.v[1] = np.sin(self.orientation)*self.speed + self.physics_v[1]
-        self.coordinates[0] += dt * self.v[0]
-        self.coordinates[1] += dt * self.v[1]
-        for i in range(len(self.mass_coordinates)):
-            self.mass_coordinates[i][0] += dt * self.v[0]
-            self.mass_coordinates[i][1] += dt * self.v[1]
-
-
-
-
-        if self.coordinates[0]>pygame.display.get_surface().get_width():
-            self.coordinates[0]-=pygame.display.get_surface().get_width()+self.width
-            for i in range(len(self.mass_coordinates)):
-                self.mass_coordinates[i][0] -=pygame.display.get_surface().get_width()+self.width
-
-        self.is_on_object = False
-        #self.bounding_box = self.calculate_bb()
+        for i in range(self.number_of_wagons):
+            self.wagons[i].move(dt, g)
 
     def draw(self,surface,zoom=1,translation=[0,0]):
-        surface.blit(pygame.transform.rotozoom(self.image,self.orientation*360/6.28,zoom),[int((translation[i]+self.coordinates[i])*zoom) for i in range(2)])
-
-    def translate(self,dx,dy):
-        self.coordinates[0]+=dx
-        self.coordinates[1]+=dy
-        for i in range(len(self.mass_coordinates)):
-            self.mass_coordinates[i][0] += dx
-            self.mass_coordinates[i][1] += dy
-
-    def update_rotation(self):
-        s = np.sin(self.orientation)
-        c = np.cos(self.orientation)
-        for i in range(len(self.mass_coordinates)):
-            self.mass_coordinates[i]=[self.coordinates[0] + c*i*dist_between_points - s*self.height,
-                                     self.coordinates[1]+ s*i*dist_between_points + c*self.height]
-
-
-
-    def is_on(self,connection,index):
-        if index == 0:
-
-            dir_to_conn = np.array([-connection.dir[1],connection.dir[0]])
-            weight_point = np.array(self.mass_coordinates[0])
-            translate_values = -dir_to_conn*np.dot(weight_point-connection.center,dir_to_conn)
-            #print(translate_values)
-            self.translate(translate_values[0],translate_values[1])
-
-        if index == len(self.mass_coordinates)-1:
-            #ToDO
-            pass
-
-
-        self.orientation = np.arccos(connection.dir[0])
-#
-        self.is_on_object=True
+        #also draw connections
+        for i in range(self.number_of_wagons):
+            self.wagons[i].draw(surface, zoom, translation)
 
 
 class Wagon():
@@ -164,7 +99,6 @@ class Wagon():
 
             connection.add_weight(w2,perc2)
 
-
     def correct_position(self):
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
         self.orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
@@ -179,8 +113,6 @@ class Wagon():
 
             self.center = (self.mass_coordinates[1]+self.mass_coordinates[0])/2 - [self.height/2 *-1*normalized_dir[1],self.height/2 *normalized_dir[0]]
             self.coordinates = 2*self.center - self.mass_coordinates[1]
-
-
 
     def move(self,dt,g=9.81):
 
@@ -199,7 +131,6 @@ class Wagon():
                 self.physics_v_mass[i][1]+=dt*g
             else:
                 self.physics_v_mass[i][1] = 0
-
 
     def draw(self,surface,zoom=1,translation=[0,0]):
 
