@@ -1,12 +1,16 @@
 import pygame
 import os
-from load_data import *
+from pygame.locals import *
+
+#System
+MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
+DATA_DIR = os.path.join(MAIN_DIR, 'data')
 
 
 #game constants
 #game
 MAX_SCORE           = 3000
-COST                = 100    
+COST                = 100
 
 #screen
 SCREEN_WIDTH        = 1300
@@ -31,7 +35,7 @@ GRAVITY             = 9.81
 BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
 BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
-BRIDGE_NODES        = 2
+BRIDGE_NODES        = 5
 BRIDGE_STIFF        = 200
 
 #grid

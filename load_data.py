@@ -1,10 +1,6 @@
 import os
 import pygame
-from pygame.locals import *
-
-#System
-MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
-DATA_DIR = os.path.join(MAIN_DIR, 'data')
+from settings import *
 
 #load image of an object
 def load_image(name, colorkey=None):
@@ -24,7 +20,6 @@ def load_image(name, colorkey=None):
 
 def load_sound(name):
     fullname = os.path.join(DATA_DIR, name)
-    print(fullname)
     sound = pygame.mixer.Sound(fullname)
     try:
         sound = pygame.mixer.Sound(fullname)

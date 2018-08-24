@@ -11,6 +11,7 @@ from RotateTranslateImage import RTImage
 #import basic pygame modules
 import pygame
 from pygame.locals import *
+from load_data import *
 
 from Points import MassPoint, create_bridge
 
@@ -68,22 +69,19 @@ def main(winstyle = 0):
     movable_objects = []
 
     train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
-    #train = Wagon(img, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED)
-    rectangle_draging=False
-
     #create a bridge
     points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
 
     BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-    #points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
-    #conn = connections2[2]
+    points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
+    conn = connections2[2]
     add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
-    #add_conn = add_point.connect_to_quick(points2[4],can_collide=True)
+    add_conn = add_point.connect_to_quick(points2[4],can_collide=True)
 
-    #points.extend(points2)
-    #connections.extend(connections2)
-    #points.append(add_point)
-    #connections.append(add_conn)
+    points.extend(points2)
+    connections.extend(connections2)
+    points.append(add_point)
+    connections.append(add_conn)
 
 
     physics = Physics(connections,points,train,bg)
