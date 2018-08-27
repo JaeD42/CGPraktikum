@@ -41,7 +41,7 @@ def main(winstyle = 0):
     winstyle = 0  # |FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, FLAGS, bestdepth)
-    screen.set_alpha(None)
+    #screen.set_alpha(None)
 
     #SOUND
     # initialize pygame.mixer
