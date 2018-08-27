@@ -3,12 +3,26 @@ from settings import *
 from Points import MassPoint,create_bridge
 from Connection import Connection
 from Effects import Effects
+import pickle
+
+class Bridge():
+    def __init__(self, points, connections):
+        self.points = [p.create_pickleable() for p in points]
+        self.connections = [c.create_pickleable() for c in connections]
+
+    def create_points(self):
+        points = []
+        for p in self.points:
+            points.append(MassPoint(p[0], p[1], p[2], p[3], p[4]))
+        return points
+
+    def create_connections(self):
+        connections = []
+        for p in self.connections:
+            connections.append(Connection(p[0], p[1], p[2], p[3], p[4]))
+        return connections
 
 class BridgeCreator():
-
-    removed_points = []
-    removed_connections = []
-
 
     def __init__(self,back_ground, cost):
         self.points = []
@@ -16,21 +30,24 @@ class BridgeCreator():
         #self.points, self.connections = create_bridge()
         self.effects = Effects()
 
-        points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
+        self.removed_points = []
+        self.removed_connections = []
 
-        BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-        points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
-        conn = connections2[2]
-        add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
-        add_conn = points2[3].connect_to_quick(add_point,can_collide=True)
+        # points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
+        #
+        # BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
+        # points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
+        # conn = connections2[2]
+        # add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
+        # add_conn = points2[3].connect_to_quick(add_point,can_collide=True)
+        #
+        # points.extend(points2)
+        # connections.extend(connections2)
+        # points.append(add_point)
+        # connections.append(add_conn)
 
-        points.extend(points2)
-        connections.extend(connections2)
-        points.append(add_point)
-        connections.append(add_conn)
-
-        self.points = points
-        self.connections = connections
+        # self.points = points
+        # self.connections = connections
 
 
         self.cost = cost
@@ -42,6 +59,17 @@ class BridgeCreator():
             gx = int(p.pos[0]/self.grid_size+0.5)
             gy = int(p.pos[1]/self.grid_size+0.5)
             self.grid[(gx,gy)] = p
+
+
+    def save_bridge(self, file):
+        filehandler = open(file, 'w')
+        pickle.dump(Bridge(self.points, self.connections), filehandler)
+
+    def load_bridge(self, file):
+        filehandler = open(file, 'r')
+        bridge = pickle.load(filehandler)
+        self.connections = bridge.connections
+        self.points = bridge.points
 
 
     def get_grid_intersections(self):

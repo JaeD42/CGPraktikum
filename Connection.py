@@ -34,6 +34,10 @@ class Connection:
     #positive force: drags points to middle
     #negative force: push points away
 
+    def create_pickleable(self):
+        return [self.pos, self.weight, self.radius, self.connections, self.moveable]
+
+
     def update_force(self):
         self.len = self.p1.distance_to(self.p2)
 

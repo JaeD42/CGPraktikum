@@ -105,6 +105,12 @@ class UI():
                         self.BC.change_bridge_mode()
                     else:
                         self.physics.change_bridge_mode()
+                if event.key == pygame.K_s:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.BC.save_bridge('bridge.bg')
+                if event.key == pygame.K_l:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.BC.load_bridge('bridge.bg')
                 if event.key == pygame.K_TAB:
                     self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
