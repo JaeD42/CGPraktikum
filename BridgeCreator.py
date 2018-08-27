@@ -43,6 +43,12 @@ class BridgeCreator():
             self.grid[(gx,gy)] = p
 
 
+    def get_grid_intersections(self):
+        for i in range(SCREEN_WIDTH/self.grid_size):
+            for j in range(SCREEN_HEIGHT/self.grid_size):
+                yield((i*self.grid_size,j*self.grid_size))
+
+
     def add_point(self, coord):
         grid_pos = self.get_grid_pos(coord)
         print(grid_pos)
