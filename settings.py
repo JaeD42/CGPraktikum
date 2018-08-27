@@ -12,6 +12,8 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 MAX_SCORE           = 3000
 POINT_COST          = 10
 CONNECTION_COST     = 10
+FIXED_CON_COST      = 50
+INITIAL_COST        = 100
 
 #screen
 SCREEN_WIDTH        = 1300

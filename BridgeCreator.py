@@ -50,12 +50,13 @@ class BridgeCreator():
 
 
     def add_point(self, coord):
-        if(self.cost > POINT_COST):
+        if(self.cost >= POINT_COST):
             grid_pos = self.get_grid_pos(coord)
             if(not self.check_which_point(grid_pos)):
                 p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=False)
                 self.grid[grid_pos] = p
                 self.points.append(p)
+                self.cost -= POINT_COST
 
 
     def add_connection(self, coord1, coord2):
@@ -71,9 +72,10 @@ class BridgeCreator():
             return
 
         #check if connection already exists
-        if(not p1.is_connected_to(p2)):
+        if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
             c = p1.connect_to_quick(p2)
             self.connections.append(c)
+            self.cost -= CONNECTION_COST
 
 
         #if not, add in self.connections and to points
@@ -85,10 +87,12 @@ class BridgeCreator():
             self.removed_points.append(p)
             self.grid[grid_pos] = None
             self.points.remove(p)
+            self.cost += POINT_COST
             #delete all connections
             for i in p.connections:
                 self.connections.remove(i)
                 i.remove()
+                self.cost += CONNECTION_COST
 
     def delete_connection(self, coord1, coord2):
         grid_pos1 = self.get_grid_pos(coord1)
@@ -102,6 +106,7 @@ class BridgeCreator():
         if(check):
             self.connections.remove(c)
             c.remove()
+            self.cost += CONNECTION_COST
 
     def change_point_mass(self, coord):
         pass
@@ -140,6 +145,10 @@ class BridgeCreator():
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:
             p.draw(screen,ZOOM,TRANSLATE)
+
+        cost_display = pygame.font.Font(None, 20)
+        cost_display = cost_display.render('Points remaining: '+ str(self.cost), True, (255,255,255))
+        screen.blit(cost_display, (10,SCREEN_HEIGHT-30))
 
     def change_bridge_mode(self):
         for c in self.connections:

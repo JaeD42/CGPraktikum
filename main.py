@@ -41,8 +41,7 @@ def main(winstyle = 0):
     winstyle = 0  # |FULLSCREEN
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, FLAGS, bestdepth)
-    #screen.set_alpha(None)
-
+    
     #SOUND
     # initialize pygame.mixer
     #pygame.mixer.init(frequency = 44100, size = -16, channels = 1, buffer = 2**12)
@@ -66,7 +65,7 @@ def main(winstyle = 0):
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
 
-    BC = BridgeCreator(bg)
+    BC = BridgeCreator(bg, INITIAL_COST)
     Interface = UI(BC)
 
 
