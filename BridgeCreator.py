@@ -111,8 +111,9 @@ class BridgeCreator():
     def change_point_mass(self, coord):
         pass
 
-    def change_point_movable(self, coord):
-        pass
+    def change_point_moveable(self, coord):
+        p = self.check_which_point_image_coords(coord)
+        p.change_moveable()
 
     def get_grid_pos_phys(self,coordinated):
         loc = ((coordinates[0]+self.grid_size/2)/self.grid_size, (coordinates[1]+self.grid_size/2)/self.grid_size)
