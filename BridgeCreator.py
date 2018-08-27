@@ -2,6 +2,7 @@ from Physics import *
 from settings import *
 from Points import MassPoint,create_bridge
 from Connection import Connection
+from Effects import Effects
 
 class BridgeCreator():
 
@@ -13,7 +14,7 @@ class BridgeCreator():
         self.points = []
         self.connections = []
         #self.points, self.connections = create_bridge()
-
+        self.effects = Effects()
 
         points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
 
@@ -49,6 +50,15 @@ class BridgeCreator():
                 yield((i*self.grid_size,j*self.grid_size))
 
 
+    def change_points(self,amount):
+        self.cost += amount
+        if amount>0:
+            self.effects.change_money(amount,pygame.mouse.get_pos(),2000,col=(0,255,0))
+        else:
+            self.effects.change_money(amount,pygame.mouse.get_pos(),2000,col=(255,0,0))
+
+
+
     def add_point(self, coord):
         if(self.cost >= POINT_COST):
             grid_pos = self.get_grid_pos(coord)
@@ -56,7 +66,7 @@ class BridgeCreator():
                 p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=True)
                 self.grid[grid_pos] = p
                 self.points.append(p)
-                self.cost -= POINT_COST
+                self.change_points(-1*POINT_COST)
 
 
     def add_connection(self, coord1, coord2,is_floor=False):
@@ -75,7 +85,7 @@ class BridgeCreator():
         if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
             c = p1.connect_to_quick(p2,can_collide=is_floor)
             self.connections.append(c)
-            self.cost -= CONNECTION_COST
+            self.change_points(-1* CONNECTION_COST)
 
 
         #if not, add in self.connections and to points
@@ -87,12 +97,12 @@ class BridgeCreator():
             self.removed_points.append(p)
             self.grid[grid_pos] = None
             self.points.remove(p)
-            self.cost += POINT_COST
+            self.change_points(POINT_COST)
             #delete all connections
             for i in p.connections:
                 self.connections.remove(i)
                 i.remove()
-                self.cost += CONNECTION_COST
+                self.change_points(CONNECTION_COST)
 
     def delete_connection(self, coord1, coord2):
         grid_pos1 = self.get_grid_pos(coord1)
@@ -106,19 +116,19 @@ class BridgeCreator():
         if(check):
             self.connections.remove(c)
             c.remove()
-            self.cost += CONNECTION_COST
+            self.change_points(CONNECTION_COST)
 
     def change_point_mass(self, coord):
         pass
 
     def change_point_moveable(self, coord):
         p = self.check_which_point_image_coords(coord)
-        if(p.moveable):
+        if(p.moveable and self.cost >= FIXED_CON_COST):
             p.change_moveable()
-            self.cost += FIXED_CON_COST
-        elif(not p.moveable and self.cost >= FIXED_CON_COST):
+            self.change_points(-1*FIXED_CON_COST)
+        elif(not p.moveable):
             p.change_moveable()
-            self.cost -= FIXED_CON_COST
+            self.change_points(FIXED_CON_COST)
 
 
 
@@ -157,6 +167,7 @@ class BridgeCreator():
         cost_display = pygame.font.Font(None, 20)
         cost_display = cost_display.render('Points remaining: '+ str(self.cost), True, (255,255,255))
         screen.blit(cost_display, (10,SCREEN_HEIGHT-30))
+        self.effects.draw(screen)
 
     def change_bridge_mode(self):
         for c in self.connections:
