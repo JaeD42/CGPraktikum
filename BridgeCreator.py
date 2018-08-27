@@ -83,10 +83,12 @@ class BridgeCreator():
 
         #check if connection already exists
         if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
-            c = p1.connect_to_quick(p2,can_collide=is_floor)
-            self.connections.append(c)
-            self.change_points(-1* CONNECTION_COST)
-
+            try:
+                c = p1.connect_to_quick(p2,can_collide=is_floor)
+                self.connections.append(c)
+                self.change_points(-1* CONNECTION_COST)
+            except:
+                print('connection too long')
 
         #if not, add in self.connections and to points
 
@@ -144,6 +146,12 @@ class BridgeCreator():
 
     def get_coordinates(self, grid_pos):
         return [grid_pos[0]*self.grid_size, grid_pos[1]*self.grid_size]
+
+    def check_if_con_exists(self, pos1, pos2):
+        p1 = self.check_which_point_image_coords(pos1)
+        p2 = self.check_which_point_image_coords(pos2)
+        print(p1.is_connected_to(p2))
+        return p1.is_connected_to(p2)
 
     #check if there is a point on that position
     def check_which_point(self, pos):

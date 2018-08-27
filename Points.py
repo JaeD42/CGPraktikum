@@ -81,7 +81,7 @@ class MassPoint:
 
 
     def is_connected_to(self,other_point):
-        self.get_connection_to(other_point)[0]
+        return self.get_connection_to(other_point)[0]
 
     def change_moveable(self):
         self.moveable = not self.moveable
