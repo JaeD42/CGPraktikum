@@ -113,7 +113,14 @@ class BridgeCreator():
 
     def change_point_moveable(self, coord):
         p = self.check_which_point_image_coords(coord)
-        p.change_moveable()
+        if(p.moveable):
+            p.change_moveable()
+            self.cost += FIXED_CON_COST
+        elif(not p.moveable and self.cost >= FIXED_CON_COST):
+            p.change_moveable()
+            self.cost -= FIXED_CON_COST
+
+
 
     def get_grid_pos_phys(self,coordinated):
         loc = ((coordinates[0]+self.grid_size/2)/self.grid_size, (coordinates[1]+self.grid_size/2)/self.grid_size)
