@@ -148,7 +148,10 @@ class UI():
     def selected_second(self,pos):
         if self.BC.get_grid_pos(pos)==self.BC.get_grid_pos(self.first_pos):
             if self.first_is_point:
-                self.BC.change_point_moveable(pos)
+                if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                    self.BC.delete_point(pos)
+                else:
+                    self.BC.change_point_moveable(pos)
             else:
                 if self.build_mode:
                     self.BC.add_point(pos)

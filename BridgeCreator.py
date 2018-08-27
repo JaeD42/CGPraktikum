@@ -92,7 +92,7 @@ class BridgeCreator():
 
         #if not, add in self.connections and to points
 
-    def delete_point(self, coord1):
+    def delete_point(self, coord):
         grid_pos = self.get_grid_pos(coord)
         if(self.grid[grid_pos]):
             p = self.grid[grid_pos]
