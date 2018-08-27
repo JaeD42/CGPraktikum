@@ -128,10 +128,8 @@ class Wagon():
     def correct_position(self):
 
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
-        if mass_dir[0]!=0:
-            self.orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
-        else:
-            self.orientation = mp.pi/2
+        self.orientation = np.arctan2(-1*mass_dir[1],mass_dir[0])
+        
 
         len = np.sqrt(np.dot(mass_dir,mass_dir))
         normalized_dir = mass_dir/len
