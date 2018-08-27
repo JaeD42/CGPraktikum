@@ -66,7 +66,7 @@ def main(winstyle = 0):
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
 
-    BC = BridgeCreator(bg)
+    BC = BridgeCreator(bg,100)
     Interface = UI(BC)
 
 
