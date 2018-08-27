@@ -155,7 +155,7 @@ class UI():
         else:
             if self.first_is_point:
                 if self.build_mode:
-                    self.BC.add_connection(self.first_pos,pos)
+                    self.BC.add_connection(self.first_pos,pos,is_floor=self.conn_is_floor)
             else:
                 pass
         self.first_selected = False

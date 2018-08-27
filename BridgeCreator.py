@@ -53,13 +53,13 @@ class BridgeCreator():
         if(self.cost >= POINT_COST):
             grid_pos = self.get_grid_pos(coord)
             if(not self.check_which_point(grid_pos)):
-                p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=False)
+                p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=True)
                 self.grid[grid_pos] = p
                 self.points.append(p)
                 self.cost -= POINT_COST
 
 
-    def add_connection(self, coord1, coord2):
+    def add_connection(self, coord1, coord2,is_floor=False):
         grid_pos1 = self.get_grid_pos(coord1)
         grid_pos2 = self.get_grid_pos(coord2)
         if not grid_pos1 in self.grid or not grid_pos2 in self.grid:
@@ -73,7 +73,7 @@ class BridgeCreator():
 
         #check if connection already exists
         if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
-            c = p1.connect_to_quick(p2)
+            c = p1.connect_to_quick(p2,can_collide=is_floor)
             self.connections.append(c)
             self.cost -= CONNECTION_COST
 
