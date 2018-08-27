@@ -9,7 +9,7 @@ class BridgeCreator():
     removed_connections = []
 
 
-    def __init__(self,back_ground):
+    def __init__(self,back_ground, cost):
         self.points = []
         self.connections = []
         #self.points, self.connections = create_bridge()
@@ -32,7 +32,7 @@ class BridgeCreator():
         self.connections = connections
 
 
-        self.cost = COST
+        self.cost = cost
         self.grid_size = GRID_SIZE
         self.bg = back_ground
         self.grid = {}
@@ -50,12 +50,12 @@ class BridgeCreator():
 
 
     def add_point(self, coord):
-        grid_pos = self.get_grid_pos(coord)
-        print(grid_pos)
-        if(not self.check_which_point(grid_pos)):
-            p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=False)
-            self.grid[grid_pos] = p
-            self.points.append(p)
+        if(self.cost > POINT_COST):
+            grid_pos = self.get_grid_pos(coord)
+            if(not self.check_which_point(grid_pos)):
+                p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=False)
+                self.grid[grid_pos] = p
+                self.points.append(p)
 
 
     def add_connection(self, coord1, coord2):

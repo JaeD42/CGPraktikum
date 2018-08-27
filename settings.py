@@ -10,7 +10,8 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 #game constants
 #game
 MAX_SCORE           = 3000
-COST                = 100
+POINT_COST          = 10
+CONNECTION_COST     = 10
 
 #screen
 SCREEN_WIDTH        = 1300
