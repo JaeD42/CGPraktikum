@@ -125,7 +125,10 @@ class Connection:
 
         if not DEBUG and not self.bridge_mode:
             p = self.get_perpendicular()
-            orientation = np.arctan(p[0]/p[1])
+            if p[1]!=0:
+                orientation = np.arctan(p[0]/p[1])
+            else:
+                orientation = np.pi/2
             surface.blit(*d_img.get_img(self.center,self.len,57.295*orientation,zoom,translation))
         else:
             col = list(self.get_color())

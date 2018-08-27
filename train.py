@@ -3,6 +3,7 @@ import pygame
 from BoundingBox import BoundingBox
 from RotateTranslateImage import RTImage
 from settings import *
+from math import pi
 
 class Train():
 
@@ -127,7 +128,8 @@ class Wagon():
     def correct_position(self):
 
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
-        self.orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
+        self.orientation = np.arctan2(-1*mass_dir[1],mass_dir[0])
+        
 
         len = np.sqrt(np.dot(mass_dir,mass_dir))
         normalized_dir = mass_dir/len
@@ -143,7 +145,10 @@ class Wagon():
         if(self.next_wagon != None):
             next_wagon_pos = self.next_wagon.mass_coordinates[0]
             dist = self.mass_coordinates[1] - next_wagon_pos
+
             len = np.sqrt(np.dot(dist, dist))
+            if len==0:
+                return
             dist = dist/len
 
             if(self.mass_coordinates[1][0] > next_wagon_pos[0]):
@@ -172,7 +177,6 @@ class Wagon():
                 self.physics_v_mass[i][1] = 0
 
     def draw(self,surface,zoom=1,translation=[0,0]):
-
         surface.blit(*self.image.get_img(self.center,57.295*self.orientation,zoom,translation))
         if DEBUG:
             pygame.draw.circle(surface,(255,0,0),[int(i) for i in self.mass_coordinates[0]],5)
