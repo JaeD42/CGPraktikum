@@ -127,9 +127,7 @@ class Wagon():
 
     def correct_position(self):
 
-        print("C",self.mass_coordinates)
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
-        print("M",mass_dir)
         if mass_dir[0]!=0:
             self.orientation = np.arctan(-1*mass_dir[1]/mass_dir[0])
         else:
