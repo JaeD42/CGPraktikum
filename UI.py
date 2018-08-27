@@ -2,6 +2,9 @@
 from settings import *
 from Physics import Physics
 from train import Train
+from ToggleIcon import ToggleIcon
+
+
 class UI():
 
     physics = None
@@ -18,6 +21,8 @@ class UI():
         self.first_is_point = False
         self.second_pos = (0,0)
         self.build_mode = True
+        self.bridge_type_icon = ToggleIcon.bridgetype()
+        self.conn_is_floor = True
 
 
     def zoom(self,zoom_in = True):
@@ -100,10 +105,13 @@ class UI():
                         self.BC.change_bridge_mode()
                     else:
                         self.physics.change_bridge_mode()
+                if event.key == pygame.K_TAB:
+                    self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
                     PAUSE = not PAUSE
                     self.build_mode = False
                     self.create_physics()
+
         return RUNNING
 
 
@@ -133,6 +141,10 @@ class UI():
 
 
 
+    def toggle_conn_type(self):
+        self.conn_is_floor = not self.conn_is_floor
+        self.bridge_type_icon.toggle()
+
     def selected_second(self,pos):
         if self.BC.get_grid_pos(pos)==self.BC.get_grid_pos(self.first_pos):
             if self.first_is_point:
@@ -160,15 +172,19 @@ class UI():
         r = self.handle_events()
         if self.build_mode:
             self.BC.draw(screen,ZOOM,TRANSLATE)
+            if(self.first_selected):
+                (x,y) = pygame.mouse.get_pos()
+                pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
+            if(self.grid_mode):
+                self.show_grid(screen)
+            self.bridge_type_icon.draw(screen)
+
         else:
             self.physics.update_physics(dt)
             self.physics.move(dt)
             self.physics.draw(screen,ZOOM,TRANSLATE)
-        if(self.first_selected):
-            (x,y) = pygame.mouse.get_pos()
-            pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
-        if(self.grid_mode):
-            self.show_grid(screen)
+
+
         return r
 
     def show_grid(self, screen):

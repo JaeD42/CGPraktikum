@@ -64,3 +64,10 @@ BG                  = 'landscape3.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
 BALKEN              = 'balken.png'
 BALKEN_UNTEN        = 'balken_unten.png'
+
+
+#Toggle Icon Bridge
+TRAIN_ON_CONN_IMG = "zugauf.png"
+TRAIN_THROUGH_CONN_IMG = "zugdurch.png"
+CONN_IMG_POS = (10,10)
+CONN_IMG_SIZE = (50,50)
