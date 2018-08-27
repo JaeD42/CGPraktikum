@@ -30,7 +30,7 @@ class BridgeCreator():
 
         self.points = points
         self.connections = connections
-        
+
 
         self.cost = COST
         self.grid_size = GRID_SIZE
@@ -132,6 +132,10 @@ class BridgeCreator():
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:
             p.draw(screen,ZOOM,TRANSLATE)
+
+    def change_bridge_mode(self):
+        for c in self.connections:
+            c.bridge_mode = not c.bridge_mode
 
     def get_hover_object(self,pos):
         pass

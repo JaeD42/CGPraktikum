@@ -91,6 +91,15 @@ class UI():
                     TRANSLATE[0]+=5
                 if event.key == pygame.K_RIGHT:
                     TRANSLATE[0]-=5
+                if event.key == pygame.K_g:
+                    #show grid
+                    pass
+                if event.key == pygame.K_b:
+                    #show bridge connections instead of images
+                    if(self.build_mode):
+                        self.BC.change_bridge_mode()
+                    else:
+                        self.physics.change_bridge_mode()
                 if event.key == pygame.K_SPACE:
                     PAUSE = not PAUSE
                     self.build_mode = False

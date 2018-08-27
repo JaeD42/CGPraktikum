@@ -7,6 +7,8 @@ from load_data import load_image
 from settings import *
 class Connection:
 
+    bridge_mode = False
+
     def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
         self.p1 = point1
         self.p2 = point2
@@ -121,7 +123,7 @@ class Connection:
         else:
             d_img = self.img_not_Collide
 
-        if not DEBUG:
+        if not DEBUG and not self.bridge_mode:
             p = self.get_perpendicular()
             orientation = np.arctan(p[0]/p[1])
             surface.blit(*d_img.get_img(self.center,self.len,57.295*orientation,zoom,translation))

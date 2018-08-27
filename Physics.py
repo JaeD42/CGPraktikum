@@ -47,6 +47,9 @@ class Physics:
                 p.move(dt)
             self.train.move(dt)
 
+    def change_bridge_mode(self):
+        for c in self.connections:
+            c.bridge_mode = not c.bridge_mode
 
     def draw(self,screen, ZOOM,TRANSLATE):
         screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
