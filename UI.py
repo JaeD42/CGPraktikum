@@ -164,6 +164,9 @@ class UI():
             self.physics.update_physics(dt)
             self.physics.move(dt)
             self.physics.draw(screen,ZOOM,TRANSLATE)
+        if(self.first_selected):
+            (x,y) = pygame.mouse.get_pos()
+            pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
         if(self.grid_mode):
             self.show_grid(screen)
         return r

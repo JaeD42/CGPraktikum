@@ -38,8 +38,8 @@ class BridgeCreator():
         self.grid = {}
 
         for p in self.points:
-            gx = int(p.pos[0]/self.grid_size)
-            gy = int(p.pos[1]/self.grid_size)
+            gx = int(p.pos[0]/self.grid_size+0.5)
+            gy = int(p.pos[1]/self.grid_size+0.5)
             self.grid[(gx,gy)] = p
 
 
@@ -61,6 +61,8 @@ class BridgeCreator():
     def add_connection(self, coord1, coord2):
         grid_pos1 = self.get_grid_pos(coord1)
         grid_pos2 = self.get_grid_pos(coord2)
+        if not grid_pos1 in self.grid or not grid_pos2 in self.grid:
+            return
         p1 = self.grid[grid_pos1]
         p2 = self.grid[grid_pos2]
 
