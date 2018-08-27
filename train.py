@@ -4,6 +4,7 @@ from BoundingBox import BoundingBox
 from RotateTranslateImage import RTImage
 from settings import *
 from math import pi
+from Effects import SmokeEffect
 
 class Train():
 
@@ -15,6 +16,9 @@ class Train():
     def __init__(self, number_of_wagons, imgs, start_coordinates, weights, speed):
         self.number_of_wagons = number_of_wagons
         self.start_coordinates = start_coordinates
+        self.smoke = SmokeEffect()
+        self.smoke_iters = 10
+        self.counter = 0
 
         for i in range(number_of_wagons):
             if(i==0):
@@ -49,10 +53,18 @@ class Train():
 
 
     def move(self,dt,g=9.81):#todo, soll auch drehen koennen
+        self.counter+=1
+        if self.counter>self.smoke_iters:
+            pos = self.wagons[-1].center[:]
+            pos[0]+=20
+            pos[1]-=10
+            self.smoke.add_smoke(pos,300,num_particles=50)
+            self.counter=0
         for i in range(self.number_of_wagons):
             self.wagons[i].move(dt, g)
 
     def draw(self,surface,zoom=1,translation=[0,0]):
+        self.smoke.draw(surface)
         #also draw connections
         for i in range(self.number_of_wagons):
             self.wagons[i].draw(surface, zoom, translation)
@@ -129,7 +141,7 @@ class Wagon():
 
         mass_dir = self.mass_coordinates[1]-self.mass_coordinates[0]
         self.orientation = np.arctan2(-1*mass_dir[1],mass_dir[0])
-        
+
 
         len = np.sqrt(np.dot(mass_dir,mass_dir))
         normalized_dir = mass_dir/len
