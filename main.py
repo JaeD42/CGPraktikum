@@ -10,6 +10,7 @@ from events import calc_events
 from RotateTranslateImage import RTImage
 from BridgeCreator import BridgeCreator
 from UI import UI
+from Sound import Sound
 #import basic pygame modules
 import pygame
 from pygame.locals import *
@@ -44,19 +45,10 @@ def main(winstyle = 0):
 
     #SOUND
     # initialize pygame.mixer
-    pygame.mixer.init(frequency = 44100, size = -16, channels = 1, buffer = 2**12)
+    #pygame.mixer.init(frequency = 44100, size = -16, channels = 1, buffer = 2**12)
 
     # create separate Channel objects for simultaneous playback
-    channel1 = pygame.mixer.Channel(0) # argument must be int
-    channel2 = pygame.mixer.Channel(1)
-    channel1.set_volume(0.1)
-    channel2.set_volume(0.1)
-    soundtick = 0
-
-    bgmusic = load_sound(BGMUSIC)
-    bgmusic.set_volume(BGMUSIC_VOL)
-    train_sound = load_sound(TRAIN_SOUND)
-    train_sound.set_volume(TRAIN_SOUND_VOL)
+    sound =Sound()
 
     balken = load_image(BALKEN)
     balken = pygame.transform.rotozoom(balken, 0, 0.1)
@@ -67,9 +59,6 @@ def main(winstyle = 0):
     bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
     #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
-    duration = train_sound.get_length() # duration of thunder in secon
-    print(duration)
-    channel1.play(bgmusic, loops = -1)
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
@@ -83,16 +72,19 @@ def main(winstyle = 0):
 
     #physics = Physics(connections,points,train,bg)
     #print(BRIDGE_END)
+
+    sound.play_bg()
+    soundtick=0
     running = True
     try:
         while running:
             running = Interface.step(STEPSIZE,screen)
 
             soundtick += 1
+            if soundtick>1000:
+                sound.play_train_sound()
+                soundtick = 0
 
-            if(soundtick % 1000 == 1):
-                if(not channel2.get_busy()):
-                    channel2.play(train_sound)
 
 
             if DEBUG:
