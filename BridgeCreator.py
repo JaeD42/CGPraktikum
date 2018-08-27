@@ -44,8 +44,8 @@ class BridgeCreator():
 
 
     def get_grid_intersections(self):
-        for i in range(SCREEN_WIDTH/self.grid_size):
-            for j in range(SCREEN_HEIGHT/self.grid_size):
+        for i in range(1,int(SCREEN_WIDTH/self.grid_size) -1):
+            for j in range(1, int(SCREEN_HEIGHT/self.grid_size) -1):
                 yield((i*self.grid_size,j*self.grid_size))
 
 

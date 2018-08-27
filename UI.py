@@ -9,6 +9,7 @@ class UI():
     SCROLL_DOWN = 5
     LEFT_MOUSE = 1
     RIGHT_MOUSE = 3
+    grid_mode = False
 
     def __init__(self, bridge_creator):
         self.BC = bridge_creator
@@ -17,7 +18,6 @@ class UI():
         self.first_is_point = False
         self.second_pos = (0,0)
         self.build_mode = True
-
 
 
     def zoom(self,zoom_in = True):
@@ -93,7 +93,7 @@ class UI():
                     TRANSLATE[0]-=5
                 if event.key == pygame.K_g:
                     #show grid
-                    pass
+                    self.grid_mode = not self.grid_mode
                 if event.key == pygame.K_b:
                     #show bridge connections instead of images
                     if(self.build_mode):
@@ -156,7 +156,7 @@ class UI():
         bg = self.BC.bg
         self.physics = Physics(connections,points,Train.get_standard_train(),bg)
 
-    def step(self,dt,screen):
+    def step(self,dt, screen):
         r = self.handle_events()
         if self.build_mode:
             self.BC.draw(screen,ZOOM,TRANSLATE)
@@ -164,4 +164,14 @@ class UI():
             self.physics.update_physics(dt)
             self.physics.move(dt)
             self.physics.draw(screen,ZOOM,TRANSLATE)
+        if(self.grid_mode):
+            self.show_grid(screen)
         return r
+
+    def show_grid(self, screen):
+        grid_line = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SRCALPHA)
+        for pos in self.BC.get_grid_intersections():
+            offset = 5
+            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0]-offset, pos[1]), (pos[0]+offset, pos[1]))
+            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0], pos[1]-offset), (pos[0],pos[1]+offset))
+        screen.blit(grid_line, (0,0))
