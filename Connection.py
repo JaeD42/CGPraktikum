@@ -124,11 +124,7 @@ class Connection:
             d_img = self.img_not_Collide
 
         if not DEBUG and not self.bridge_mode:
-            p = self.get_perpendicular()
-            if p[1]!=0:
-                orientation = np.arctan(p[0]/p[1])
-            else:
-                orientation = np.pi/2
+            orientation = np.arctan2(-1*self.dir[1],self.dir[0])
             surface.blit(*d_img.get_img(self.center,self.len,57.295*orientation,zoom,translation))
         else:
             col = list(self.get_color())
