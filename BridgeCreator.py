@@ -3,10 +3,11 @@ from settings import *
 from Points import MassPoint,create_bridge
 from Connection import Connection
 from Effects import Effects
-from Grid import Grid
+
 import pickle
 from tkinter import *
 from tkinter import messagebox
+from Grid import Grid
 import sys
 if (sys.version_info > (3, 0)):
     import tkinter.simpledialog as simpledialog
@@ -69,7 +70,8 @@ class BridgeCreator():
         self.cost = cost
 
         self.bg = back_ground
-        self.grid = Grid()
+        print(Grid)
+        self.grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
 
         #for p in self.points:
         #    gx = int(p.pos[0]/self.grid_size+0.5)
@@ -114,22 +116,17 @@ class BridgeCreator():
 
     def add_point(self, coord):
         if(self.cost >= POINT_COST):
-
-            grid_pos = self.get_grid_pos(coord)
-            if(not self.check_which_point(grid_pos)):
-                p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=True)
-                self.grid[grid_pos] = p
+            if(not self.grid.point_exists(coord)):
+                p =self.grid.add_point_at_pos(coord)
                 self.points.append(p)
                 self.change_points(-1*POINT_COST)
 
 
     def add_connection(self, coord1, coord2,is_floor=False):
-        grid_pos1 = self.get_grid_pos(coord1)
-        grid_pos2 = self.get_grid_pos(coord2)
-        if not grid_pos1 in self.grid or not grid_pos2 in self.grid:
+        exists1,p1 = self.grid.get_point_at_pos(coord1)
+        exists2,p2 = self.grid.get_point_at_pos(coord2)
+        if not exists1 or not exists2:
             return
-        p1 = self.grid[grid_pos1]
-        p2 = self.grid[grid_pos2]
 
         #check if valid points
         if(not(p1 and p2)):
@@ -147,11 +144,10 @@ class BridgeCreator():
         #if not, add in self.connections and to points
 
     def delete_point(self, coord):
-        grid_pos = self.get_grid_pos(coord)
-        if(self.grid[grid_pos]):
-            p = self.grid[grid_pos]
+
+        if(self.grid.point_exists(coord)):
+            p = self.grid.remove_point_at_pos(coord)
             self.removed_points.append(p)
-            self.grid[grid_pos] = None
             self.points.remove(p)
             self.change_points(POINT_COST)
             #delete all connections
@@ -161,11 +157,9 @@ class BridgeCreator():
                 self.change_points(CONNECTION_COST)
 
     def delete_connection(self, coord1, coord2):
-        grid_pos1 = self.get_grid_pos(coord1)
-        grid_pos2 = self.get_grid_pos(coord2)
-        p1 = self.grid[grid_pos1]
-        p2 = self.grid[grid_pos2]
-        if(not(p1 and p2)):
+        ex1,p1 = self.grid.get_point_at_pos(coord1)
+        ex2,p2 = self.grid.get_point_at_pos(coord2)
+        if(not(ex1 and ex2)):
             return
 
         check, c = p1.get_connection_to(p2)
@@ -178,45 +172,23 @@ class BridgeCreator():
         pass
 
     def change_point_moveable(self, coord):
-        p = self.check_which_point_image_coords(coord)
-        if(p.moveable and self.cost >= FIXED_CON_COST):
+        ex,p = self.grid.get_point_at_pos(coord)
+        if ex and (p.moveable and self.cost >= FIXED_CON_COST):
             p.change_moveable()
             self.change_points(-1*FIXED_CON_COST)
-        elif(not p.moveable):
+        elif ex and (not p.moveable):
             p.change_moveable()
             self.change_points(FIXED_CON_COST)
 
 
-
-    def get_grid_pos_phys(self,coordinated):
-        loc = ((coordinates[0]+self.grid_size/2)/self.grid_size, (coordinates[1]+self.grid_size/2)/self.grid_size)
-        return loc
-
-    #get the position in grid coordinates
-    def get_grid_pos(self, coordinates):
-        coord = [coordinates[0]/ZOOM-TRANSLATE[0],coordinates[1]/ZOOM-TRANSLATE[1]]
-        loc = (int((coord[0]+self.grid_size/2)/self.grid_size), int((coord[1]+self.grid_size/2)/self.grid_size))
-        return loc
-
-    def get_coordinates(self, grid_pos):
-        return [grid_pos[0]*self.grid_size, grid_pos[1]*self.grid_size]
-
     def check_if_con_exists(self, pos1, pos2):
-        p1 = self.check_which_point_image_coords(pos1)
-        p2 = self.check_which_point_image_coords(pos2)
-        print(p1.is_connected_to(p2))
-        return p1.is_connected_to(p2)
-
-    #check if there is a point on that position
-    def check_which_point(self, pos):
-        if not pos in self.grid:
-            return None
+        ex1,p1 = self.grid.get_point_at_pos(pos1)
+        ex2,p2 = self.grid.get_point_at_pos(pos2)
+        if(ex1 and ex2):
+            return p1.is_connected_to(p2)
         else:
-            return self.grid[pos]
+            return False
 
-    def check_which_point_image_coords(self,coord):
-        pos = self.get_grid_pos(coord)
-        return self.check_which_point(pos)
 
     def draw(self,screen, ZOOM, TRANSLATE):
         screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
@@ -239,4 +211,4 @@ class BridgeCreator():
         pass
 
     def show_grid(self,screen):
-        self.grid.draw(self,screen)
+        self.grid.draw(screen)

@@ -148,7 +148,7 @@ class UI():
         if(self.is_on_music_icon(pos)):
             self.toggle_music()
         else:
-            p = self.BC.check_which_point_image_coords(pos)
+            _,p = self.BC.grid.get_point_at_pos(pos)
             self.first_selected = True
             self.first_pos = pos[:]
             if p!=None:
@@ -176,7 +176,7 @@ class UI():
         self.bridge_type_icon.toggle()
 
     def selected_second(self,pos):
-        if self.BC.get_grid_pos(pos)==self.BC.get_grid_pos(self.first_pos):
+        if self.BC.grid.is_same_grid_pos(pos,self.first_pos):
             if self.first_is_point:
                 if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                     self.BC.delete_point(pos)
@@ -227,5 +227,3 @@ class UI():
 
 
         return r
-
-    

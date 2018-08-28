@@ -7,6 +7,19 @@ class Grid:
         self.positions = []
         self.points = {}
 
+    @staticmethod
+    def create_standard_grid(upper_left,lower_right,num_points_x,num_points_y):
+        width = lower_right[0]-upper_left[0]
+        height = lower_right[1]-upper_left[1]
+        positions = []
+        for i in range(num_points_x):
+            for j in range(num_points_y):
+                positions.append([upper_left[0]+float(width)*i/(num_points_x-1),upper_left[1]+float(height)*j/(num_points_y-1)])
+        g = Grid()
+        g.positions=positions
+        return g
+
+
     def get_closest_grid_pos(self,pos):
         minDist = 10**5
         minPos = None
@@ -39,10 +52,13 @@ class Grid:
     def add_point_at_pos(self,pos):
         t = tuple(self.get_closest_grid_pos(pos))
         self.points[t]=MassPoint(t,NODE_MASS)
+        return self.points[t]
 
     def remove_point_at_pos(self,pos):
         t = tuple(self.get_closest_grid_pos(pos))
+        P = self.points[t]
         del self.points[t]
+        return P
 
     def is_valid_grid_pos(self,pos,max_dist):
         minDist = 10**5
