@@ -4,6 +4,8 @@ from Points import MassPoint,create_bridge
 from Connection import Connection
 from Effects import Effects
 import pickle
+from tkinter import *
+from tkinter import messagebox
 
 class Bridge():
     def __init__(self, points, connections):
@@ -69,6 +71,8 @@ class BridgeCreator():
 
 
     def save_bridge(self, file):
+        Tk().wm_withdraw() #to hide the main window
+        messagebox.showinfo('Continue','OK')
         filehandler = open(file, 'w')
         pickle.dump(Bridge(self.points, self.connections), filehandler)
 
