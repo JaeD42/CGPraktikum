@@ -17,16 +17,6 @@ class MassPoint:
         self.add_force = [0.0,0.0]
         self.prev_force = [0.0,0.0]
 
-    def __init__(self, pos, weight, radius, connections, moveable):
-        self.pos=np.array([float(i) for i in pos])
-        self.v = [0.0,0.0]
-        self.weight=weight
-        self.connections = connections
-        self.radius=radius
-        self.moveable=moveable
-        self.add_force = [0.0,0.0]
-        self.prev_force = [0.0,0.0]
-
     def create_pickleable(self):
         return [self.pos, self.weight, self.radius, self.connections, self.moveable]
 
