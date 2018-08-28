@@ -27,10 +27,7 @@ class Bridge():
         return points
 
     def create_connections(self):
-        connections = []
-        for p in self.connections:
-            connections.append(Connection(p[0], p[1], p[2], p[3], p[4]))
-        return connections
+        pass
 
 class BridgeCreator():
 
@@ -83,8 +80,8 @@ class BridgeCreator():
 
 
     def get_grid_intersections(self):
-        for i in range(1,int(SCREEN_WIDTH/self.grid_size) -1):
-            for j in range(1, int(SCREEN_HEIGHT/self.grid_size) -1):
+        for i in range(1,int(SCREEN_WIDTH/self.grid_size)):
+            for j in range(1, int(SCREEN_HEIGHT/self.grid_size)-1):
                 yield((i*self.grid_size,j*self.grid_size))
 
 
