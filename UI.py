@@ -125,13 +125,16 @@ class UI():
                     if(self.initial_bridge):
                         PAUSE = not PAUSE
                     else:
+                        self.initial_bridge = Bridge(self.BC.points, self.BC.connections)
                         self.build_mode = False
                         self.create_physics()
-                if event.key == pygame.K_z and pygame.key.get_pressed()[pygame.K_LCTRL]:
-                    self.build_mode = True
-                    PAUSE = True
-                    self.BC.load_bridge(self.initial_bridge)
-                    self.initial_bridge = None
+                if event.key == pygame.K_y:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.build_mode = True
+                        PAUSE = True
+                        self.physics = None
+                        self.BC.load_bridge(bridge=self.initial_bridge)
+                        self.initial_bridge = None
 
 
         return RUNNING
@@ -227,9 +230,10 @@ class UI():
             self.bridge_type_icon.draw(screen)
 
         else:
-            self.physics.update_physics(dt)
-            self.physics.move(dt)
-            self.physics.draw(screen,ZOOM,TRANSLATE)
+            if(not PAUSE):
+                self.physics.update_physics(dt)
+                self.physics.move(dt)
+                self.physics.draw(screen,ZOOM,TRANSLATE)
 
         self.music_type_icon.draw(screen)
 
