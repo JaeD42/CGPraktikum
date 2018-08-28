@@ -90,9 +90,12 @@ class BridgeCreator():
         except:
             print('save failed')
 
-    def load_bridge(self, file = ""):
+    def load_bridge(self, file = "", bridge=None):
         try:
-            if(not file):
+            if (bridge!=None):
+                self.points,self.connections = bridge.load_from_pickled()
+                return
+            elif(not file):
                 Tk().wm_withdraw() #to hide the main window
                 file=simpledialog.askstring("Load", "Please enter filename:")
                 file = os.path.join(BRIDGE_DIR, file+".bridge")
