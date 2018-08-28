@@ -4,8 +4,11 @@ import numpy as np
 from math import sqrt
 from Connection import Connection
 from settings import DEBUG
+from itertools import count
 
 class MassPoint:
+
+    _indx=count(0)
 
     def __init__(self,pos,weight,radius=5,moveable=True):
         self.pos=np.array([float(i) for i in pos])
@@ -16,9 +19,12 @@ class MassPoint:
         self.moveable=moveable
         self.add_force = [0.0,0.0]
         self.prev_force = [0.0,0.0]
+        self.point_num = next(self._indx)
+
+
 
     def create_pickleable(self):
-        return [self.pos, self.weight, self.radius, self.connections, self.moveable]
+        return [self.point_num, self.pos, self.weight, self.radius, self.moveable]
 
     def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
         c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
