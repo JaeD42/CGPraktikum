@@ -35,7 +35,7 @@ class Connection:
     #negative force: push points away
 
     def create_pickleable(self):
-        return [self.p1.point_num,self.p2.point_num,self.length, self.strength, self.max_force, self.can_collide]
+        return [self.p1.point_num,self.p2.point_num,self.correct_length, self.strength, self.max_force, self.can_collide]
 
 
     def update_force(self):
