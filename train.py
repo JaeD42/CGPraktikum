@@ -42,9 +42,13 @@ class Train():
 
     def connect_wagons(self):
         next_wagon = self.wagons[self.number_of_wagons-1]
-        for i in reversed(self.wagons[0:-1]):
-            i.add_next_wagon(next_wagon)
-            next_wagon = i
+        for i, wagon in enumerate(reversed(self.wagons[0:-1])):
+            if(i == 0):
+                next_wagon.add_last_wagon(wagon)
+            wagon.add_next_wagon(next_wagon)
+            next_wagon = wagon
+
+
 
 
     def collision_with_connection(self,connection):
@@ -52,7 +56,7 @@ class Train():
             self.wagons[i].collision_with_connection(connection)
 
 
-    def move(self,dt,g=9.81):#todo, soll auch drehen koennen
+    def move(self,dt,g=9.81):
         self.counter+=1
         if self.counter>self.smoke_iters:
             pos = self.wagons[-1].center[:]
@@ -71,7 +75,6 @@ class Train():
 
 
 class Wagon():
-    next_wagon = None
 
     def __init__(self, image, coordinates, weights, speed):
         self.image = RTImage(image)
@@ -95,6 +98,8 @@ class Wagon():
                                     self.coordinates[1]+self.height])
         self.mass_coordinates = np.array(self.mass_coordinates)
 
+        self.next_wagon = None
+        self.last_wagon = None
         self.last_zoom = 1
         #self.orientation_changed = False
 
@@ -102,6 +107,9 @@ class Wagon():
 
     def add_next_wagon(self,wagon):
         self.next_wagon = wagon
+
+    def add_last_wagon(self, wagon):
+        self.last_wagon = wagon
 
     def collision_mass_with_physics(self,bounding_box,index):
 
@@ -153,6 +161,25 @@ class Wagon():
             self.coordinates = 2*self.center - self.mass_coordinates[1]
 
 
+    def stay_close_to_last_wagon(self):
+        if(self.last_wagon):
+            last_wagon_pos = self.last_wagon.mass_coordinates[1]
+            dist = last_wagon_pos - self.mass_coordinates[0]
+
+            len = np.sqrt(np.dot(dist, dist))
+            if len==0:
+                return
+            dist = dist/len
+
+            if(self.mass_coordinates[0][0] < last_wagon_pos[0]):
+                self.mass_coordinates[1] -= 0.5 * dist * len
+
+            elif(len > 5):
+                self.mass_coordinates[1] -= 0.1 * dist * (len - 5)
+
+            elif(len < 4.5):
+                self.mass_coordinates[1] += 0.1 * dist * (len - 5)
+
     def stay_close_to_next_wagon(self):
         if(self.next_wagon != None):
             next_wagon_pos = self.next_wagon.mass_coordinates[0]
@@ -179,6 +206,7 @@ class Wagon():
         self.mass_coordinates[1] += (np.array(self.physics_v_mass[1]) + self.v)*dt
 
         self.stay_close_to_next_wagon()
+        self.stay_close_to_last_wagon()
 
         self.correct_position()
 
