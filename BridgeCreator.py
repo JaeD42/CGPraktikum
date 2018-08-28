@@ -6,6 +6,7 @@ from Effects import Effects
 import pickle
 from tkinter import *
 from tkinter import messagebox
+import tkinter.simpledialog as simpledialog
 
 class Bridge():
     def __init__(self, points, connections):
@@ -21,15 +22,6 @@ class Bridge():
         for c in self.connections:
             conns.append(points[c[0]].connect_to(points[c[1]],c[2],c[3],c[5],c[4]))
         return list(points.values()),conns
-
-    def create_points(self):
-        points = {}
-        for p in self.points:
-            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4])
-        return points
-
-    def create_connections(self):
-        pass
 
 class BridgeCreator():
 
@@ -71,15 +63,25 @@ class BridgeCreator():
 
 
     def save_bridge(self, file):
-        Tk().wm_withdraw() #to hide the main window
-        messagebox.showinfo('Continue','OK')
-        filehandler = open(file, 'wb')
-        pickle.dump(Bridge(self.points, self.connections), filehandler)
+        try:
+            Tk().wm_withdraw() #to hide the main window
+            file=simpledialog.askstring("Save", "Please enter filename:")
+            file = os.path.join(BRIDGE_DIR, file+".bridge")
+            filehandler = open(file, 'wb')
+            pickle.dump(Bridge(self.points, self.connections), filehandler)
+        except:
+            print('save failed')
 
     def load_bridge(self, file):
-        filehandler = open(file, 'rb')
-        bridge = pickle.load(filehandler)
-        self.points,self.connections = bridge.load_from_pickled()
+        try:
+            Tk().wm_withdraw() #to hide the main window
+            file=simpledialog.askstring("Load", "Please enter filename:")
+            file = os.path.join(BRIDGE_DIR, file+".bridge")
+            filehandler = open(file, 'rb')
+            bridge = pickle.load(filehandler)
+            self.points,self.connections = bridge.load_from_pickled()
+        except:
+            print('load failed')
 
 
     def get_grid_intersections(self):
