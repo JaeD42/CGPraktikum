@@ -3,6 +3,7 @@ from settings import *
 from Physics import Physics
 from train import Train
 from ToggleIcon import ToggleIcon
+from BridgeCreator import Bridge
 
 
 class UI():
@@ -23,6 +24,8 @@ class UI():
         self.build_mode = True
         self.bridge_type_icon = ToggleIcon.bridgetype()
         self.conn_is_floor = True
+
+        self.initial_bridge = None
 
 
     def zoom(self,zoom_in = True):
@@ -107,10 +110,13 @@ class UI():
                         self.physics.change_bridge_mode()
                 if event.key == pygame.K_s:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
-                        self.BC.save_bridge('bridge.bg')
+                        if(self.build_mode):
+                            self.BC.save_bridge()
+                        else:
+                            self.initial_bridge.save_bridge()
                 if event.key == pygame.K_l:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
-                        self.BC.load_bridge('bridge.bg')
+                        self.BC.load_bridge()
                 if event.key == pygame.K_TAB:
                     self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
@@ -177,6 +183,7 @@ class UI():
         self.build_mode = False
         points = self.BC.points
         connections = self.BC.connections
+        self.initial_bridge = Bridge(points, connections)
         bg = self.BC.bg
         self.physics = Physics(connections,points,Train.get_standard_train(),bg)
 
