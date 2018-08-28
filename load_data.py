@@ -32,3 +32,6 @@ def load_sound(name):
         print('Cannot load sound:', name)
         raise SystemExit
     return sound
+
+def antialias(img):
+    return pygame.transform.rotozoom(img,0,1)

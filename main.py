@@ -79,10 +79,16 @@ def main(winstyle = 0):
         while running:
             running = Interface.step(STEPSIZE,screen)
 
-            soundtick += 1
-            if soundtick>1000:
-                sound.play_train_sound()
-                soundtick = 0
+            if(not Interface.music_is_on):
+                sound.mute()
+            else:
+                sound.unmute()
+
+            if(not Interface.build_mode):
+                soundtick += 1
+                if soundtick>1000:
+                    sound.play_train_sound()
+                    soundtick = 0
 
 
 
