@@ -10,6 +10,16 @@ class Bridge():
         self.points = [p.create_pickleable() for p in points]
         self.connections = [c.create_pickleable() for c in connections]
 
+
+    def load_from_pickled(self,pickled_points,pickled_conns):
+        points = {}
+        for p in pickled_points:
+            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4]))
+        conns = []
+        for c in pickled_conns:
+            conns.append(points[c[0]].connect_to(points[c[1]],c[2],c[3],c[5],c[4]))
+        return list(points),conns
+
     def create_points(self):
         pass
 
