@@ -8,7 +8,8 @@ class SmokeSimulation():
 
     def __init__(self,num_particles,position):
         self.num_particles = num_particles
-        self.positions = np.random.normal(scale = 5,size=(num_particles,2))+position
+        self.start_pos = position
+        self.positions = np.random.normal(scale = 10,size=(num_particles,2))+position
         self.velocities = np.random.normal(scale = 2,size=(num_particles,2))
         self.h=5
         self.sigma = 0.1
@@ -16,11 +17,11 @@ class SmokeSimulation():
         self.rho_0 = 4.5
         self.k=5
         self.k_near = 6
-        self.size = 4
+        self.size = 7
 
 
     def step(self,dt,g=9.81):
-        self.velocities[:,1]-=dt*g*0.5
+        self.velocities[:,1]=-5*(1-(self.positions[:,1]-self.start_pos[1])/50)
 
         #self.apply_viscosity(dt)
         old_pos = self.positions[:]
@@ -114,7 +115,7 @@ class SmokeSimulation():
 
     def draw(self,screen,col=(0,0,0)):
         surf = pygame.Surface((2*self.size,2*self.size), pygame.SRCALPHA)
-        pygame.draw.circle(surf,(0,0,0,10),[self.size,self.size],self.size)
+        pygame.draw.circle(surf,(0,0,0,2),[self.size,self.size],self.size)
         for i in range(self.num_particles):
             #pygame.draw.circle(surf,(0,0,0,20),[int(j) for j in self.positions[i]],5)
             screen.blit(surf,[int(j)-self.size for j in self.positions[i]])
