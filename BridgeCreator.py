@@ -26,6 +26,17 @@ class Bridge():
             conns.append(points[c[0]].connect_to(points[c[1]],c[2],c[3],c[5],c[4]))
         return list(points.values()),conns
 
+    def save_bridge(self, file = ""):
+        try:
+            if(not file):
+                Tk().wm_withdraw() #to hide the main window
+                file=simpledialog.askstring("Save", "Please enter filename:")
+                file = os.path.join(BRIDGE_DIR, file+".bridge")
+            filehandler = open(file, 'wb')
+            pickle.dump(self, filehandler)
+        except:
+            print('save failed')
+
 class BridgeCreator():
 
     def __init__(self,back_ground, cost):
@@ -65,18 +76,23 @@ class BridgeCreator():
             self.grid[(gx,gy)] = p
 
 
-    def save_bridge(self, file):
-        Tk().wm_withdraw() #to hide the main window
-        file=simpledialog.askstring("Save", "Please enter filename:")
-        file = os.path.join(BRIDGE_DIR, file+".bridge")
-        filehandler = open(file, 'wb')
-        pickle.dump(Bridge(self.points, self.connections), filehandler)
-
-    def load_bridge(self, file):
+    def save_bridge(self, file = ""):
         try:
-            Tk().wm_withdraw() #to hide the main window
-            file=simpledialog.askstring("Load", "Please enter filename:")
-            file = os.path.join(BRIDGE_DIR, file+".bridge")
+            if(not file):
+                Tk().wm_withdraw() #to hide the main window
+                file=simpledialog.askstring("Save", "Please enter filename:")
+                file = os.path.join(BRIDGE_DIR, file+".bridge")
+            filehandler = open(file, 'wb')
+            pickle.dump(Bridge(self.points, self.connections), filehandler)
+        except:
+            print('save failed')
+
+    def load_bridge(self, file = ""):
+        try:
+            if(not file):
+                Tk().wm_withdraw() #to hide the main window
+                file=simpledialog.askstring("Load", "Please enter filename:")
+                file = os.path.join(BRIDGE_DIR, file+".bridge")
             filehandler = open(file, 'rb')
             bridge = pickle.load(filehandler)
             self.points,self.connections = bridge.load_from_pickled()

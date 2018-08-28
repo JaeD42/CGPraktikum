@@ -3,6 +3,7 @@ from settings import *
 from Physics import Physics
 from train import Train
 from ToggleIcon import ToggleIcon
+from BridgeCreator import Bridge
 
 
 class UI():
@@ -22,7 +23,11 @@ class UI():
         self.second_pos = (0,0)
         self.build_mode = True
         self.bridge_type_icon = ToggleIcon.bridgetype()
+        self.music_type_icon = ToggleIcon.musictype()
+        self.music_is_on = True
         self.conn_is_floor = True
+
+        self.initial_bridge = None
 
 
     def zoom(self,zoom_in = True):
@@ -107,10 +112,13 @@ class UI():
                         self.physics.change_bridge_mode()
                 if event.key == pygame.K_s:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
-                        self.BC.save_bridge('bridge.bg')
+                        if(self.build_mode):
+                            self.BC.save_bridge()
+                        else:
+                            self.initial_bridge.save_bridge()
                 if event.key == pygame.K_l:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
-                        self.BC.load_bridge('bridge.bg')
+                        self.BC.load_bridge()
                 if event.key == pygame.K_TAB:
                     self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
@@ -137,14 +145,30 @@ class UI():
         pass
 
     def selected(self,pos):
-        p = self.BC.check_which_point_image_coords(pos)
-        self.first_selected = True
-        self.first_pos = pos[:]
-        if p!=None:
-            self.first_is_point = True
+        if(self.is_on_music_icon(pos)):
+            self.toggle_music()
         else:
-            self.first_is_point = False
+            p = self.BC.check_which_point_image_coords(pos)
+            self.first_selected = True
+            self.first_pos = pos[:]
+            if p!=None:
+                self.first_is_point = True
+            else:
+                self.first_is_point = False
 
+
+
+    def is_on_music_icon(self, mouse_pos):
+        img = self.music_type_icon.imgs[0]
+        size = (img.get_width(), img.get_height())
+        pos = self.music_type_icon.pos
+        if(mouse_pos[0]< pos[0]+size[0] and mouse_pos[0]> pos[0] and mouse_pos[1]< pos[1] + size[1] and mouse_pos[1]> pos[1]):
+            return True
+        return False
+
+    def toggle_music(self):
+        self.music_is_on = not self.music_is_on
+        self.music_type_icon.toggle()
 
 
     def toggle_conn_type(self):
@@ -177,11 +201,14 @@ class UI():
         self.build_mode = False
         points = self.BC.points
         connections = self.BC.connections
+        self.initial_bridge = Bridge(points, connections)
         bg = self.BC.bg
         self.physics = Physics(connections,points,Train.get_standard_train(),bg)
 
+
     def step(self,dt, screen):
         r = self.handle_events()
+
         if self.build_mode:
             self.BC.draw(screen,ZOOM,TRANSLATE)
             if(self.first_selected):
@@ -195,6 +222,8 @@ class UI():
             self.physics.update_physics(dt)
             self.physics.move(dt)
             self.physics.draw(screen,ZOOM,TRANSLATE)
+
+        self.music_type_icon.draw(screen)
 
 
         return r
