@@ -14,7 +14,7 @@ class Bridge():
     def load_from_pickled(self,pickled_points,pickled_conns):
         points = {}
         for p in pickled_points:
-            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4]))
+            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4])
         conns = []
         for c in pickled_conns:
             conns.append(points[c[0]].connect_to(points[c[1]],c[2],c[3],c[5],c[4]))
@@ -23,7 +23,7 @@ class Bridge():
     def create_points(self):
         points = {}
         for p in self.points:
-            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4]))
+            points[p[0]] = MassPoint(p[1], p[2], p[3], p[4])
         return points
 
     def create_connections(self):
