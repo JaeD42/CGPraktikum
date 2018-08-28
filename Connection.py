@@ -9,7 +9,7 @@ class Connection:
 
     bridge_mode = False
 
-    def __init__(self,point1,point2,length,strength,max_force = 1000, can_collide = False):
+    def __init__(self,point1,point2,length,strength,max_force = MAX_FORCE, can_collide = False):
         self.p1 = point1
         self.p2 = point2
         self.img_Collide = RTImage_Connection(pygame.transform.rotozoom(load_image(BALKEN_UNTEN),0,0.1),length)

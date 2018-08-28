@@ -41,6 +41,7 @@ BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
 BRIDGE_NODES        = 5
 BRIDGE_STIFF        = 300
+MAX_FORCE           = 10
 
 #grid
 GRID_SIZE           = 100
