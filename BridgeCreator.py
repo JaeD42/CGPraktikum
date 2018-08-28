@@ -3,6 +3,7 @@ from settings import *
 from Points import MassPoint,create_bridge
 from Connection import Connection
 from Effects import Effects
+from Grid import Grid
 import pickle
 from tkinter import *
 from tkinter import messagebox
@@ -66,14 +67,14 @@ class BridgeCreator():
 
 
         self.cost = cost
-        self.grid_size = GRID_SIZE
-        self.bg = back_ground
-        self.grid = {}
 
-        for p in self.points:
-            gx = int(p.pos[0]/self.grid_size+0.5)
-            gy = int(p.pos[1]/self.grid_size+0.5)
-            self.grid[(gx,gy)] = p
+        self.bg = back_ground
+        self.grid = Grid()
+
+        #for p in self.points:
+        #    gx = int(p.pos[0]/self.grid_size+0.5)
+        #    gy = int(p.pos[1]/self.grid_size+0.5)
+        #    self.grid[(gx,gy)] = p
 
 
     def save_bridge(self, file = ""):
@@ -100,10 +101,6 @@ class BridgeCreator():
             print('load failed')
 
 
-    def get_grid_intersections(self):
-        for i in range(1,int(SCREEN_WIDTH/self.grid_size)):
-            for j in range(1, int(SCREEN_HEIGHT/self.grid_size)-1):
-                yield((i*self.grid_size,j*self.grid_size))
 
 
     def change_points(self,amount):
@@ -117,6 +114,7 @@ class BridgeCreator():
 
     def add_point(self, coord):
         if(self.cost >= POINT_COST):
+
             grid_pos = self.get_grid_pos(coord)
             if(not self.check_which_point(grid_pos)):
                 p = MassPoint(self.get_coordinates(grid_pos), NODE_MASS, moveable=True)
@@ -239,3 +237,6 @@ class BridgeCreator():
 
     def get_hover_object(self,pos):
         pass
+
+    def show_grid(self,screen):
+        self.grid.draw(self,screen)

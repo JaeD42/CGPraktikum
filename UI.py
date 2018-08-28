@@ -215,7 +215,7 @@ class UI():
                 (x,y) = pygame.mouse.get_pos()
                 pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
             if(self.grid_mode):
-                self.show_grid(screen)
+                self.BC.show_grid(screen)
             self.bridge_type_icon.draw(screen)
 
         else:
@@ -228,10 +228,4 @@ class UI():
 
         return r
 
-    def show_grid(self, screen):
-        grid_line = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SRCALPHA)
-        for pos in self.BC.get_grid_intersections():
-            offset = 5
-            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0]-offset, pos[1]), (pos[0]+offset, pos[1]))
-            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0], pos[1]-offset), (pos[0],pos[1]+offset))
-        screen.blit(grid_line, (0,0))
+    
