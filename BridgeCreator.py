@@ -6,8 +6,11 @@ from Effects import Effects
 import pickle
 from tkinter import *
 from tkinter import messagebox
-import tkinter.simpledialog as simpledialog
-
+import sys
+if (sys.version_info > (3, 0)):
+    import tkinter.simpledialog as simpledialog
+else:
+    import tkSimpleDialog as simpledialog
 class Bridge():
     def __init__(self, points, connections):
         self.points = [p.create_pickleable() for p in points]
@@ -63,14 +66,11 @@ class BridgeCreator():
 
 
     def save_bridge(self, file):
-        try:
-            Tk().wm_withdraw() #to hide the main window
-            file=simpledialog.askstring("Save", "Please enter filename:")
-            file = os.path.join(BRIDGE_DIR, file+".bridge")
-            filehandler = open(file, 'wb')
-            pickle.dump(Bridge(self.points, self.connections), filehandler)
-        except:
-            print('save failed')
+        Tk().wm_withdraw() #to hide the main window
+        file=simpledialog.askstring("Save", "Please enter filename:")
+        file = os.path.join(BRIDGE_DIR, file+".bridge")
+        filehandler = open(file, 'wb')
+        pickle.dump(Bridge(self.points, self.connections), filehandler)
 
     def load_bridge(self, file):
         try:
