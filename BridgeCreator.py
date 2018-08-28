@@ -20,7 +20,7 @@ class Bridge():
         conns = []
         for c in self.connections:
             conns.append(points[c[0]].connect_to(points[c[1]],c[2],c[3],c[5],c[4]))
-        return list(points),conns
+        return list(points.values()),conns
 
     def create_points(self):
         points = {}
@@ -73,11 +73,11 @@ class BridgeCreator():
     def save_bridge(self, file):
         Tk().wm_withdraw() #to hide the main window
         messagebox.showinfo('Continue','OK')
-        filehandler = open(file, 'w')
+        filehandler = open(file, 'wb')
         pickle.dump(Bridge(self.points, self.connections), filehandler)
 
     def load_bridge(self, file):
-        filehandler = open(file, 'r')
+        filehandler = open(file, 'rb')
         bridge = pickle.load(filehandler)
         self.points,self.connections = bridge.load_from_pickled()
 
