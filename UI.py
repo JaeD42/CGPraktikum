@@ -122,9 +122,17 @@ class UI():
                 if event.key == pygame.K_TAB:
                     self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
-                    PAUSE = not PAUSE
-                    self.build_mode = False
-                    self.create_physics()
+                    if(self.initial_bridge):
+                        PAUSE = not PAUSE
+                    else:
+                        self.build_mode = False
+                        self.create_physics()
+                if event.key == pygame.K_z and pygame.key.get_pressed()[pygame.K_LCTRL]:
+                    self.build_mode = True
+                    PAUSE = True
+                    self.BC.load_bridge(self.initial_bridge)
+                    self.initial_bridge = None
+
 
         return RUNNING
 
@@ -227,5 +235,3 @@ class UI():
 
 
         return r
-
-    
