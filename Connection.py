@@ -55,15 +55,12 @@ class Connection:
         return False
 
     def get_color(self,start=[0,255,0],end=[255,0,0]):
-        if DEBUG:
-            m = self.max_force
-            if m==-1:
-                m=100
-            fac = min(float(abs(self.force))/m,1)
-            col = [int(fac*end[i]+(1-fac)*start[i]) for i in range(3)]
-            return tuple(col)
-        else:
-            return [0,255,0]
+        m = self.max_force
+        if m==-1:
+            m=100
+        fac = min(float(abs(self.force))/m,1)
+        col = [int(fac*end[i]+(1-fac)*start[i]) for i in range(3)]
+        return tuple(col)
 
     def get_perpendicular(self):
         perp = [-self.dir[1],self.dir[0]]

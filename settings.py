@@ -13,7 +13,7 @@ MAX_SCORE           = 3000
 POINT_COST          = 10
 CONNECTION_COST     = 10
 FIXED_CON_COST      = 50
-INITIAL_COST        = 100
+INITIAL_COST        = 1000
 
 #screen
 SCREEN_WIDTH        = 1300
