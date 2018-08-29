@@ -72,7 +72,7 @@ class BridgeCreator():
                 self.points,self.connections = bridge.load_from_pickled()
                 self.grid.empty()
                 self.grid.restore_points(self.points)
-                
+
                 return
             elif(not file):
                 Tk().wm_withdraw() #to hide the main window
@@ -179,15 +179,11 @@ class BridgeCreator():
         screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
         for plat in self.plateaus:
-            if(not plat.in_front):
-                plat.draw(screen,ZOOM,TRANSLATE)
+            plat.draw(screen,ZOOM,TRANSLATE)
         for c in self.connections:
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:
             p.draw(screen,ZOOM,TRANSLATE)
-        for plat in self.plateaus:
-            if(plat.in_front):
-                plat.draw(screen,ZOOM,TRANSLATE)
 
         cost_display = pygame.font.Font(None, 20)
         cost_display = cost_display.render('Points remaining: '+ str(self.cost), True, (255,255,255))
