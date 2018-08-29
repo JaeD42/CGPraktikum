@@ -1,5 +1,5 @@
-from load_data import load_image, antialias
-from settings import *
+from Utils.load_data import load_image, antialias
+from Utils.settings import *
 
 class ToggleIcon:
 

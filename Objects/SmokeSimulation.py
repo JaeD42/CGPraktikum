@@ -2,7 +2,7 @@
 import numpy as np
 import math
 import pygame
-from settings import *
+from Utils.settings import *
 
 class SmokeSimulation():
 

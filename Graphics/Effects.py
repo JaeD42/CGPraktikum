@@ -24,7 +24,7 @@ class Effects:
             self.effects.remove(i)
 
 
-from SmokeSimulation import SmokeSimulation
+from Objects.SmokeSimulation import SmokeSimulation
 class SmokeEffect:
 
     def __init__(self):

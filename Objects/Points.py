@@ -2,8 +2,8 @@
 import pygame
 import numpy as np
 from math import sqrt
-from Connection import Connection
-from settings import DEBUG
+from Objects.Connection import Connection
+from Utils.settings import DEBUG
 from itertools import count
 
 class MassPoint:

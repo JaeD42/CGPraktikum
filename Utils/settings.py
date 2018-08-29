@@ -1,9 +1,10 @@
 import pygame
 import os
 from pygame.locals import *
+import sys
 
 #System
-MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
+MAIN_DIR = os.path.split(os.path.abspath(sys.argv[0]))[0]
 DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 

@@ -1,10 +1,10 @@
 
-from settings import *
-from Physics import Physics
-from train import Train
-from ToggleIcon import ToggleIcon
-from BridgeCreator import Bridge,BridgeCreator
-from Game import Level
+from Utils.settings import *
+from Game.Physics import Physics
+from Objects.train import Train
+from Graphics.ToggleIcon import ToggleIcon
+from Game.BridgeCreator import Bridge,BridgeCreator
+from Game.Game import Level
 
 
 class UI():
@@ -17,7 +17,7 @@ class UI():
     grid_mode = False
 
     def __init__(self):
-        self.level = Level.load_from_file("testingLevelSave")
+        self.level = Level.load_from_file("lvl1")
 
         self.BC = BridgeCreator(self.level)
 

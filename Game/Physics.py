@@ -1,4 +1,4 @@
-from settings import *
+from Utils.settings import *
 import pygame
 class Physics:
 

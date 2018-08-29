@@ -1,13 +1,13 @@
-from Physics import *
-from settings import *
-from Points import MassPoint,create_bridge
-from Connection import Connection
-from Effects import Effects
+from Game.Physics import *
+from Utils.settings import *
+from Objects.Points import MassPoint,create_bridge
+from Objects.Connection import Connection
+from Graphics.Effects import Effects
 
 import pickle
 from tkinter import *
 from tkinter import messagebox
-from Grid import Grid
+from Objects.Grid import Grid
 import sys
 if (sys.version_info > (3, 0)):
     import tkinter.simpledialog as simpledialog
