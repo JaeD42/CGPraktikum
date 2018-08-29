@@ -70,6 +70,8 @@ class Level:
             img = load_image(p.path)
             if(p.flipped):
                 img = pygame.transform.flip(img,True, False)
+            imgsize = [img.get_width(), img.get_height()]
+            img = pygame.transform.smoothscale(img, (imgsize[0], int(imgsize[1] *1.5)))
             img = pygame.transform.rotozoom(img ,0, 0.3)
             p.add_img(img)
 

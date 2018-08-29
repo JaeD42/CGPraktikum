@@ -63,11 +63,14 @@ class Physics:
         screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
         for plat in self.plateaus:
-            plat.draw(screen,ZOOM,TRANSLATE)
-
+            if(not plat.in_front):
+                plat.draw(screen,ZOOM,TRANSLATE)
         for c in self.connections:
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:
             p.draw(screen,ZOOM,TRANSLATE)
+        for plat in self.plateaus:
+            if(plat.in_front):
+                plat.draw(screen,ZOOM,TRANSLATE)
 
         self.train.draw(screen,ZOOM,TRANSLATE)

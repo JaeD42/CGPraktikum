@@ -42,30 +42,10 @@ class Bridge():
 class BridgeCreator():
 
     def __init__(self,level):
-
-        #self.points, self.connections = create_bridge()
         self.effects = Effects()
 
         self.removed_points = []
         self.removed_connections = []
-
-        # points,connections = create_bridge(BRIDGE_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES, D=BRIDGE_STIFF, max_force = 2000)
-        #
-        # BRIDGE2_START = [BRIDGE_START[0],BRIDGE_START[1]+200]
-        # points2,connections2 = create_bridge(BRIDGE2_START,BRIDGE_END,BRIDGE_HEIGHT, BRIDGE_NODES-1, D=BRIDGE_STIFF*2, max_force = 10000)
-        # conn = connections2[2]
-        # add_point = MassPoint((SCREEN_WIDTH,240),5,moveable=False)
-        # add_conn = points2[3].connect_to_quick(add_point,can_collide=True)
-        #
-        # points.extend(points2)
-        # connections.extend(connections2)
-        # points.append(add_point)
-        # connections.append(add_conn)
-
-        # self.points = points
-        # self.connections = connections
-
-
         self.cost = level.get_max_points()
 
         self.bg = level.get_background()
@@ -73,13 +53,6 @@ class BridgeCreator():
         self.points =level.get_points()
         self.connections = level.get_connections()
         self.plateaus = level.plateaus
-
-        #self.grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
-
-        #for p in self.points:
-        #    gx = int(p.pos[0]/self.grid_size+0.5)
-        #    gy = int(p.pos[1]/self.grid_size+0.5)
-        #    self.grid[(gx,gy)] = p
 
 
     def save_bridge(self, file = ""):
@@ -200,11 +173,15 @@ class BridgeCreator():
         screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
         for plat in self.plateaus:
-            plat.draw(screen,ZOOM,TRANSLATE)
+            if(not plat.in_front):
+                plat.draw(screen,ZOOM,TRANSLATE)
         for c in self.connections:
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:
             p.draw(screen,ZOOM,TRANSLATE)
+        for plat in self.plateaus:
+            if(plat.in_front):
+                plat.draw(screen,ZOOM,TRANSLATE)
 
         cost_display = pygame.font.Font(None, 20)
         cost_display = cost_display.render('Points remaining: '+ str(self.cost), True, (255,255,255))

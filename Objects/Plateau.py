@@ -18,6 +18,7 @@ class Plateau:
         self.path = path
         self.img = None
         self.flipped = False
+        self.in_front = False
 
     def add_img(self,img):
         self.img = img
