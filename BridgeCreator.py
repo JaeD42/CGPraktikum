@@ -41,9 +41,8 @@ class Bridge():
 
 class BridgeCreator():
 
-    def __init__(self,back_ground, cost):
-        self.points = []
-        self.connections = []
+    def __init__(self,level):
+
         #self.points, self.connections = create_bridge()
         self.effects = Effects()
 
@@ -67,11 +66,14 @@ class BridgeCreator():
         # self.connections = connections
 
 
-        self.cost = cost
+        self.cost = level.get_max_points()
 
-        self.bg = back_ground
-        print(Grid)
-        self.grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
+        self.bg = level.get_background()
+        self.grid = level.get_grid()
+        self.points =level.get_points()
+        self.connections = level.get_connections()
+
+        #self.grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
 
         #for p in self.points:
         #    gx = int(p.pos[0]/self.grid_size+0.5)

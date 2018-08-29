@@ -55,7 +55,6 @@ def main(winstyle = 0):
     balken_u = pygame.transform.rotozoom(balken_u, 0, 0.1)
 
 
-    bg = RTImage(pygame.transform.scale(load_image(BG), (SCREEN_WIDTH, SCREEN_HEIGHT)))
     #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
 
@@ -65,8 +64,7 @@ def main(winstyle = 0):
     #list of movable objects for collision check (mouse dragging)
     movable_objects = []
 
-    BC = BridgeCreator(bg, INITIAL_COST)
-    Interface = UI(BC)
+    Interface = UI()
 
 
     #physics = Physics(connections,points,train,bg)

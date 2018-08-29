@@ -3,9 +3,11 @@ from Points import MassPoint
 
 class Grid:
 
-    def __init__(self):
-        self.positions = []
+    def __init__(self,positions=[]):
+        self.positions = positions
         self.points = {}
+
+
 
     @staticmethod
     def create_standard_grid(upper_left,lower_right,num_points_x,num_points_y):
@@ -18,6 +20,11 @@ class Grid:
         g = Grid()
         g.positions=positions
         return g
+
+    def restore_points(self,points):
+        for p in points:
+            pos = self.get_closest_grid_pos(p.pos)
+            self.points[pos]=p
 
 
     def get_closest_grid_pos(self,pos):

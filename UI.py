@@ -3,7 +3,8 @@ from settings import *
 from Physics import Physics
 from train import Train
 from ToggleIcon import ToggleIcon
-from BridgeCreator import Bridge
+from BridgeCreator import Bridge,BridgeCreator
+from Game import Level
 
 
 class UI():
@@ -15,8 +16,11 @@ class UI():
     RIGHT_MOUSE = 3
     grid_mode = False
 
-    def __init__(self, bridge_creator):
-        self.BC = bridge_creator
+    def __init__(self):
+        self.level = Level.load_from_file("testingLevelSave")
+
+        self.BC = BridgeCreator(self.level)
+
         self.first_pos = (0,0)
         self.first_selected = False
         self.first_is_point = False
@@ -28,6 +32,7 @@ class UI():
         self.conn_is_floor = True
 
         self.initial_bridge = None
+
 
 
     def zoom(self,zoom_in = True):

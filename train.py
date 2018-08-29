@@ -126,6 +126,20 @@ class Wagon():
 
         return 0,0
 
+    def collision_with_level_elements(self,level):
+        for plat in level.plateaus:
+            BB = plat.get_bounding_box()
+            w,perc = self.collision_mass_with_physics(BB,0)
+            if w:
+                self.physics_v_mass[0]=[0,0]
+            w,perc = self.collision_mass_with_physics(BB,1)
+            if w:
+                self.physics_v_mass[1]=[0,0]
+
+
+
+
+
     def collision_with_connection(self,connection):
         if not connection.can_collide:
             return
