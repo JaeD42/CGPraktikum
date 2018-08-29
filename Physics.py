@@ -42,6 +42,9 @@ class Physics:
                 self.remove_connection(c)
 
 
+    def check_if_won(self):
+        return self.level.game_is_won(self.train)
+
 
 
 

@@ -13,6 +13,8 @@ class Plateau:
         self.len = math.sqrt(self.dir[0]**2+self.dir[1]**2)
         self.dir = [self.dir[0]/self.len,self.dir[1]/self.len]
         self.collision_width = 10
+        
+        #load image and scale and flip
 
     def get_perpendicular(self):
         perp = [-self.dir[1],self.dir[0]]

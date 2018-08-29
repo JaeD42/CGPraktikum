@@ -39,7 +39,7 @@ class Level:
 
 
     def game_is_won(self,train):
-        c = train.wagon[0].center
+        c = train.wagons[0].center
         if c[0]>self.goal[0] and c[1]<self.goal[1]:
             print("WON")
             return True

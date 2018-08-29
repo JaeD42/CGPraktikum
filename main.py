@@ -90,7 +90,7 @@ def main(winstyle = 0):
 
 
 
-            if DEBUG:
+            if SHOW_FPS:
                 fps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
                 screen.blit(fps, (50, 50))
 

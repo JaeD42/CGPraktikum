@@ -49,6 +49,7 @@ GRID_SIZE           = 100
 
 
 DEBUG               = False
+SHOW_FPS            = True
 
 STEPSIZE            = 0.02
 

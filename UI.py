@@ -232,6 +232,7 @@ class UI():
 
 
     def step(self,dt, screen):
+        global PAUSE
         r = self.handle_events()
 
         if self.build_mode:
@@ -249,6 +250,9 @@ class UI():
                     self.physics.update_physics(dt)
                     self.physics.move(dt)
                 self.physics.draw(screen,ZOOM,TRANSLATE)
+                if self.physics.check_if_won():
+                    PAUSE=True
+                    print("WON")
 
         self.music_type_icon.draw(screen)
 
