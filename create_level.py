@@ -6,13 +6,14 @@ import pygame
 from Utils.load_data import load_image
 from Utils.settings import *
 from Game.Game import Level
-if __name__=="__main__":
-    from Objects.Plateau import Plateau
-    from Objects.Grid import Grid
-    from Utils.settings import *
+from Objects.Plateau import Plateau
+from Objects.Grid import Grid
+from Utils.settings import *
 
-    p1 = [[-200,400], [100,400]]
-    p2 = [[1500, 400], [1800, 400]]
+
+def lvl1():
+    p1 = [[-200,400], [250,400]]
+    p2 = [[1150, 400], [1500, 400]]
     p3 = [[400, 400], [700, 400]]
     p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0])
     p_start.flipped = True
@@ -26,5 +27,8 @@ if __name__=="__main__":
     conns = []
     max_points = 999
 
-    l = Level(start,goal,points,conns,grid,[p_start, p_end, p_middle], max_points, BG)
-    l.save_level("lvl1")
+    return Level(start,goal,points,conns,grid,[p_start, p_end, p_middle], max_points, BG)
+
+if __name__=="__main__":
+
+    lvl1().save_level("lvl1")

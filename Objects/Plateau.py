@@ -3,6 +3,7 @@ import math
 import numpy as np
 from Objects.BoundingBox import BoundingBox
 from Utils.load_data import load_image
+from Utils.settings import *
 import pygame
 class Plateau:
 
@@ -35,4 +36,5 @@ class Plateau:
     def draw(self,screen,zoom,translate):
         if(self.img):
             screen.blit(self.img, self.start)
-        pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
+        if(DEBUG):
+            pygame.draw.line(screen,[255,255,255],self.start,self.end,5)

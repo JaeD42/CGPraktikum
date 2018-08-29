@@ -9,6 +9,20 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 
 
+
+#grid
+GRID_SIZE           = 100
+
+
+DEBUG               = True
+SHOW_FPS            = True
+
+STEPSIZE            = 0.02
+
+
+#pygame flags
+FLAGS               = DOUBLEBUF
+
 #game constants
 #game
 MAX_SCORE           = 3000
@@ -45,18 +59,6 @@ BRIDGE_NODES        = 5
 BRIDGE_STIFF        = 300
 MAX_FORCE           = 10
 
-#grid
-GRID_SIZE           = 100
-
-
-DEBUG               = False
-SHOW_FPS            = True
-
-STEPSIZE            = 0.02
-
-
-#pygame flags
-FLAGS               = DOUBLEBUF
 
 #Sound and images
 BGMUSIC             = 'Spring.wav'
@@ -64,7 +66,7 @@ TRAIN_SOUND         = 'train_whistle_short.wav'
 BGMUSIC_VOL         = 0.2
 TRAIN_SOUND_VOL     = 0.3
 
-BG                  = 'landscape3.png'
+BG                  = 'landscape.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
 PLATEAU_IMGS        = ['plateau1.png', 'plateau2.png', 'plateau3.png','plateau4.png']
 BALKEN              = 'balken.png'
