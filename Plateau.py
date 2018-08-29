@@ -2,6 +2,7 @@
 import math
 import numpy as np
 from BoundingBox import BoundingBox
+from load_data import load_image
 import pygame
 class Plateau:
 
@@ -13,8 +14,10 @@ class Plateau:
         self.len = math.sqrt(self.dir[0]**2+self.dir[1]**2)
         self.dir = [self.dir[0]/self.len,self.dir[1]/self.len]
         self.collision_width = 10
-        
-        #load image and scale and flip
+        self.img = None
+
+    def add_img(self,img):
+        self.img = img
 
     def get_perpendicular(self):
         perp = [-self.dir[1],self.dir[0]]
@@ -28,4 +31,6 @@ class Plateau:
         return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,other_dir],[self.len/2,self.collision_width/2])
 
     def draw(self,screen,zoom,translate):
+        if(self.img):
+            screen.blit(self.img, self.start)
         pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
