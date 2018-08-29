@@ -6,7 +6,7 @@ from load_data import load_image
 import pygame
 class Plateau:
 
-    def __init__(self,startP,endP):
+    def __init__(self,startP,endP, path):
         self.start = startP
         self.end = endP
         self.center = [(self.start[i]+self.end[i])/2 for i in range(2)]
@@ -14,7 +14,9 @@ class Plateau:
         self.len = math.sqrt(self.dir[0]**2+self.dir[1]**2)
         self.dir = [self.dir[0]/self.len,self.dir[1]/self.len]
         self.collision_width = 10
+        self.path = path
         self.img = None
+        self.flipped = False
 
     def add_img(self,img):
         self.img = img

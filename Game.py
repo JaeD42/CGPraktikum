@@ -65,7 +65,12 @@ class Level:
 
 
 
-
+    def load_plateau_imgs(self):
+        for p in self.plateaus:
+            img = load_image(p.path)
+            if(p.flipped):
+                img = pygame.transform.flip(img,True, False)
+            p.add_img(img)
 
     def load_level(self,path):
         filehandler = open(path, 'rb')
@@ -84,7 +89,7 @@ class Level:
 
         self.max_points = d["max_money"]
         self.back_ground_path = d["bg"]
-        self.bg = RTImage(pygame.transform.scale(load_image(self.back_ground_path), (SCREEN_WIDTH, SCREEN_HEIGHT)))
+        self.bg = RTImage(pygame.transform.smoothscale(load_image(self.back_ground_path), (SCREEN_WIDTH, SCREEN_HEIGHT)))
 
 
     def get_max_points(self):
@@ -108,10 +113,13 @@ if __name__=="__main__":
     from Grid import Grid
     from settings import *
 
-    p_start = Plateau((-200,400), (100,400))
-    p_start.add_img(pygame.transform.flip(load_image(PLATEAU_IMGS[0])),True, False)
-    p_end = Plateau()
-    p1 = Plateau((-200,300),(200,300))
+    p1 = [[-200,400], [100,400]]
+    p2 = [[1500, 400], [1800, 400]]
+    p3 = [[400, 400], [700, 400]]
+    p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0])
+    p_start.flipped = True
+    p_end = Plateau(p2[0], p2[1] ,PLATEAU_IMGS[0])
+    p_middle = Plateau(p3[0], p3[1], PLATEAU_IMGS[1])
 
     grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
     start = TRAIN_START_COORD
