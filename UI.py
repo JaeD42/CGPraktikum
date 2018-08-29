@@ -32,6 +32,7 @@ class UI():
         self.conn_is_floor = True
 
         self.initial_bridge = None
+        self.speed_factor = 1
 
 
 
@@ -140,6 +141,14 @@ class UI():
                         self.physics = None
                         self.BC.load_bridge(bridge=self.initial_bridge)
                         self.initial_bridge = None
+                if event.key == pygame.K_PLUS:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.speed_factor+=1
+                if event.key == pygame.K_MINUS:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.speed_factor=max(self.speed_factor-1,1)
+
+
 
 
         return RUNNING
@@ -222,7 +231,7 @@ class UI():
         self.physics = Physics(connections,points,Train.get_standard_train(),self.level)
 
 
-    def step(self,dt, screen,speed_fac=5):
+    def step(self,dt, screen):
         r = self.handle_events()
 
         if self.build_mode:
@@ -236,7 +245,7 @@ class UI():
 
         else:
             if(not PAUSE):
-                for i in range(speed_fac):
+                for i in range(self.speed_factor):
                     self.physics.update_physics(dt)
                     self.physics.move(dt)
                 self.physics.draw(screen,ZOOM,TRANSLATE)
