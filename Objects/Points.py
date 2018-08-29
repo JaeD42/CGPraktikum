@@ -24,7 +24,7 @@ class MassPoint:
 
 
     def create_pickleable(self):
-        return [self.point_num, self.pos, self.weight, self.radius, self.moveable]
+        return [self.point_num, list(self.pos)[:], self.weight, self.radius, self.moveable]
 
     def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
         c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
