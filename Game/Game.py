@@ -70,6 +70,7 @@ class Level:
             img = load_image(p.path)
             if(p.flipped):
                 img = pygame.transform.flip(img,True, False)
+            img = pygame.transform.rotozoom(img ,0, 0.3)
             p.add_img(img)
 
     def load_level(self,path):
@@ -90,7 +91,7 @@ class Level:
         self.max_points = d["max_money"]
         self.back_ground_path = d["bg"]
         self.bg = RTImage(pygame.transform.smoothscale(load_image(self.back_ground_path), (SCREEN_WIDTH, SCREEN_HEIGHT)))
-
+        self.load_plateau_imgs()
 
     def get_max_points(self):
         return self.max_points
