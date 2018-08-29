@@ -5,7 +5,7 @@ class ToggleIcon:
 
     def __init__(self,images,pos,size):
         self.pos = pos
-        self.imgs = [pygame.transform.scale(im,size) for im in images]
+        self.imgs = [pygame.transform.smoothscale(im,size) for im in images]
         self.cur_index = 0
 
 
@@ -13,7 +13,9 @@ class ToggleIcon:
         self.cur_index = (self.cur_index+1)%len(self.imgs)
 
     def draw(self,screen):
-        screen.blit(self.imgs[self.cur_index],self.pos)
+        img = self.imgs[self.cur_index]
+        screen.blit(img ,self.pos)
+
 
     @staticmethod
     def bridgetype():
