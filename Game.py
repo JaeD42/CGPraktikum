@@ -108,7 +108,11 @@ if __name__=="__main__":
     from Grid import Grid
     from settings import *
 
+    p_start = Plateau((-200,400), (100,400))
+    p_start.add_img(pygame.transform.flip(load_image(PLATEAU_IMGS[0])),True, False)
+    p_end = Plateau()
     p1 = Plateau((-200,300),(200,300))
+
     grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
     start = TRAIN_START_COORD
     goal = BRIDGE_END
@@ -116,5 +120,5 @@ if __name__=="__main__":
     conns = []
     max_points = 999
 
-    l = Level(start,goal,points,conns,grid,[p1], max_points, BG)
-    l.save_level("testingLevelSave")
+    l = Level(start,goal,points,conns,grid,[p_start, p_end, p1], max_points, BG)
+    l.save_level("lvl1")
