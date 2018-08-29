@@ -33,12 +33,17 @@ class SmokeEffect:
     def add_smoke(self,pos,duration,num_particles=25):
         self.effects.append([SmokeSimulation(num_particles,pos),duration,duration])
 
-    def draw(self,screen):
+    def update(self,dt):
         to_remove = []
         for val in self.effects:
             val[1]-=1
             if val[1]<0:
                 to_remove.append(val)
             else:
-                val[0].step(0.03)
-                val[0].draw(screen,[int(255*(1-float(val[1])/val[2]))]*3)
+                val[0].step(dt)
+        for s in to_remove:
+            self.effects.remove(s)
+
+    def draw(self,screen):
+        for val in self.effects:
+            val[0].draw(screen,[int(255*(1-float(val[1])/val[2]))]*3)

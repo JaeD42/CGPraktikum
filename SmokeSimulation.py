@@ -21,7 +21,7 @@ class SmokeSimulation():
 
 
     def step(self,dt,g=9.81):
-        self.velocities[:,1]=-5*(1-(self.positions[:,1]-self.start_pos[1])/50)
+        self.velocities[:,1]=-8*(1-(self.positions[:,1]-self.start_pos[1])/50)
 
         #self.apply_viscosity(dt)
         old_pos = self.positions[:]

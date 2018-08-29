@@ -68,11 +68,12 @@ class Train():
 
     def move(self,dt,g=9.81):
         self.counter+=1
+        self.smoke.update(dt)
         if self.counter>self.smoke_iters:
             pos = self.wagons[-1].center[:]
             pos[0]+=20
             pos[1]-=10
-            self.smoke.add_smoke(pos,300,num_particles=150)
+            self.smoke.add_smoke(pos,300,num_particles=100)
             self.counter=0
         for i in range(self.number_of_wagons):
             self.wagons[i].move(dt, g)
