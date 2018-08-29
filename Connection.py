@@ -28,7 +28,7 @@ class Connection:
         self.dir = self.dir/self.len
         self.can_collide=can_collide
         self.line_width = 1
-        self.collision_width = 100
+        self.collision_width = 10
         self.hover_width = 10
 
     #positive force: drags points to middle

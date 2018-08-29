@@ -222,7 +222,7 @@ class UI():
         self.physics = Physics(connections,points,Train.get_standard_train(),self.level)
 
 
-    def step(self,dt, screen):
+    def step(self,dt, screen,speed_fac=5):
         r = self.handle_events()
 
         if self.build_mode:
@@ -236,8 +236,9 @@ class UI():
 
         else:
             if(not PAUSE):
-                self.physics.update_physics(dt)
-                self.physics.move(dt)
+                for i in range(speed_fac):
+                    self.physics.update_physics(dt)
+                    self.physics.move(dt)
                 self.physics.draw(screen,ZOOM,TRANSLATE)
 
         self.music_type_icon.draw(screen)

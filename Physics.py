@@ -30,6 +30,7 @@ class Physics:
 
         if not PAUSE:
             broken_conns = []
+            self.train.collision_with_level(self.level)
             for c in self.connections:
                 broke = c.update_force()
                 if broke:
@@ -40,7 +41,7 @@ class Physics:
             for c in broken_conns:
                 self.remove_connection(c)
 
-            self.train.collision_with_level(self.level)
+
 
 
 

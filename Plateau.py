@@ -12,7 +12,7 @@ class Plateau:
         self.dir = [(-self.start[i]+self.end[i]) for i in range(2)]
         self.len = math.sqrt(self.dir[0]**2+self.dir[1]**2)
         self.dir = [self.dir[0]/self.len,self.dir[1]/self.len]
-        self.collision_width = 100
+        self.collision_width = 10
 
     def get_perpendicular(self):
         perp = [-self.dir[1],self.dir[0]]

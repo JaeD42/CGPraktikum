@@ -108,7 +108,7 @@ if __name__=="__main__":
     from Grid import Grid
     from settings import *
 
-    p1 = Plateau((-200,500),(1000,300))
+    p1 = Plateau((-200,300),(200,300))
     grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
     start = TRAIN_START_COORD
     goal = BRIDGE_END
