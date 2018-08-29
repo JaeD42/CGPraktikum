@@ -2,13 +2,15 @@ from settings import *
 import pygame
 class Physics:
 
-    def __init__(self,connections,points,train,back_ground):
+    def __init__(self,connections,points,train,level):
 
         self.connections = set(connections)
         self.points = set(points)
         self.removed_points = set()
         self.train = train
-        self.bg = back_ground
+        self.bg = level.get_background()
+        self.level = level
+        self.plateaus = level.plateaus
 
 
     def add_connection(self,connection):
@@ -38,6 +40,8 @@ class Physics:
             for c in broken_conns:
                 self.remove_connection(c)
 
+            self.train.collision_with_level(self.level)
+
 
 
     def move(self,dt):
@@ -52,7 +56,10 @@ class Physics:
             c.bridge_mode = not c.bridge_mode
 
     def draw(self,screen, ZOOM,TRANSLATE):
-        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
+        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
+
+        for plat in self.plateaus:
+            plat.draw(screen,ZOOM,TRANSLATE)
 
         for c in self.connections:
             c.draw(screen,ZOOM,TRANSLATE)
