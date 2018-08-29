@@ -128,7 +128,7 @@ class Wagon():
 
         if collision_found:
 
-            self.mass_coordinates[index]-=[(1+ax2_perc)*bounding_box.axes[1][i]*(bounding_box.lengths[1]-15) for i in range(2)]
+            self.mass_coordinates[index]-=[(1+ax2_perc)*bounding_box.axes[1][i]*(bounding_box.lengths[1]) for i in range(2)]
 
 
 
