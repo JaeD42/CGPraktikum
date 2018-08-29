@@ -72,6 +72,7 @@ class BridgeCreator():
         self.grid = level.get_grid()
         self.points =level.get_points()
         self.connections = level.get_connections()
+        self.plateaus = level.plateaus
 
         #self.grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
 
@@ -196,8 +197,10 @@ class BridgeCreator():
 
 
     def draw(self,screen, ZOOM, TRANSLATE):
-        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,ZOOM,TRANSLATE))
+        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
+        for plat in self.plateaus:
+            plat.draw(screen,ZOOM,TRANSLATE)
         for c in self.connections:
             c.draw(screen,ZOOM,TRANSLATE)
         for p in self.points:

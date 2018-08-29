@@ -1,5 +1,8 @@
 
 import math
+import numpy as np
+from BoundingBox import BoundingBox
+import pygame
 class Plateau:
 
     def __init__(self,startP,endP):
@@ -22,5 +25,5 @@ class Plateau:
         other_dir = np.array(self.get_perpendicular())
         return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,other_dir],[self.len/2,self.collision_width/2])
 
-    def draw(self,screen):
-        pass
+    def draw(self,screen,zoom,translate):
+        pygame.draw.line(screen,[255,255,255],self.start,self.end,5)

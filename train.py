@@ -34,10 +34,15 @@ class Train():
         self.connect_wagons()
 
     @staticmethod
-    def get_standard_train():
+    def get_standard_train(level=None):
+
         from load_data import load_image
         wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
-        train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
+
+        if level==None:
+            train = Train(NUMBER_OF_WAGONS, wagon_imgs, TRAIN_START_COORD, TRAIN_WEIGHTS, TRAIN_SPEED )
+        else:
+            train = Train(NUMBER_OF_WAGONS, wagon_imgs, level.start, TRAIN_WEIGHTS, TRAIN_SPEED )
         return train
 
     def connect_wagons(self):
@@ -54,6 +59,11 @@ class Train():
     def collision_with_connection(self,connection):
         for i in range(self.number_of_wagons):
             self.wagons[i].collision_with_connection(connection)
+
+    def collision_with_level(self,level):
+        for i in range(self.number_of_wagons):
+            self.wagons[i].collision_with_level_elements(level)
+
 
 
     def move(self,dt,g=9.81):
@@ -101,6 +111,7 @@ class Wagon():
         self.next_wagon = None
         self.last_wagon = None
         self.last_zoom = 1
+        self.on_plateau = True
         #self.orientation_changed = False
 
 
@@ -127,13 +138,16 @@ class Wagon():
         return 0,0
 
     def collision_with_level_elements(self,level):
+        self.on_plateau = [False,False]
         for plat in level.plateaus:
             BB = plat.get_bounding_box()
             w,perc = self.collision_mass_with_physics(BB,0)
             if w:
                 self.physics_v_mass[0]=[0,0]
+                self.on_plateau[0]=True
             w,perc = self.collision_mass_with_physics(BB,1)
             if w:
+                self.on_plateau[1]=True
                 self.physics_v_mass[1]=[0,0]
 
 
@@ -225,10 +239,8 @@ class Wagon():
         self.correct_position()
 
         for i in range(2):
-            if not ((self.mass_coordinates[i][0]<BRIDGE_START[0] or self.mass_coordinates[i][0]>BRIDGE_END[0]) and abs(self.mass_coordinates[i][1]-BRIDGE_START[1])<10):
+            if not self.on_plateau[i]:
                 self.physics_v_mass[i][1]+=dt*g
-            else:
-                self.physics_v_mass[i][1] = 0
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         surface.blit(*self.image.get_img(self.center,57.295*self.orientation,zoom,translation))

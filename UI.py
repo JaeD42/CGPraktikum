@@ -219,7 +219,7 @@ class UI():
         connections = self.BC.connections
         self.initial_bridge = Bridge(points, connections)
         bg = self.BC.bg
-        self.physics = Physics(connections,points,Train.get_standard_train(),bg)
+        self.physics = Physics(connections,points,Train.get_standard_train(),self.level)
 
 
     def step(self,dt, screen):
