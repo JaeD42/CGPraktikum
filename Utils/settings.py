@@ -14,7 +14,7 @@ BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 GRID_SIZE           = 100
 
 
-DEBUG               = True
+DEBUG               = False
 SHOW_FPS            = True
 
 STEPSIZE            = 0.02

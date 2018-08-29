@@ -12,7 +12,7 @@ from Utils.settings import *
 
 
 def lvl1():
-    p1 = [[-200,400], [250,400]]
+    p1 = [[-200,400], [230,400]]
     p2 = [[1150, 400], [1500, 400]]
     p3 = [[400, 400], [700, 400]]
     p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0])
