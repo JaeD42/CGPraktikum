@@ -21,10 +21,13 @@ class Grid:
         g.positions=positions
         return g
 
+    def empty(self):
+        self.points={}
+
     def restore_points(self,points):
         for p in points:
             pos = self.get_closest_grid_pos(p.pos)
-            self.points[pos]=p
+            self.points[tuple(pos)]=p
 
 
     def get_closest_grid_pos(self,pos):

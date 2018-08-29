@@ -134,6 +134,7 @@ class UI():
                         self.initial_bridge = Bridge(self.BC.points, self.BC.connections)
                         self.build_mode = False
                         self.create_physics()
+                        PAUSE = False
                 if event.key == pygame.K_y:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.build_mode = True
@@ -223,6 +224,7 @@ class UI():
         self.first_is_point = False
 
     def create_physics(self):
+        print("here")
         self.build_mode = False
         points = self.BC.points
         connections = self.BC.connections

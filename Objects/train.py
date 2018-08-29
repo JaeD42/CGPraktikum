@@ -8,7 +8,7 @@ from Graphics.Effects import SmokeEffect
 
 class Train():
 
-    wagons = []
+
 
     #imgs[2] = first wagon image
     #imgs[1] = middle wagon image
@@ -19,6 +19,7 @@ class Train():
         self.smoke = SmokeEffect()
         self.smoke_iters = 10
         self.counter = 0
+        self.wagons = []
 
         for i in range(number_of_wagons):
             if(i==0):

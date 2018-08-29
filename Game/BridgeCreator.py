@@ -70,6 +70,9 @@ class BridgeCreator():
         try:
             if (bridge!=None):
                 self.points,self.connections = bridge.load_from_pickled()
+                self.grid.empty()
+                self.grid.restore_points(self.points)
+                
                 return
             elif(not file):
                 Tk().wm_withdraw() #to hide the main window
@@ -78,6 +81,9 @@ class BridgeCreator():
             filehandler = open(file, 'rb')
             bridge = pickle.load(filehandler)
             self.points,self.connections = bridge.load_from_pickled()
+            self.grid.empty()
+            self.grid.restore_points(self.points)
+
         except:
             print('load failed')
 
