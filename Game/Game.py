@@ -1,10 +1,10 @@
-from BridgeCreator import Bridge
-from Grid import Grid
+from Game.BridgeCreator import Bridge
+from Objects.Grid import Grid
 import pickle
-from RotateTranslateImage import RTImage
+from Graphics.RotateTranslateImage import RTImage
 import pygame
-from load_data import load_image
-from settings import *
+from Utils.load_data import load_image
+from Utils.settings import *
 class Game:
 
     def __init__(self):
@@ -106,27 +106,3 @@ class Level:
 
     def get_background(self):
         return self.bg
-
-
-if __name__=="__main__":
-    from Plateau import Plateau
-    from Grid import Grid
-    from settings import *
-
-    p1 = [[-200,400], [100,400]]
-    p2 = [[1500, 400], [1800, 400]]
-    p3 = [[400, 400], [700, 400]]
-    p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0])
-    p_start.flipped = True
-    p_end = Plateau(p2[0], p2[1] ,PLATEAU_IMGS[0])
-    p_middle = Plateau(p3[0], p3[1], PLATEAU_IMGS[1])
-
-    grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
-    start = TRAIN_START_COORD
-    goal = BRIDGE_END
-    points = []
-    conns = []
-    max_points = 999
-
-    l = Level(start,goal,points,conns,grid,[p_start, p_end, p1], max_points, BG)
-    l.save_level("lvl1")

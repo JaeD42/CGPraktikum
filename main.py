@@ -2,21 +2,20 @@
 #!/usr/bin/env python
 
 import random, os.path
-from Physics import Physics
+from Game.Physics import Physics
 import numpy as np
-from train import Train,Wagon
-from settings import *
-from events import calc_events
-from RotateTranslateImage import RTImage
-from BridgeCreator import BridgeCreator
-from UI import UI
-from Sound import Sound
+from Objects.train import Train,Wagon
+from Utils.settings import *
+from Graphics.RotateTranslateImage import RTImage
+from Game.BridgeCreator import BridgeCreator
+from Game.UI import UI
+from Graphics.Sound import Sound
 #import basic pygame modules
 import pygame
 from pygame.locals import *
-from load_data import *
+from Utils.load_data import *
 
-from Points import MassPoint, create_bridge
+from Objects.Points import MassPoint, create_bridge
 
 #see if we can load more than standard BMP
 if not pygame.image.get_extended():

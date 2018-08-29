@@ -1,6 +1,6 @@
 import os
 import pygame
-from settings import *
+from Utils.settings import *
 
 preloaded = {}
 

@@ -1,10 +1,10 @@
 import numpy as np
 import pygame
-from BoundingBox import BoundingBox
-from RotateTranslateImage import RTImage
-from settings import *
+from Objects.BoundingBox import BoundingBox
+from Graphics.RotateTranslateImage import RTImage
+from Utils.settings import *
 from math import pi
-from Effects import SmokeEffect
+from Graphics.Effects import SmokeEffect
 
 class Train():
 
@@ -36,7 +36,7 @@ class Train():
     @staticmethod
     def get_standard_train(level=None):
 
-        from load_data import load_image
+        from Utils.load_data import load_image
         wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
 
         if level==None:

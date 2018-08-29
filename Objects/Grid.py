@@ -1,5 +1,5 @@
-from settings import *
-from Points import MassPoint
+from Utils.settings import *
+from Objects.Points import MassPoint
 
 class Grid:
 

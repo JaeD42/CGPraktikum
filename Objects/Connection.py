@@ -1,10 +1,10 @@
 import numpy as np
 import pygame
-from BoundingBox import BoundingBox
-from settings import DEBUG
-from RotateTranslateImage import RTImage_Connection
-from load_data import load_image
-from settings import *
+from Objects.BoundingBox import BoundingBox
+from Utils.settings import DEBUG
+from Graphics.RotateTranslateImage import RTImage_Connection
+from Utils.load_data import load_image
+from Utils.settings import *
 class Connection:
 
     bridge_mode = False

@@ -1,6 +1,6 @@
 import pygame
-from load_data import load_sound
-from settings import *
+from Utils.load_data import load_sound
+from Utils.settings import *
 
 
 

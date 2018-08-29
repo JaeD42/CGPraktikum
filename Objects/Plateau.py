@@ -1,8 +1,8 @@
 
 import math
 import numpy as np
-from BoundingBox import BoundingBox
-from load_data import load_image
+from Objects.BoundingBox import BoundingBox
+from Utils.load_data import load_image
 import pygame
 class Plateau:
 
