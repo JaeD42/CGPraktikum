@@ -12,13 +12,15 @@ from Utils.settings import *
 
 
 def lvl1():
-    p1 = [[-200,400], [250,400]]
-    p2 = [[1150, 400], [1500, 400]]
-    p3 = [[400, 400], [700, 400]]
+    h = 300
+    p1 = [[-200,h], [230,h]]
+    p2 = [[1150, h], [1500, h]]
+    p3 = [[400, h], [700, h]]
     p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0])
     p_start.flipped = True
     p_end = Plateau(p2[0], p2[1] ,PLATEAU_IMGS[0])
     p_middle = Plateau(p3[0], p3[1], PLATEAU_IMGS[1])
+    p_middle.in_front = True
 
     grid = Grid.create_standard_grid((100,100),(1200,500),10,10)
     start = TRAIN_START_COORD

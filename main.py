@@ -41,21 +41,7 @@ def main(winstyle = 0):
     bestdepth = pygame.display.mode_ok(SCREENRECT.size, winstyle, 32)
     screen = pygame.display.set_mode(SCREENRECT.size, FLAGS, bestdepth)
 
-    #SOUND
-    # initialize pygame.mixer
-    #pygame.mixer.init(frequency = 44100, size = -16, channels = 1, buffer = 2**12)
-
-    # create separate Channel objects for simultaneous playback
     sound =Sound()
-
-    balken = load_image(BALKEN)
-    balken = pygame.transform.rotozoom(balken, 0, 0.1)
-    balken_u = load_image(BALKEN_UNTEN)
-    balken_u = pygame.transform.rotozoom(balken_u, 0, 0.1)
-
-
-    #wagon_imgs = [pygame.transform.rotozoom(load_image(img),0,0.2) for img in WAGON_IMGS]
-
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 20)
@@ -64,10 +50,6 @@ def main(winstyle = 0):
     movable_objects = []
 
     Interface = UI()
-
-
-    #physics = Physics(connections,points,train,bg)
-    #print(BRIDGE_END)
 
     sound.play_bg()
     soundtick=0
