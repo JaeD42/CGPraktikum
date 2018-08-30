@@ -12,6 +12,8 @@ class Plateau:
         self.start = startP[:]
         self.end = endP[:]
         self.center = [(self.start[i]+self.end[i])/2 for i in range(2)]
+        self.center[1] += 2
+        self.center[0] += 2
         self.dir = [(-self.start[i]+self.end[i]) for i in range(2)]
         self.len = math.sqrt(self.dir[0]**2+self.dir[1]**2)
         self.dir = [self.dir[0]/self.len,self.dir[1]/self.len]
