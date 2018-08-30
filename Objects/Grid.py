@@ -9,6 +9,7 @@ class Grid:
         self.old_zoom = 1
         self.old_t = [0,0]
         self.old_grid = None
+        self.added_point = True
 
 
 
@@ -24,9 +25,12 @@ class Grid:
         g.positions=positions
         return g
 
-    def no_close_points(self,pos,dist):
-        for p in self.points:
-            continue
+    def no_close_points(self,pos,dist=MIN_POINT_DIST):
+        for p in self.points.values():
+            d = max(abs(p.pos[0]-pos[0]), abs(p.pos[1]-pos[1]))
+            if d<dist:
+                return False
+        return True
 
     def empty(self):
         self.points={}
@@ -69,12 +73,14 @@ class Grid:
     def add_point_at_pos(self,pos):
         t = tuple(self.get_closest_grid_pos(pos))
         self.points[t]=MassPoint(t,NODE_MASS)
+        self.added_point = True
         return self.points[t]
 
     def remove_point_at_pos(self,pos):
         t = tuple(self.get_closest_grid_pos(pos))
         P = self.points[t]
         del self.points[t]
+        self.added_point = True
         return P
 
     def is_valid_grid_pos(self,pos,max_dist):
@@ -91,7 +97,7 @@ class Grid:
         return self.get_closest_grid_pos(pos1)==self.get_closest_grid_pos(pos2)
 
     def draw(self,screen,z,t):
-        if self.old_grid==None or self.old_zoom!=z or self.old_t!=t:
+        if self.old_grid==None or self.old_zoom!=z or self.old_t!=t or self.added_point:
             surf = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SRCALPHA)
             offset = 2
             grid_line = pygame.Surface((2*offset+1,2*offset+1), pygame.SRCALPHA)
@@ -99,10 +105,12 @@ class Grid:
             pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset+1,offset))
 
             for pos in self.positions:
-                posx = (pos[0]+t[0])*z-offset
-                posy = (pos[1]+t[1])*z-offset
-                surf.blit(grid_line, (posx,posy))
+                if self.no_close_points(pos):
+                    posx = (pos[0]+t[0])*z-offset
+                    posy = (pos[1]+t[1])*z-offset
+                    surf.blit(grid_line, (posx,posy))
             self.old_grid = surf
             self.old_zoom = z
+            self.added_point = False
             self.old_t = t[:]
         screen.blit(self.old_grid,(0,0))

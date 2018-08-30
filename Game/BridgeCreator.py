@@ -52,6 +52,7 @@ class BridgeCreator():
         self.grid = level.get_grid()
         self.points =level.get_points()
         self.connections = level.get_connections()
+        self.level = level
         self.plateaus = level.plateaus
 
 
@@ -67,25 +68,32 @@ class BridgeCreator():
             print('save failed')
 
     def load_bridge(self, file = "", bridge=None):
-        try:
-            if (bridge!=None):
-                self.points,self.connections = bridge.load_from_pickled()
-                self.grid.empty()
-                self.grid.restore_points(self.points)
+        if (bridge!=None):
+            self.points,self.connections = bridge.load_from_pickled()
 
-                return
-            elif(not file):
-                Tk().wm_withdraw() #to hide the main window
-                file=simpledialog.askstring("Load", "Please enter filename:")
-                file = os.path.join(BRIDGE_DIR, file+".bridge")
+
+        elif(not file):
+            Tk().wm_withdraw() #to hide the main window
+            file=simpledialog.askstring("Load", "Please enter filename:")
+            file = os.path.join(BRIDGE_DIR, file+".bridge")
+
+        if(bridge==None):
             filehandler = open(file, 'rb')
             bridge = pickle.load(filehandler)
             self.points,self.connections = bridge.load_from_pickled()
-            self.grid.empty()
-            self.grid.restore_points(self.points)
 
-        except:
-            print('load failed')
+        print("here")
+        self.grid.empty()
+        self.grid.restore_points(self.points)
+        self.cost = self.level.get_max_points()
+        for p in self.points:
+            if p.moveable:
+                self.cost -=POINT_COST
+            else:
+                p.set_mutable(False)
+        for c in self.connections:
+            self.cost -=CONNECTION_COST
+
 
 
 
@@ -101,7 +109,7 @@ class BridgeCreator():
 
     def add_point(self, coord):
         if(self.cost >= POINT_COST):
-            if(not self.grid.point_exists(coord)):
+            if(not self.grid.point_exists(coord) and self.grid.no_close_points(coord,MIN_POINT_DIST)):
                 p =self.grid.add_point_at_pos(coord)
                 self.points.append(p)
                 self.change_points(-1*POINT_COST)
@@ -193,8 +201,9 @@ class BridgeCreator():
         self.effects.draw(screen)
 
     def change_bridge_mode(self):
-        for c in self.connections:
-            c.bridge_mode = not c.bridge_mode
+        Connection.bridge_mode = not Connection.bridge_mode
+        #for c in self.connections:
+        #    c.bridge_mode = not c.bridge_mode
 
     def get_hover_object(self,pos):
         pass
