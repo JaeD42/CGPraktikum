@@ -21,7 +21,7 @@ class Plateau:
         self.flipped = False
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
-        self.center = [0,0]
+        self.img_center = [0,0]
 
 
     def add_img(self,img):
@@ -35,7 +35,7 @@ class Plateau:
             img = pygame.transform.flip(img,True, False)
 
         self.img = RTImage(img)
-        self.center = [self.start[0]+img.get_width()//2,self.start[1]+img.get_height()//2]
+        self.img_center = [self.start[0]+img.get_width()//2,self.start[1]+img.get_height()//2]
 
 
     def get_perpendicular(self):
@@ -51,6 +51,6 @@ class Plateau:
 
     def draw(self,screen,zoom,translate):
         if(self.img):
-            screen.blit(*self.img.get_img(self.center,0,zoom,translate))
+            screen.blit(*self.img.get_img(self.img_center,0,zoom,translate))
         if(DEBUG):
             pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
