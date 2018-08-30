@@ -179,7 +179,6 @@ class BridgeCreator():
 
 
     def draw(self,screen, ZOOM, TRANSLATE):
-        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
         for plat in self.plateaus:
             plat.draw(screen,ZOOM,TRANSLATE)

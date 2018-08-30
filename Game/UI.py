@@ -248,14 +248,15 @@ class UI():
     def step(self,dt, screen):
         global PAUSE
         r = self.handle_events()
+        screen.blit(*self.level.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
 
         if self.build_mode:
+            if(self.grid_mode):
+                self.BC.show_grid(screen,ZOOM,TRANSLATE)
             self.BC.draw(screen,ZOOM,TRANSLATE)
             if(self.first_selected):
                 (x,y) = self.convert_coordinates(pygame.mouse.get_pos())
                 pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
-            if(self.grid_mode):
-                self.BC.show_grid(screen,ZOOM,TRANSLATE)
             self.bridge_type_icon.draw(screen)
 
         else:
@@ -263,11 +264,10 @@ class UI():
                 for i in range(self.speed_factor):
                     self.physics.update_physics(dt)
                     self.physics.move(dt)
-                self.physics.draw(screen,ZOOM,TRANSLATE)
                 if self.physics.check_if_won():
                     PAUSE=True
                     print("WON")
-
+            self.physics.draw(screen,ZOOM,TRANSLATE)
         self.music_type_icon.draw(screen)
 
 

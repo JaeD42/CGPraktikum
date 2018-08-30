@@ -60,8 +60,6 @@ class Physics:
             c.bridge_mode = not c.bridge_mode
 
     def draw(self,screen, ZOOM,TRANSLATE):
-        screen.blit(*self.bg.get_img(SCREEN_MIDDLE,0,1,[0,0]))
-
         for plat in self.plateaus:
             plat.draw(screen,ZOOM,TRANSLATE)
         for c in self.connections:
