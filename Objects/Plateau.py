@@ -7,7 +7,7 @@ from Utils.settings import *
 import pygame
 class Plateau:
 
-    def __init__(self,startP,endP, path):
+    def __init__(self,startP,endP, path, img_scale_x = 1.0, img_scale_y = 1.0):
         self.start = startP
         self.end = endP
         self.center = [(self.start[i]+self.end[i])/2 for i in range(2)]
@@ -19,8 +19,15 @@ class Plateau:
         self.img = None
         self.flipped = False
         self.in_front = False
+        self.img_scale_x = img_scale_x
+        self.img_scale_y = img_scale_y
 
     def add_img(self,img):
+        w = img.get_width()
+        h = img.get_height()
+        img = pygame.transform.smoothscale(self.img,
+                                           (int(self.img_scale_x*w),
+                                            int(self.img_scale_y*h)))
         self.img = img
 
     def get_perpendicular(self):

@@ -30,9 +30,12 @@ def lvl1():
     max_points = 999
 
     fixed_points_pos = [(225, 325), (225, 400), (650, 500), (1170, 300)]
-    
+
 
     return Level(start,goal,points,conns,grid,[p_start, p_end, p_middle], max_points, BG)
+
+def lvl2():
+
 
 if __name__=="__main__":
 
