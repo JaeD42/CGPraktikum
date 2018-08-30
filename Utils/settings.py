@@ -9,13 +9,13 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 
 #load lvl:
-LOAD_LVL            = 'lvl1'
+LOAD_LVL            = 'lvl2'
 
 #grid
 GRID_SIZE           = 100
 
 
-DEBUG               = False
+DEBUG               = True
 GM                  = False
 SHOW_FPS            = True
 
@@ -70,7 +70,7 @@ TRAIN_SOUND_VOL     = 0.3
 
 BG                  = 'landscape.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
-PLATEAU_IMGS        = ['plateau1.png', 'plateau2.png', 'plateau3.png','plateau4.png']
+PLATEAU_IMGS        = ['plateau0.png', 'plateau2.png', 'plateau1.png', 'plateau3.png','plateau4.png']
 BALKEN              = 'balken.png'
 BALKEN_UNTEN        = 'balken_unten.png'
 
