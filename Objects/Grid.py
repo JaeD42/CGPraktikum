@@ -6,6 +6,9 @@ class Grid:
     def __init__(self,positions=[]):
         self.positions = positions
         self.points = {}
+        self.old_zoom = 1
+        self.old_t = [0,0]
+        self.old_grid = None
 
 
 
@@ -84,12 +87,18 @@ class Grid:
         return self.get_closest_grid_pos(pos1)==self.get_closest_grid_pos(pos2)
 
     def draw(self,screen,z,t):
-        offset = 5
-        grid_line = pygame.Surface((2*offset,2*offset), pygame.SRCALPHA)
-        pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset))
-        pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset,offset))
+        if self.old_grid==None or self.old_zoom!=z or self.old_t!=t:
+            surf = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SRCALPHA)
+            offset = 5
+            grid_line = pygame.Surface((2*offset,2*offset), pygame.SRCALPHA)
+            pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset))
+            pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset,offset))
 
-        for pos in self.positions:
-            posx = (pos[0]+t[0])*z-offset
-            posy = (pos[1]+t[1])*z-offset
-            screen.blit(grid_line, (posx,posy))
+            for pos in self.positions:
+                posx = (pos[0]+t[0])*z-offset
+                posy = (pos[1]+t[1])*z-offset
+                surf.blit(grid_line, (posx,posy))
+            self.old_grid = surf
+            self.old_zoom = z
+            self.old_t = t[:]
+        screen.blit(self.old_grid,(0,0))
