@@ -18,17 +18,22 @@ class Plateau:
         self.collision_width = 10
         self.path = path
         self.img = None
+        self.flipped = False
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
         self.center = [0,0]
 
 
     def add_img(self,img):
+        img = pygame.transform.rotozoom(img ,0, 0.3)
         w = img.get_width()
         h = img.get_height()
         img = pygame.transform.smoothscale(img,
                                            (int(self.img_scale_x*w),
                                             int(self.img_scale_y*h)))
+        if(self.flipped):
+            img = pygame.transform.flip(img,True, False)
+
         self.img = RTImage(img)
         self.center = [self.start[0]+img.get_width()//2,self.start[1]+img.get_height()//2]
 
@@ -46,6 +51,6 @@ class Plateau:
 
     def draw(self,screen,zoom,translate):
         if(self.img):
-            return screen.blit(*self.img.get_img(self.center,0,zoom,translate))
+            screen.blit(*self.img.get_img(self.center,0,zoom,translate))
         if(DEBUG):
-            return pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
+            pygame.draw.line(screen,[255,255,255],self.start,self.end,5)

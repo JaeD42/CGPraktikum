@@ -3,14 +3,14 @@ import pygame
 import numpy as np
 from math import sqrt
 from Objects.Connection import Connection
-from Utils.settings import DEBUG
+from Utils.settings import DEBUG, NODE_MASS
 from itertools import count
 
 class MassPoint:
 
     _indx=count(0)
 
-    def __init__(self,pos,weight,radius=5,moveable=True):
+    def __init__(self,pos,weight = NODE_MASS,radius=5,moveable=True):
         self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
         self.weight=weight
