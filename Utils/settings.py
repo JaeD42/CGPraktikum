@@ -15,7 +15,7 @@ LOAD_LVL            = 'lvl2'
 GRID_SIZE           = 100
 
 
-DEBUG               = True
+DEBUG               = False
 GM                  = False
 SHOW_FPS            = True
 
