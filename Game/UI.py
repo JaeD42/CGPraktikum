@@ -243,7 +243,7 @@ class UI():
         if self.build_mode:
             self.BC.draw(screen,ZOOM,TRANSLATE)
             if(self.first_selected):
-                (x,y) = pygame.mouse.get_pos()
+                (x,y) = self.convert_coordinates(pygame.mouse.get_pos())
                 pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
             if(self.grid_mode):
                 self.BC.show_grid(screen,ZOOM,TRANSLATE)

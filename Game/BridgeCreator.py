@@ -129,8 +129,8 @@ class BridgeCreator():
         #if not, add in self.connections and to points
 
     def delete_point(self, coord):
-
-        if(self.grid.point_exists(coord)):
+        ex,p = self.grid.get_point_at_pos(coord)
+        if ex and p.mutable:
             p = self.grid.remove_point_at_pos(coord)
             self.removed_points.append(p)
             self.points.remove(p)
@@ -148,7 +148,7 @@ class BridgeCreator():
             return
 
         check, c = p1.get_connection_to(p2)
-        if(check):
+        if(check and c.mutable):
             self.connections.remove(c)
             c.remove()
             self.change_points(CONNECTION_COST)
@@ -158,10 +158,10 @@ class BridgeCreator():
 
     def change_point_moveable(self, coord):
         ex,p = self.grid.get_point_at_pos(coord)
-        if ex and (p.moveable and self.cost >= FIXED_CON_COST):
+        if ex and p.mutable and (p.moveable and self.cost >= FIXED_CON_COST):
             p.change_moveable()
             self.change_points(-1*FIXED_CON_COST)
-        elif ex and (not p.moveable):
+        elif ex and p.mutable and (not p.moveable):
             p.change_moveable()
             self.change_points(FIXED_CON_COST)
 

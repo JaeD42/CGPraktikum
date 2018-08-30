@@ -9,7 +9,7 @@ class Connection:
 
     bridge_mode = False
 
-    def __init__(self,point1,point2,length,strength,max_force = MAX_FORCE, can_collide = False):
+    def __init__(self,point1,point2,length,strength,max_force = MAX_FORCE, can_collide = False, mutable=True):
         self.p1 = point1
         self.p2 = point2
         self.img_Collide = RTImage_Connection(pygame.transform.rotozoom(load_image(BALKEN_UNTEN),0,0.1),length)
@@ -30,6 +30,7 @@ class Connection:
         self.line_width = 1
         self.collision_width = 10
         self.hover_width = 10
+        self.mutable = mutable
 
     #positive force: drags points to middle
     #negative force: push points away
@@ -37,6 +38,8 @@ class Connection:
     def create_pickleable(self):
         return [self.p1.point_num,self.p2.point_num,self.correct_length, self.strength, self.max_force, self.can_collide]
 
+    def set_mutable(self,mutable):
+        self.mutable = mutable
 
     def update_force(self):
         self.len = self.p1.distance_to(self.p2)
