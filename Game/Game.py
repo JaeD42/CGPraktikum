@@ -81,6 +81,12 @@ class Level:
         b.points = pickled_points
         b.connections = pickled_connections
         self.points,self.connections = b.load_from_pickled()
+
+        for p in self.points:
+            p.set_mutable(False)
+        for c in self.connections:
+            c.set_mutable(False)
+
         self.start = d["start"]
         self.goal = d["goal"]
         self.plateaus = d["plateaus"]
