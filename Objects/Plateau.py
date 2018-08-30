@@ -45,7 +45,7 @@ class Plateau:
         return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,other_dir],[self.len/2,self.collision_width/2])
 
     def draw(self,screen,zoom,translate):
-        if(self.img and not DEBUG):
+        if(self.img):
             return screen.blit(*self.img.get_img(self.center,0,zoom,translate))
         if(DEBUG):
             return pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
