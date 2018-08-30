@@ -83,10 +83,13 @@ class Grid:
     def is_same_grid_pos(self,pos1,pos2):
         return self.get_closest_grid_pos(pos1)==self.get_closest_grid_pos(pos2)
 
-    def draw(self,screen):
-        grid_line = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.SRCALPHA)
+    def draw(self,screen,z,t):
+        offset = 5
+        grid_line = pygame.Surface((2*offset,2*offset), pygame.SRCALPHA)
+        pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset))
+        pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset,offset))
+
         for pos in self.positions:
-            offset = 5
-            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0]-offset, pos[1]), (pos[0]+offset, pos[1]))
-            pygame.draw.line(grid_line, (0,0,0, 100), (pos[0], pos[1]-offset), (pos[0],pos[1]+offset))
-        screen.blit(grid_line, (0,0))
+            posx = (pos[0]+t[0])*z-offset
+            posy = (pos[1]+t[1])*z-offset
+            screen.blit(grid_line, (posx,posy))

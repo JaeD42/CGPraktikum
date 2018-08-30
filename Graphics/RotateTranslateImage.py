@@ -15,6 +15,7 @@ class RTImage:
         self.last_img = pygame.transform.rotozoom(self.img,self.rotation,self.zoom)
 
     def get_img(self,center,rotation,zoom,translation):
+        center = np.array(center)
         if self.zoom != zoom or self.rotation!=rotation:
             self.rotation = rotation
             self.zoom = zoom
@@ -22,7 +23,7 @@ class RTImage:
             self.last_img = pygame.transform.rotozoom(self.img,self.rotation,self.zoom)
             self.half_size = np.array([self.last_img.get_width()/2,self.last_img.get_height()/2])
 
-        return (self.last_img, (center-self.half_size + translation)*zoom)
+        return (self.last_img, (center + translation)*zoom-self.half_size)
 
 class RTImage_Connection:
     def __init__(self,img,length,zoom=1.0,rotation=0):
@@ -39,6 +40,7 @@ class RTImage_Connection:
         self.last_img = pygame.transform.rotozoom(self.img.subsurface(0,0,self.length,self.img.get_height()),self.rotation,self.zoom)
 
     def get_img(self,center,length,rotation,zoom,translation):
+        center = np.array(center)
         if self.zoom != zoom or self.rotation!=rotation or self.length!=length:
             self.rotation = rotation
             self.zoom = zoom
@@ -47,4 +49,4 @@ class RTImage_Connection:
             self.last_img = pygame.transform.rotozoom(self.img.subsurface(0,0,self.length,self.img.get_height()),self.rotation,self.zoom)
             self.half_size = np.array([self.last_img.get_width()/2,self.last_img.get_height()/2])
 
-        return (self.last_img, (center-self.half_size + translation)*zoom)
+        return (self.last_img, (center + translation)*zoom-self.half_size)

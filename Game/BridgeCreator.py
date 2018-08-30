@@ -197,5 +197,5 @@ class BridgeCreator():
     def get_hover_object(self,pos):
         pass
 
-    def show_grid(self,screen):
-        self.grid.draw(screen)
+    def show_grid(self,screen,ZOOM,TRANSLATE):
+        self.grid.draw(screen,ZOOM,TRANSLATE)

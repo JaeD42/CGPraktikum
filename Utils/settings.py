@@ -21,7 +21,7 @@ STEPSIZE            = 0.02
 
 
 #pygame flags
-FLAGS               = DOUBLEBUF
+FLAGS               = pygame.DOUBLEBUF
 
 #game constants
 #game

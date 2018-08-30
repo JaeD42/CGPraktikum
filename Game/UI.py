@@ -243,7 +243,7 @@ class UI():
                 (x,y) = pygame.mouse.get_pos()
                 pygame.draw.line(screen,(255,255,255),self.first_pos,(x,y),5)
             if(self.grid_mode):
-                self.BC.show_grid(screen)
+                self.BC.show_grid(screen,ZOOM,TRANSLATE)
             self.bridge_type_icon.draw(screen)
 
         else:
