@@ -62,7 +62,7 @@ def lvl2():
         grid.add_grid_point(i)
         p = MassPoint(i)
         p.set_mutable(False)
-        point.append(p)
+        points.append(p)
 
 
 

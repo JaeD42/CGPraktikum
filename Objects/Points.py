@@ -10,11 +10,7 @@ class MassPoint:
 
     _indx=count(0)
 
-<<<<<<< HEAD
     def __init__(self,pos,weight = NODE_MASS,radius=5,moveable=True, mutable=True):
-=======
-    def __init__(self,pos,weight,radius=5,moveable=True,mutable=True):
->>>>>>> d7f48aa8581b7d091e3341c49bd8744d8d2a3c2d
         self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
         self.weight=weight
