@@ -8,7 +8,8 @@ MAIN_DIR = os.path.split(os.path.abspath(sys.argv[0]))[0]
 DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 
-
+#load lvl:
+LOAD_LVL            = 'lvl2'
 
 #grid
 GRID_SIZE           = 100

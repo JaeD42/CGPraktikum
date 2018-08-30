@@ -17,7 +17,7 @@ class UI():
     grid_mode = False
 
     def __init__(self):
-        self.level = Level.load_from_file("lvl1")
+        self.level = Level.load_from_file(LOAD_LVL)
 
         self.BC = BridgeCreator(self.level)
 
