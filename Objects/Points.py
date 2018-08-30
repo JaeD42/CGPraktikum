@@ -17,6 +17,7 @@ class MassPoint:
     def __init__(self,pos,weight = NODE_MASS,radius=6,moveable=True, mutable=True):
         self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
+        self.start_weight = weight
         self.weight=weight
         self.connections = []
         self.radius=radius
@@ -29,7 +30,7 @@ class MassPoint:
 
 
     def create_pickleable(self):
-        return [self.point_num, list(self.pos)[:], self.weight, self.radius, self.moveable]
+        return [self.point_num, list(self.pos)[:], self.start_weight, self.radius, self.moveable]
 
     def set_mutable(self,mutable):
         self.mutable = mutable

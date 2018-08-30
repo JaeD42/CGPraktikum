@@ -8,7 +8,7 @@ from Graphics.RotateTranslateImage import RTImage
 import pygame
 class Plateau:
 
-    def __init__(self,startP,endP, path, img_scale_x = 1.0, img_scale_y = 1.0):
+    def __init__(self,startP,endP, path,img_scale_x = 1.0, img_scale_y = 1.0,  img_offset = [0,0]):
         self.start = startP[:]
         self.end = endP[:]
         self.center = [(self.start[i]+self.end[i])/2 for i in range(2)]
@@ -24,6 +24,7 @@ class Plateau:
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
         self.img_center = [0,0]
+        self.img_offset = img_offset
 
 
     def add_img(self,img):
@@ -37,7 +38,7 @@ class Plateau:
             img = pygame.transform.flip(img,True, False)
 
         self.img = RTImage(img)
-        self.img_center = [self.start[0]+img.get_width()//2,self.start[1]+img.get_height()//2]
+        self.img_center = [self.start[0]+img.get_width()//2 + self.img_offset[0],self.start[1]+img.get_height()//2 + self.img_offset[1]]
 
 
     def get_perpendicular(self):
