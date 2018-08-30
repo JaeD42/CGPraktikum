@@ -10,7 +10,7 @@ class MassPoint:
 
     _indx=count(0)
 
-    def __init__(self,pos,weight,radius=5,moveable=True):
+    def __init__(self,pos,weight,radius=5,moveable=True,mutable=True):
         self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
         self.weight=weight
@@ -20,11 +20,15 @@ class MassPoint:
         self.add_force = [0.0,0.0]
         self.prev_force = [0.0,0.0]
         self.point_num = next(self._indx)
+        self.mutable = mutable
 
 
 
     def create_pickleable(self):
         return [self.point_num, list(self.pos)[:], self.weight, self.radius, self.moveable]
+
+    def set_mutable(self,mutable):
+        self.mutable = mutable
 
     def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
         c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
