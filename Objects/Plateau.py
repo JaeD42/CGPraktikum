@@ -18,7 +18,6 @@ class Plateau:
         self.collision_width = 10
         self.path = path
         self.img = None
-        self.flipped = False
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
         self.center = [0,0]
@@ -27,7 +26,7 @@ class Plateau:
     def add_img(self,img):
         w = img.get_width()
         h = img.get_height()
-        img = pygame.transform.smoothscale(self.img,
+        img = pygame.transform.smoothscale(img,
                                            (int(self.img_scale_x*w),
                                             int(self.img_scale_y*h)))
         self.img = RTImage(img)
