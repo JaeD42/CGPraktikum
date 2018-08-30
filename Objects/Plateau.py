@@ -18,7 +18,6 @@ class Plateau:
         self.path = path
         self.img = None
         self.flipped = False
-        self.in_front = False
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
 
