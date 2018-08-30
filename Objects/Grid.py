@@ -24,6 +24,10 @@ class Grid:
         g.positions=positions
         return g
 
+    def no_close_points(self,pos,dist):
+        for p in self.points:
+            continue
+
     def empty(self):
         self.points={}
 
