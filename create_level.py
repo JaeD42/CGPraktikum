@@ -102,7 +102,7 @@ def lvl2():
 
     points = []
     conns = []
-    fixed_points_pos = [(60, 160), (500, 400), (540, 400), (660, 550),(775, 400), (820,400), (1240, 160)]
+    fixed_points_pos = [(60, 160), (500, 400), (540, 400), (660, 550),(780, 400), (820,400), (1240, 160)]
     for i in fixed_points_pos:
         grid.add_grid_point(i)
         p = MassPoint(i, moveable = False)
@@ -110,12 +110,53 @@ def lvl2():
 
 
 
-    max_points =400
+    max_points =500
 
     return Level(start, goal, points, conns, grid, plateaus, max_points, BG)
 
 
+def lvl3():
+    h = 250
+    mid = int(SCREEN_WIDTH/2)
+    y_scale = 1.5
+    p1 = [[-300,h],[120, h]]
+    p2 = [[mid-450,h+350],[450, 500]]
+    p2_2 = [[mid+200,h+250],[mid+450,h+350]]
+    p3 = [[SCREEN_WIDTH-120, h], [SCREEN_WIDTH+200, h]]
+    p_start = Plateau(p1[0], p1[1], PLATEAU_IMGS[0], img_scale_y = y_scale)
+    p_mid1 = Plateau(p2[0], p2[1], PLATEAU_IMGS[4], img_scale_y = y_scale, img_offset = [0,-100])
+    p_mid2 = Plateau(p2_2[0], p2_2[1], PLATEAU_IMGS[4], img_scale_y = y_scale)
+    p_end = Plateau(p3[0], p3[1], PLATEAU_IMGS[0], img_scale_y = y_scale)
+    p_start.flipped = True
+    p_mid2.flipped = True
+
+    grid_step = 10
+    grid_x = [0, 0]
+    grid_y = [SCREEN_WIDTH, SCREEN_HEIGHT]
+
+    grid = Grid.create_standard_grid(grid_x,grid_y,66,31)
+
+    plateaus = [p_start, p_mid1, p_mid2, p_end]
+
+    start = TRAIN_START_COORD
+    goal = [p3[0][0] + 50, p3[0][1]]
+
+
+    points = []
+    conns = []
+    fixed_points_pos = [(120, 260), (120, 100), (440, 500), (860, 500), (1180, 100), (1180, 260)]
+    for i in fixed_points_pos:
+        grid.add_grid_point(i)
+        p = MassPoint(i, moveable = False)
+        points.append(p)
+
+
+
+    max_points =500
+
+    return Level(start, goal, points, conns, grid, plateaus, max_points, BG)
+
 
 if __name__=="__main__":
 
-    lvl2().save_level("lvl2")
+    lvl3().save_level("lvl3")
