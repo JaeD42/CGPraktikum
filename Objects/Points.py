@@ -6,6 +6,9 @@ from Objects.Connection import Connection
 from Utils.settings import DEBUG, NODE_MASS
 from itertools import count
 
+MAX_COL = np.array([75, 154, 173])
+MIN_COL = np.array([2,44,58])
+
 class MassPoint:
 
     _indx=count(0)
@@ -70,10 +73,21 @@ class MassPoint:
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.moveable:
-            return pygame.draw.circle(surface,(min(self.prev_force[1],63),110,126),self.get_int_pos(zoom,translation),int(self.radius*zoom))
+            pos = self.get_int_pos(zoom,translation)
+            col = surface.get_at(pos)
+            lam = (col[0] + col[1] + col[2])/765
+            col_p = lam * MAX_COL +(1-lam)*MIN_COL
+            col_p = [int(i) for i in col_p]
+            return pygame.draw.circle(surface,(min(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),pos,int(self.radius*zoom))
         else:
             p = self.get_int_pos(zoom,translation)
-            return pygame.draw.rect(surface,(min(self.prev_force[1],63),110,126),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+            pos = [p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom)]
+            col = surface.get_at(pos)
+            lam = (col[0] + col[1] + col[2])/765
+            col_p = lam * MAX_COL +(1-lam)*MIN_COL
+            col_p = [int(i) for i in col_p]
+
+            return pygame.draw.rect(surface,(min(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
 
 
     def get_int_pos(self,zoom,translation):

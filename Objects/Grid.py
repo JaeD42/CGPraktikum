@@ -85,9 +85,9 @@ class Grid:
 
     def draw(self,screen,z,t):
         offset = 5
-        grid_line = pygame.Surface((2*offset,2*offset), pygame.SRCALPHA)
-        pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset))
-        pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset,offset))
+        grid_line = pygame.Surface((2*offset +1,2*offset + 1), pygame.SRCALPHA)
+        pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset + 1))
+        pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset + 1,offset))
 
         for pos in self.positions:
             posx = (pos[0]+t[0])*z-offset
