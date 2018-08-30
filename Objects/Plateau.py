@@ -4,6 +4,7 @@ import numpy as np
 from Objects.BoundingBox import BoundingBox
 from Utils.load_data import load_image
 from Utils.settings import *
+from Graphics.RotateTranslateImage import RTImage
 import pygame
 class Plateau:
 
@@ -20,14 +21,18 @@ class Plateau:
         self.flipped = False
         self.img_scale_x = img_scale_x
         self.img_scale_y = img_scale_y
+        self.center = [0,0]
 
+    
     def add_img(self,img):
         w = img.get_width()
         h = img.get_height()
         img = pygame.transform.smoothscale(self.img,
                                            (int(self.img_scale_x*w),
                                             int(self.img_scale_y*h)))
-        self.img = img
+        self.img = RTImage(img)
+        self.center = [self.start[0]+img.get_width()//2,self.start[1]+img.get_height()//2]
+
 
     def get_perpendicular(self):
         perp = [-self.dir[1],self.dir[0]]
@@ -41,7 +46,7 @@ class Plateau:
         return BoundingBox(np.array(self.center)+(self.collision_width/2)*other_dir,[self.dir,other_dir],[self.len/2,self.collision_width/2])
 
     def draw(self,screen,zoom,translate):
-        if(self.img):
-            screen.blit(self.img, self.start)
+        if(self.img and not DEBUG):
+            return screen.blit(*self.img.get_img(self.center,0,zoom,translate))
         if(DEBUG):
-            pygame.draw.line(screen,[255,255,255],self.start,self.end,5)
+            return pygame.draw.line(screen,[255,255,255],self.start,self.end,5)

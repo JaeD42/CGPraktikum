@@ -12,6 +12,7 @@ class Effects:
 
     def draw(self,screen):
         to_remove = []
+        rects = []
         for values in self.effects:
             surf,start,max_time,pos = values
             if time.time()-start>max_time:
@@ -19,9 +20,10 @@ class Effects:
             else:
                 posx,posy = pos
                 posy =int(posy-((time.time()-start)*20)/max_time)
-                screen.blit(surf,(posx,posy))
+                rects.append(screen.blit(surf,(posx,posy)))
         for i in to_remove:
             self.effects.remove(i)
+        return rects
 
 
 from Objects.SmokeSimulation import SmokeSimulation
@@ -45,5 +47,5 @@ class SmokeEffect:
             self.effects.remove(s)
 
     def draw(self,screen):
-        for val in self.effects:
-            val[0].draw(screen,[int(255*(1-float(val[1])/val[2]))]*3)
+
+        return [val[0].draw(screen,[int(255*(1-float(val[1])/val[2]))]*3) for val in self.effects]

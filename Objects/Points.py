@@ -66,10 +66,10 @@ class MassPoint:
 
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.moveable:
-            pygame.draw.circle(surface,(min(self.prev_force[1],255),0,255),self.get_int_pos(zoom,translation),int(self.radius*zoom))
+            return pygame.draw.circle(surface,(min(self.prev_force[1],255),0,255),self.get_int_pos(zoom,translation),int(self.radius*zoom))
         else:
             p = self.get_int_pos(zoom,translation)
-            pygame.draw.rect(surface,(min(self.prev_force[1],255),0,255),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+            return pygame.draw.rect(surface,(min(self.prev_force[1],255),0,255),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
 
 
     def get_int_pos(self,zoom,translation):
