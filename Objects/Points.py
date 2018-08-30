@@ -3,17 +3,18 @@ import pygame
 import numpy as np
 from math import sqrt
 from Objects.Connection import Connection
-from Utils.settings import DEBUG, NODE_MASS
+from Utils.settings import DEBUG, NODE_MASS, SCREEN_WIDTH, SCREEN_HEIGHT
 from itertools import count
 
-MAX_COL = np.array([75, 154, 173])
-MIN_COL = np.array([2,44,58])
+MAX_COL = np.array([6,51,66])
+MIN_COL = np.array([81, 128, 143])
+WHITE = [255,255,255]
 
 class MassPoint:
 
     _indx=count(0)
 
-    def __init__(self,pos,weight = NODE_MASS,radius=5,moveable=True, mutable=True):
+    def __init__(self,pos,weight = NODE_MASS,radius=6,moveable=True, mutable=True):
         self.pos=np.array([float(i) for i in pos])
         self.v = [0.0,0.0]
         self.weight=weight
@@ -74,20 +75,32 @@ class MassPoint:
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.moveable:
             pos = self.get_int_pos(zoom,translation)
+            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 0 or pos[1] <1):
+                return
+            pos[0] -= 1
+            pos[1] -= 1
             col = surface.get_at(pos)
-            lam = (col[0] + col[1] + col[2])/765
-            col_p = lam * MAX_COL +(1-lam)*MIN_COL
-            col_p = [int(i) for i in col_p]
-            return pygame.draw.circle(surface,(min(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),pos,int(self.radius*zoom))
-        else:
-            p = self.get_int_pos(zoom,translation)
-            pos = [p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom)]
-            col = surface.get_at(pos)
-            lam = (col[0] + col[1] + col[2])/765
+            lam = min((col[0] + col[1] + col[2])/600,1)
             col_p = lam * MAX_COL +(1-lam)*MIN_COL
             col_p = [int(i) for i in col_p]
 
-            return pygame.draw.rect(surface,(min(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+            col_p = WHITE[:]
+            return pygame.draw.circle(surface,(max(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),pos,int(self.radius*zoom))
+        else:
+            p = self.get_int_pos(zoom,translation)
+            pos = [p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom)]
+            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 0 or pos[1] <1):
+                return
+            pos[0] -= 1
+            pos[1] -= 1
+            col = surface.get_at(pos)
+            lam = min((col[0] + col[1] + col[2])/600,1)
+            col_p = lam * MAX_COL +(1-lam)*MIN_COL
+            col_p = [int(i) for i in col_p]
+
+            col_p = WHITE[:]
+
+            return pygame.draw.rect(surface,(max(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
 
 
     def get_int_pos(self,zoom,translation):
