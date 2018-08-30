@@ -89,7 +89,7 @@ class Grid:
     def draw(self,screen,z,t):
         if self.old_grid==None or self.old_zoom!=z or self.old_t!=t:
             surf = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.SRCALPHA)
-            offset = 5
+            offset = 2
             grid_line = pygame.Surface((2*offset+1,2*offset+1), pygame.SRCALPHA)
             pygame.draw.line(grid_line, (0,0,0, 100), (offset, 0), (offset, 2*offset+1))
             pygame.draw.line(grid_line, (0,0,0, 100), (0, offset), (2*offset+1,offset))
