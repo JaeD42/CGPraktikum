@@ -17,7 +17,7 @@ class UI():
     grid_mode = False
 
     def __init__(self):
-        self.level = Level.load_from_file("lvl1")
+        self.level = Level.load_from_file(LOAD_LVL)
 
         self.BC = BridgeCreator(self.level)
 
@@ -206,7 +206,7 @@ class UI():
             if self.first_is_point:
                 if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                     self.BC.delete_point(pos)
-                else:
+                elif(GM):
                     self.BC.change_point_moveable(pos)
             else:
                 if self.build_mode:
