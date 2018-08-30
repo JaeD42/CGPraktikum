@@ -65,6 +65,9 @@ class UI():
 
 
 
+    def convert_coordinates(self,coord):
+        return [coord[i]/ZOOM-TRANSLATE[i] for i in range(2)]
+
 
 
     def handle_events(self):
@@ -157,11 +160,11 @@ class UI():
 
 
     def left_down(self):
-        pos = pygame.mouse.get_pos()
+        pos = self.convert_coordinates(pygame.mouse.get_pos())
         self.selected(pos)
 
     def left_up(self):
-        pos = pygame.mouse.get_pos()
+        pos = self.convert_coordinates(pygame.mouse.get_pos())
         self.selected_second(pos)
 
     def right_down(self):
