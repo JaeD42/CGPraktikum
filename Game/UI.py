@@ -51,17 +51,25 @@ class UI():
         TRANSLATE[0] = x/ZOOM-xI
         TRANSLATE[1] = y/ZOOM-yI
 
+
+        TRANSLATE[0]=max(TRANSLATE[0],SCREEN_WIDTH/ZOOM-SCREEN_WIDTH)
+        TRANSLATE[1]=max(TRANSLATE[1],SCREEN_HEIGHT/ZOOM-SCREEN_HEIGHT)
+        TRANSLATE[0]=min(TRANSLATE[0],0)
+        TRANSLATE[1]=min(TRANSLATE[1],0)
+
+
+
     def translate(self,dx,dy):
         global TRANSLATE
 
         TRANSLATE[0]+=dx
         TRANSLATE[1]+=dy
 
-        TRANSLATE[0]=max(TRANSLATE[0],-0.3*SCREEN_WIDTH*(ZOOM-1))
-        TRANSLATE[1]=max(TRANSLATE[1],-0.3*SCREEN_HEIGHT*(ZOOM-1))
 
-        TRANSLATE[0]=min(TRANSLATE[0],0.5*SCREEN_WIDTH*(ZOOM-1))
-        TRANSLATE[1]=min(TRANSLATE[1],0.5*SCREEN_HEIGHT*(ZOOM-1))
+        TRANSLATE[0]=max(TRANSLATE[0],SCREEN_WIDTH/ZOOM-SCREEN_WIDTH)
+        TRANSLATE[1]=max(TRANSLATE[1],SCREEN_HEIGHT/ZOOM-SCREEN_HEIGHT)
+        TRANSLATE[0]=min(TRANSLATE[0],0)
+        TRANSLATE[1]=min(TRANSLATE[1],0)
 
 
 
@@ -103,13 +111,14 @@ class UI():
                 dx = 0
                 dy = 0
                 if event.key == pygame.K_UP:
-                    TRANSLATE[1]+=5
+                    dy+=5
                 if event.key == pygame.K_DOWN:
-                    TRANSLATE[1]-=5
+                    dy-=5
                 if event.key == pygame.K_LEFT:
-                    TRANSLATE[0]+=5
+                    dx+=5
                 if event.key == pygame.K_RIGHT:
-                    TRANSLATE[0]-=5
+                    dx-=5
+                self.translate(dx,dy)
                 if event.key == pygame.K_g:
                     #show grid
                     self.grid_mode = not self.grid_mode

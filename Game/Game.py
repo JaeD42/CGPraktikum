@@ -77,7 +77,10 @@ class Level:
 
         pickled_points = d["points"]
         pickled_connections = d["connections"]
-        self.points,self.connections = Bridge(pickled_points,pickled_connections).load_from_pickled()
+        b = Bridge([],[])
+        b.points = pickled_points
+        b.connections = pickled_connections
+        self.points,self.connections = b.load_from_pickled()
         self.start = d["start"]
         self.goal = d["goal"]
         self.plateaus = d["plateaus"]
