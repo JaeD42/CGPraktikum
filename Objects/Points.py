@@ -3,7 +3,7 @@ import pygame
 import numpy as np
 from math import sqrt
 from Objects.Connection import Connection
-from Utils.settings import DEBUG, NODE_MASS, SCREEN_WIDTH, SCREEN_HEIGHT
+from Utils.settings import DEBUG, NODE_MASS, WEIGHT_PER_LENGTH, MAX_FORCE, BRIDGE_STIFF, SCREEN_WIDTH, SCREEN_HEIGHT
 from itertools import count
 
 MAX_COL = np.array([6,51,66])
@@ -34,8 +34,10 @@ class MassPoint:
     def set_mutable(self,mutable):
         self.mutable = mutable
 
-    def connect_to(self,other_point,length,strength,can_collide=False,max_force=1000):
+    def connect_to(self,other_point,length,strength,can_collide=False,max_force=MAX_FORCE):
         c = Connection(self,other_point,length,strength,max_force=max_force,can_collide=can_collide)
+        self.weight += length*WEIGHT_PER_LENGTH
+        other_point.weight +=length*WEIGHT_PER_LENGTH
         self.connections.append(c)
         other_point.connections.append(c)
         return c
@@ -61,7 +63,7 @@ class MassPoint:
 
 
         if gravity:
-            self.v[1] += dt*gravity/self.weight
+            self.v[1] += dt*gravity
 
         self.v[0] += dt*self.add_force[0]/self.weight
         self.v[1] += dt*self.add_force[1]/self.weight
@@ -109,7 +111,7 @@ class MassPoint:
     def get_pos(self):
         return self.pos
 
-    def connect_to_quick(self,other_point,strength=300,can_collide=False,max_force=1000):
+    def connect_to_quick(self,other_point,strength=BRIDGE_STIFF,can_collide=False,max_force=MAX_FORCE):
         return self.connect_to(other_point,self.distance_to(other_point),strength,can_collide,max_force)
 
 

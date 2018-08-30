@@ -51,10 +51,12 @@ class Connection:
         self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
         self.dir = [(pos1[0]-pos2[0])/self.len,(pos1[1]-pos2[1])/self.len]
 
+        
         if abs(self.force)>self.max_force:
             self.p1.connections.remove(self)
             self.p2.connections.remove(self)
             return True
+
         return False
 
     def get_color(self,start=[0,255,0],end=[255,0,0]):

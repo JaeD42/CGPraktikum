@@ -136,10 +136,13 @@ class BridgeCreator():
             self.points.remove(p)
             self.change_points(POINT_COST)
             #delete all connections
+            print(len(p.connections))
             for i in p.connections:
                 self.connections.remove(i)
-                i.remove()
                 self.change_points(CONNECTION_COST)
+            [i.remove() for i in p.connections[:]]
+
+            print(len(p.connections))
 
     def delete_connection(self, coord1, coord2):
         ex1,p1 = self.grid.get_point_at_pos(coord1)

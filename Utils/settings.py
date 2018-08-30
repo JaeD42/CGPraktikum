@@ -47,7 +47,7 @@ RUNNING             = True
 
 #train
 NUMBER_OF_WAGONS    = 5
-TRAIN_WEIGHTS       = [[40,40]]*5
+TRAIN_WEIGHTS       = [[4000,4000]]*5
 TRAIN_START_COORD   = [-400,0.0]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2
@@ -58,8 +58,9 @@ BRIDGE_START        = [SCREEN_WIDTH*0.1, SCREEN_HEIGHT*0.4]
 BRIDGE_END          = [SCREEN_WIDTH*0.9, SCREEN_HEIGHT*0.4]
 BRIDGE_HEIGHT       = 70
 BRIDGE_NODES        = 5
-BRIDGE_STIFF        = 300
-MAX_FORCE           = 10
+BRIDGE_STIFF        = 10000
+MAX_FORCE           = 100000
+WEIGHT_PER_LENGTH   = 0.5
 
 
 #Sound and images
