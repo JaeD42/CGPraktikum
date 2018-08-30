@@ -77,7 +77,7 @@ class MassPoint:
     def draw(self,surface,zoom=1,translation=[0,0]):
         if self.moveable:
             pos = self.get_int_pos(zoom,translation)
-            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 0 or pos[1] <1):
+            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 1 or pos[1] < 1):
                 return
             pos[0] -= 1
             pos[1] -= 1
@@ -87,11 +87,11 @@ class MassPoint:
             col_p = [int(i) for i in col_p]
 
             col_p = WHITE[:]
-            return pygame.draw.circle(surface,(max(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),pos,int(self.radius*zoom))
+            return pygame.draw.circle(surface,(col_p[0],col_p[1],col_p[2]),pos,int(self.radius*zoom))
         else:
             p = self.get_int_pos(zoom,translation)
             pos = [p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom)]
-            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 0 or pos[1] <1):
+            if(pos[0] > SCREEN_WIDTH or pos[1] > SCREEN_HEIGHT or pos[0] < 1 or pos[1] < 1):
                 return
             pos[0] -= 1
             pos[1] -= 1
@@ -102,7 +102,7 @@ class MassPoint:
 
             col_p = WHITE[:]
 
-            return pygame.draw.rect(surface,(max(self.prev_force[1],col_p[0]),col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+            return pygame.draw.rect(surface,(col_p[0],col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
 
 
     def get_int_pos(self,zoom,translation):

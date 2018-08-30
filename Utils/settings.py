@@ -71,7 +71,7 @@ TRAIN_SOUND_VOL     = 0.3
 
 BG                  = 'landscape.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
-PLATEAU_IMGS        = ['plateau0.png', 'plateau2.png', 'plateau1.png', 'plateau3.png','plateau4.png']
+PLATEAU_IMGS        = ['plateau0.png', 'plateau2.png', 'plateau1.png', 'plateau3.png','plateau4.png', 'plateau5.png', 'plateau6.png']
 BALKEN              = 'balken.png'
 BALKEN_UNTEN        = 'balken_unten.png'
 
