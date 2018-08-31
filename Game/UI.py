@@ -21,6 +21,7 @@ class UI():
         self.level = Level.load_from_file(LVLS[self.level_num])
 
         self.won_level = False
+        self.lost_level = False
 
         self.BC = BridgeCreator(self.level)
 
@@ -44,6 +45,8 @@ class UI():
         self.level_num = num
         self.level = Level.load_from_file(LVLS[num])
         self.won_level = False
+        self.lost_level = False
+
 
         self.BC = BridgeCreator(self.level)
 
@@ -169,6 +172,8 @@ class UI():
                 if event.key == pygame.K_SPACE:
                     if(self.won_level):
                         self.init_level_num((self.level_num+1)%4)
+                    elif(self.lost_level):
+                        self.init_level_num(self.level_num)
                     elif(self.initial_bridge):
                         PAUSE = not PAUSE
                     else:
@@ -265,7 +270,6 @@ class UI():
         self.first_is_point = False
 
     def create_physics(self):
-        print("here")
         self.build_mode = False
         points = self.BC.points
         connections = self.BC.connections
@@ -296,6 +300,9 @@ class UI():
                 if self.physics.check_if_won():
                     PAUSE=True
                     self.won_level = True
+                if self.physics.check_if_lose():
+                    PAUSE=True
+                    self.lost_level = True
             self.physics.draw(screen,ZOOM,TRANSLATE)
         self.music_type_icon.draw(screen)
 
@@ -304,6 +311,16 @@ class UI():
             font2 = pygame.font.Font(None,20)
 
             txt1 = font1.render("YOU WON",True, (255,255,255))
+            txt2 = font2.render("press space to continue",True, (255,255,255))
+
+            screen.blit(txt1,(100,200))
+            screen.blit(txt2,(150,300))
+
+        if self.lost_level:
+            font1 = pygame.font.Font(None,100)
+            font2 = pygame.font.Font(None,20)
+
+            txt1 = font1.render("YOU LOST :(",True, (255,255,255))
             txt2 = font2.render("press space to continue",True, (255,255,255))
 
             screen.blit(txt1,(100,200))

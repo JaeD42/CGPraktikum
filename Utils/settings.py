@@ -9,7 +9,7 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 
 #load lvl:
-LOAD_LVL            = 0
+LOAD_LVL            = 3
 LVLS                = ['lvl1','lvl2','lvl3','lvl4']
 #grid
 GRID_SIZE           = 100
@@ -48,7 +48,7 @@ RUNNING             = True
 
 #train
 NUMBER_OF_WAGONS    = 5
-TRAIN_WEIGHTS       = [[2000,2000]]*5
+TRAIN_WEIGHTS       = [[4000,4000]]*5
 TRAIN_START_COORD   = [-400,0.0]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2

@@ -61,6 +61,8 @@ class MassPoint:
             self.v[0] += (connection.force*pre)*(dir[0]/l)
 
             self.v[1] += (connection.force*pre)*(dir[1]/l)
+        self.v[0]=self.v[0]*0.99
+        self.v[1]=self.v[1]*0.99
 
 
         if gravity:

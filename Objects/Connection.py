@@ -51,7 +51,7 @@ class Connection:
         self.center = [(pos1[0]+pos2[0])/2,(pos1[1]+pos2[1])/2]
         self.dir = [(pos1[0]-pos2[0])/self.len,(pos1[1]-pos2[1])/self.len]
 
-        
+
         if abs(self.force)>self.max_force:
             self.p1.connections.remove(self)
             self.p2.connections.remove(self)
@@ -136,7 +136,8 @@ class Connection:
             col = list(self.get_color())
             if not self.can_collide:
                 col.append(122)
-
+            if self.can_collide:
+                self.line_width=3
             r = pygame.draw.line(surface,self.get_color(),self.p1.get_int_pos(zoom,translation),self.p2.get_int_pos(zoom,translation),self.line_width)
             self.line_width = 1
             return r
