@@ -142,34 +142,34 @@ class UI():
                 dy = 0
                 if event.key == pygame.K_UP:
                     dy+=5
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     dy-=5
-                if event.key == pygame.K_LEFT:
+                elif event.key == pygame.K_LEFT:
                     dx+=5
-                if event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT:
                     dx-=5
                 self.translate(dx,dy)
                 if event.key == pygame.K_g:
                     #show grid
                     self.grid_mode = not self.grid_mode
-                if event.key == pygame.K_b:
+                elif event.key == pygame.K_b:
                     #show bridge connections instead of images
                     if(self.build_mode):
                         self.BC.change_bridge_mode()
                     else:
                         self.physics.change_bridge_mode()
-                if event.key == pygame.K_s:
+                elif event.key == pygame.K_s:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         if(self.build_mode):
                             self.BC.save_bridge()
                         else:
                             self.initial_bridge.save_bridge()
-                if event.key == pygame.K_l:
+                elif event.key == pygame.K_l:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.BC.load_bridge()
-                if event.key == pygame.K_TAB:
+                elif event.key == pygame.K_TAB:
                     self.toggle_conn_type()
-                if event.key == pygame.K_SPACE:
+                elif event.key == pygame.K_SPACE:
                     if(self.won_level):
                         self.init_level_num((self.level_num+1)%4)
                     elif(self.lost_level):
@@ -181,21 +181,35 @@ class UI():
                         self.build_mode = False
                         self.create_physics()
                         PAUSE = False
-                if event.key == pygame.K_y:
+                elif event.key == pygame.K_y:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.build_mode = True
                         PAUSE = True
                         self.physics = None
                         self.BC.load_bridge(bridge=self.initial_bridge)
                         self.initial_bridge = None
-                if event.key == pygame.K_PLUS:
+                elif event.key == pygame.K_PLUS or event.key == pygame.K_p:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.speed_factor+=1
-                if event.key == pygame.K_MINUS:
+                elif event.key == pygame.K_MINUS or event.key == pygame.K_m:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.speed_factor=max(self.speed_factor-1,1)
 
-
+                elif event.key == pygame.K_1:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.init_level_num(0)
+                elif event.key == pygame.K_2:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.init_level_num(1)
+                elif event.key == pygame.K_3:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.init_level_num(2)
+                elif event.key == pygame.K_4:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.init_level_num(3)
+                elif event.key == pygame.K_r:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        self.init_level_num(self.level_num)
 
 
         return RUNNING
