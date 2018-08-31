@@ -52,7 +52,7 @@ def lvl4():
 
     max_points =400
 
-    return Level(start, goal, points, conns, grid, plateaus, max_points, BG)
+    return Level(start, goal, points, conns, grid, plateaus, max_points, BG3)
 
 if __name__=="__main__":
     l = lvl4()

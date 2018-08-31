@@ -68,32 +68,34 @@ class BridgeCreator():
             print('save failed')
 
     def load_bridge(self, file = "", bridge=None):
-        if (bridge!=None):
-            self.points,self.connections = bridge.load_from_pickled()
+        try:
+            if (bridge!=None):
+                self.points,self.connections = bridge.load_from_pickled()
 
 
-        elif(not file):
-            Tk().wm_withdraw() #to hide the main window
-            file=simpledialog.askstring("Load", "Please enter filename:")
-            file = os.path.join(BRIDGE_DIR, file+".bridge")
+            elif(not file):
+                Tk().wm_withdraw() #to hide the main window
+                file=simpledialog.askstring("Load", "Please enter filename:")
+                file = os.path.join(BRIDGE_DIR, file+".bridge")
 
-        if(bridge==None):
-            filehandler = open(file, 'rb')
-            bridge = pickle.load(filehandler)
-            self.points,self.connections = bridge.load_from_pickled()
+            if(bridge==None):
+                filehandler = open(file, 'rb')
+                bridge = pickle.load(filehandler)
+                self.points,self.connections = bridge.load_from_pickled()
 
-        print("here")
-        self.grid.empty()
-        self.grid.restore_points(self.points)
-        self.cost = self.level.get_max_points()
-        for p in self.points:
-            if p.moveable:
-                self.cost -=POINT_COST
-            else:
-                p.set_mutable(False)
-        for c in self.connections:
-            self.cost -=CONNECTION_COST
-
+            print("here")
+            self.grid.empty()
+            self.grid.restore_points(self.points)
+            self.cost = self.level.get_max_points()
+            for p in self.points:
+                if p.moveable:
+                    self.cost -=POINT_COST
+                else:
+                    p.set_mutable(False)
+            for c in self.connections:
+                self.cost -=CONNECTION_COST
+        except:
+            print("load failed")
 
 
 
