@@ -157,8 +157,8 @@ class BridgeCreator():
             print(len(p.connections))
 
     def delete_connection(self, coord1, coord2):
-        ex1,p1 = self.grid.get_point_at_pos(coord1)
-        ex2,p2 = self.grid.get_point_at_pos(coord2)
+        ex1,p1 = self.grid.get_closest_point(coord1)
+        ex2,p2 = self.grid.get_closest_point(coord2)
         if(not(ex1 and ex2)):
             return
 
