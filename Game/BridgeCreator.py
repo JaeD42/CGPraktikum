@@ -182,8 +182,8 @@ class BridgeCreator():
 
 
     def check_if_con_exists(self, pos1, pos2):
-        ex1,p1 = self.grid.get_point_at_pos(pos1)
-        ex2,p2 = self.grid.get_point_at_pos(pos2)
+        ex1,p1 = self.grid.get_closest_point(pos1)
+        ex2,p2 = self.grid.get_closest_point(pos2)
         if(ex1 and ex2):
             return p1.is_connected_to(p2)
         else:
