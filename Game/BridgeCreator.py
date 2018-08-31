@@ -125,6 +125,8 @@ class BridgeCreator():
         if(not(p1 and p2)):
             return
 
+        if(not p1.moveable and not p2.moveable):
+            return
         #check if connection already exists
         if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
             try:
