@@ -109,7 +109,7 @@ class UI():
 
 
     def handle_events(self):
-        global ZOOM,TRANSLATE,PAUSE, RUNNING
+        global ZOOM,TRANSLATE,PAUSE, RUNNING, DEBUG
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -210,6 +210,10 @@ class UI():
                 elif event.key == pygame.K_r:
                     if(pygame.key.get_pressed()[pygame.K_LCTRL]):
                         self.init_level_num(self.level_num)
+                elif event.key == pygame.K_d:
+                    if(pygame.key.get_pressed()[pygame.K_LCTRL]):
+                        DEBUG = not DEBUG
+
 
 
         return RUNNING
@@ -234,7 +238,7 @@ class UI():
         if(self.is_on_music_icon(pos)):
             self.toggle_music()
         else:
-            _,p = self.BC.grid.get_point_at_pos(pos)
+            _,p = self.BC.grid.get_closest_point(pos)
             self.first_selected = True
             self.first_pos = pos[:]
             if p!=None:
