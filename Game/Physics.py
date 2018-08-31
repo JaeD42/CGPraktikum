@@ -45,7 +45,8 @@ class Physics:
     def check_if_won(self):
         return self.level.game_is_won(self.train)
 
-
+    def check_if_lose(self):
+        return self.train[0].mass_coordinates[1]>1300
 
 
     def move(self,dt):
