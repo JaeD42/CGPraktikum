@@ -51,6 +51,17 @@ class Grid:
                 minPos = grid_pos
         return minPos[:]
 
+    def get_closest_point(self,pos):
+        maxD = MIN_POINT_DIST
+        point = None
+        for p in self.points.values():
+            d = max(abs(p.pos[0]-pos[0]), abs(p.pos[1]-pos[1]))
+            print(d)
+            if d<maxD:
+                maxD=d
+                point=p
+        return point!=None,point
+
 
     def add_grid_point(self,pos):
         self.positions.append(pos)

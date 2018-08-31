@@ -116,8 +116,8 @@ class BridgeCreator():
 
 
     def add_connection(self, coord1, coord2,is_floor=False):
-        exists1,p1 = self.grid.get_point_at_pos(coord1)
-        exists2,p2 = self.grid.get_point_at_pos(coord2)
+        exists1,p1 = self.grid.get_closest_point(coord1)
+        exists2,p2 = self.grid.get_closest_point(coord2)
         if not exists1 or not exists2:
             return
 
@@ -125,7 +125,7 @@ class BridgeCreator():
         if(not(p1 and p2)):
             return
 
-        if(not p1.moveable and not p2.moveable):
+        if((not p1.moveable) and (not p2.moveable)):
             return
         #check if connection already exists
         if(not p1.is_connected_to(p2) and self.cost >= CONNECTION_COST):
