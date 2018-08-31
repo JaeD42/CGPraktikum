@@ -112,7 +112,7 @@ def lvl2():
 
     max_points =500
 
-    return Level(start, goal, points, conns, grid, plateaus, max_points, BG)
+    return Level(start, goal, points, conns, grid, plateaus, max_points, BG2)
 
 
 def lvl3():
@@ -159,4 +159,4 @@ def lvl3():
 
 if __name__=="__main__":
 
-    lvl1().save_level("lvl1")
+    lvl3().save_level("lvl3")

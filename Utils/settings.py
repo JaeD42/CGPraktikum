@@ -18,7 +18,7 @@ MIN_POINT_DIST      = 70
 
 DEBUG               = False
 GM                  = False
-SHOW_FPS            = True
+SHOW_FPS            = False
 
 STEPSIZE            = 0.02
 
@@ -71,6 +71,8 @@ BGMUSIC_VOL         = 0.2
 TRAIN_SOUND_VOL     = 0.3
 
 BG                  = 'landscape.png'
+BG2 	            = 'landscape2.png'
+BG3                 = 'landscape3.png'
 WAGON_IMGS          = ['train_lastwagon.png', 'train_wagon.png', 'train_firstwagon.png']
 PLATEAU_IMGS        = ['plateau0.png', 'plateau2.png', 'plateau1.png', 'plateau3.png','plateau4.png', 'plateau5.png', 'plateau6.png']
 BALKEN              = 'balken.png'
