@@ -159,4 +159,4 @@ def lvl3():
 
 if __name__=="__main__":
 
-    lvl3().save_level("lvl3")
+    lvl1().save_level("lvl1")
