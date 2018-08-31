@@ -9,8 +9,8 @@ DATA_DIR = os.path.join(MAIN_DIR, 'data')
 BRIDGE_DIR = os.path.join(MAIN_DIR, 'bridges')
 
 #load lvl:
-LOAD_LVL            = 'lvl4'
-
+LOAD_LVL            = 0
+LVLS                = ['lvl1','lvl2','lvl3','lvl4']
 #grid
 GRID_SIZE           = 100
 MIN_POINT_DIST      = 70

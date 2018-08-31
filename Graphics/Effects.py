@@ -1,5 +1,6 @@
 import pygame
 import time
+import math
 
 class Effects:
 
@@ -20,6 +21,7 @@ class Effects:
             else:
                 posx,posy = pos
                 posy =int(posy-((time.time()-start)*20)/max_time)
+                posx =int(posx+(math.sin(5*(time.time()-start))*5))
                 rects.append(screen.blit(surf,(posx,posy)))
         for i in to_remove:
             self.effects.remove(i)

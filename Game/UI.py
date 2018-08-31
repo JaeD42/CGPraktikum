@@ -9,7 +9,7 @@ from Game.Game import Level
 
 class UI():
 
-    physics = None
+
     SCROLL_UP = 4
     SCROLL_DOWN = 5
     LEFT_MOUSE = 1
@@ -17,7 +17,10 @@ class UI():
     grid_mode = False
 
     def __init__(self):
-        self.level = Level.load_from_file(LOAD_LVL)
+        self.level_num = LOAD_LVL
+        self.level = Level.load_from_file(LVLS[self.level_num])
+
+        self.won_level = False
 
         self.BC = BridgeCreator(self.level)
 
@@ -34,6 +37,30 @@ class UI():
         self.initial_bridge = None
         self.speed_factor = 1
 
+        self.physics = None
+
+    def init_level_num(self,num):
+
+        self.level_num = num
+        self.level = Level.load_from_file(LVLS[num])
+        self.won_level = False
+
+        self.BC = BridgeCreator(self.level)
+
+        self.first_pos = (0,0)
+        self.first_selected = False
+        self.first_is_point = False
+        self.second_pos = (0,0)
+        self.build_mode = True
+        self.bridge_type_icon = ToggleIcon.bridgetype()
+        self.music_type_icon = ToggleIcon.musictype()
+        self.music_is_on = True
+        self.conn_is_floor = True
+
+        self.initial_bridge = None
+        self.speed_factor = 1
+
+        self.physics = None
 
 
     def zoom(self,zoom_in = True):
@@ -140,7 +167,9 @@ class UI():
                 if event.key == pygame.K_TAB:
                     self.toggle_conn_type()
                 if event.key == pygame.K_SPACE:
-                    if(self.initial_bridge):
+                    if(self.won_level):
+                        self.init_level_num((self.level_num+1)%4)
+                    elif(self.initial_bridge):
                         PAUSE = not PAUSE
                     else:
                         self.initial_bridge = Bridge(self.BC.points, self.BC.connections)
@@ -266,9 +295,20 @@ class UI():
                     self.physics.move(dt)
                 if self.physics.check_if_won():
                     PAUSE=True
-                    print("WON")
+                    self.won_level = True
             self.physics.draw(screen,ZOOM,TRANSLATE)
         self.music_type_icon.draw(screen)
+
+        if self.won_level:
+            font1 = pygame.font.Font(None,100)
+            font2 = pygame.font.Font(None,20)
+
+            txt1 = font1.render("YOU WON",True, (255,255,255))
+            txt2 = font2.render("press space to continue",True, (255,255,255))
+
+            screen.blit(txt1,(100,200))
+            screen.blit(txt2,(150,300))
+
 
 
         return r

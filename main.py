@@ -76,7 +76,6 @@ def main(winstyle = 0):
                 screen.blit(fps, (50, 50))
                 mouse = font.render(str(pygame.mouse.get_pos()), True, pygame.Color('white'))
                 screen.blit(mouse, (50, 80))
-
             pygame.display.flip()
             # - constant game speed / FPS -
             clock.tick(FPS)
