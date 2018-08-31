@@ -76,7 +76,7 @@ class MassPoint:
         self.v[1] += dt*self.add_force[1]/self.weight
         if DEBUG:
             self.prev_force = 0.95*self.prev_force + 0.05*(summed_force + self.add_force + [0,gravity*self.weight])
-        self.add_force = [0.0,0.0]
+        self.add_force = [0.5*self.add_force[0],0.5*self.add_force[1]]
 
         self.pos[0] += dt*self.v[0]
         self.pos[1] += dt*self.v[1]
