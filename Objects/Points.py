@@ -23,7 +23,7 @@ class MassPoint:
         self.radius=radius
         self.moveable=moveable
         self.add_force = [0.0,0.0]
-        self.prev_force = [0.0,0.0]
+        self.prev_force = np.array([0.0,0.0])
         self.point_num = next(self._indx)
         self.mutable = mutable
 
@@ -51,12 +51,16 @@ class MassPoint:
         if not self.moveable:
             return
 
+        summed_force = np.array([0.0,0.0])
+
         pre = dt/self.weight
         for connection in self.connections:
             center = connection.center
             dir = [center[0]-self.pos[0],center[1]-self.pos[1]]
             l = sqrt(dir[0]*dir[0]+dir[1]*dir[1])
 
+            if DEBUG:
+                summed_force+=np.array(dir[:])/l * connection.force
 
             self.v[0] += (connection.force*pre)*(dir[0]/l)
 
@@ -71,7 +75,7 @@ class MassPoint:
         self.v[0] += dt*self.add_force[0]/self.weight
         self.v[1] += dt*self.add_force[1]/self.weight
         if DEBUG:
-            self.prev_force = self.add_force[:]
+            self.prev_force = 0.9*self.prev_force + 0.1*(summed_force + self.add_force + [0,gravity*self.weight])
         self.add_force = [0.0,0.0]
 
         self.pos[0] += dt*self.v[0]
@@ -90,7 +94,7 @@ class MassPoint:
             col_p = [int(i) for i in col_p]
 
             col_p = WHITE[:]
-            return pygame.draw.circle(surface,(col_p[0],col_p[1],col_p[2]),pos,int(self.radius*zoom))
+            pygame.draw.circle(surface,(col_p[0],col_p[1],col_p[2]),pos,int(self.radius*zoom))
         else:
             p = self.get_int_pos(zoom,translation)
             pos = [p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom)]
@@ -105,7 +109,11 @@ class MassPoint:
 
             col_p = WHITE[:]
 
-            return pygame.draw.rect(surface,(col_p[0],col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+            pygame.draw.rect(surface,(col_p[0],col_p[1],col_p[2]),[p[0]-int(self.radius*zoom),p[1]-int(self.radius*zoom),2*int(self.radius*zoom),2*int(self.radius*zoom)])
+        if DEBUG:
+            pos = self.get_int_pos(zoom,translation)
+            pos2 = [pos[0]+self.prev_force[0]/self.weight*4,pos[1]+self.prev_force[1]/self.weight*4]
+            pygame.draw.line(surface,(0,255,255),pos,pos2)
 
 
     def get_int_pos(self,zoom,translation):

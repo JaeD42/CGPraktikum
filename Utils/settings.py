@@ -16,7 +16,7 @@ GRID_SIZE           = 100
 MIN_POINT_DIST      = 70
 
 
-DEBUG               = False
+DEBUG               = True
 GM                  = False
 SHOW_FPS            = True
 
