@@ -6,6 +6,7 @@
 
 A small bridge simulation game written in pygame.
 
+![Choo-Choo](images/TrainGameImage.png)
 
 
 ### Requirements
@@ -20,7 +21,7 @@ A small bridge simulation game written in pygame.
 
 ### Playing the game
 
-Simply run main.py and enjoy. 
+Simply run main.py and enjoy.
 
 The Task is to create a Bridge that does not collapse under the train.
 
@@ -29,7 +30,8 @@ Controls are as follows:
 | Input                | Result                                       |
 | -------------------- | -------------------------------------------- |
 | Click                | Create a Node                                |
-| Click and Drag       | Connect Nodes                                |
+| Ctrl Click                | Delete a Node                                |
+| Click and Drag       | Connect/Disconnect Nodes                                |
 | G                    | Show/Hide Node Grid                          |
 | B                    | Show/Wide Bridge Stress                      |
 | Space                | Start Train (Pause)                          |
@@ -45,3 +47,6 @@ Controls are as follows:
 
 
 Sound can be muted by clicking the sound button (because of a pygame bug, sound is only available in windows at the moment)
+
+
+Written by Jana Becker (bejana@students.uni-mainz.de) and Jan Disselhoff (jdisselh@students.uni-mainz.de)
