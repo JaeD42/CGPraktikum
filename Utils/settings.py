@@ -16,7 +16,7 @@ GRID_SIZE           = 100
 MIN_POINT_DIST      = 70
 
 
-DEBUG               = True
+DEBUG               = False
 GM                  = False
 SHOW_FPS            = False
 
@@ -48,7 +48,7 @@ RUNNING             = True
 
 #train
 NUMBER_OF_WAGONS    = 5
-TRAIN_WEIGHTS       = [[1500,1500]]*5
+TRAIN_WEIGHTS       = [[1500,1500]]*NUMBER_OF_WAGONS
 TRAIN_START_COORD   = [-400,0.0]
 TRAIN_SPEED         = 30
 NODE_MASS           = 2
