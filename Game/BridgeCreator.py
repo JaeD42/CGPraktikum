@@ -83,7 +83,6 @@ class BridgeCreator():
                 bridge = pickle.load(filehandler)
                 self.points,self.connections = bridge.load_from_pickled()
 
-            print("here")
             self.grid.empty()
             self.grid.restore_points(self.points)
             self.cost = self.level.get_max_points()
@@ -148,13 +147,11 @@ class BridgeCreator():
             self.points.remove(p)
             self.change_points(POINT_COST)
             #delete all connections
-            print(len(p.connections))
             for i in p.connections:
                 self.connections.remove(i)
                 self.change_points(CONNECTION_COST)
             [i.remove() for i in p.connections[:]]
 
-            print(len(p.connections))
 
     def delete_connection(self, coord1, coord2):
         ex1,p1 = self.grid.get_closest_point(coord1)

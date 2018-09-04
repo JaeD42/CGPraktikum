@@ -56,7 +56,6 @@ class Grid:
         point = None
         for p in self.points.values():
             d = max(abs(p.pos[0]-pos[0]), abs(p.pos[1]-pos[1]))
-            print(d)
             if d<maxD:
                 maxD=d
                 point=p
