@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
 import numpy as np
 import pygame
 from Objects.BoundingBox import BoundingBox

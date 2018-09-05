@@ -37,7 +37,7 @@ Controls are as follows:
 | Space                | Start Train (Pause)                          |
 | Tab                  | Switch between Floor and support connections |
 | Mouse Wheel          | Zoom                                         |
-| WASD                 | Move Camera                                  |
+| Arrow Keys                 | Move Camera                                  |
 | Ctrl +/- or p/m      | Speed up/down                                |
 | Ctrl z (sometimes y) | Get back to build mode                       |
 | Ctrl r               | Reset level                                  |

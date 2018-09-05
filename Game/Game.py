@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 from Game.BridgeCreator import Bridge
 from Objects.Grid import Grid
 import pickle

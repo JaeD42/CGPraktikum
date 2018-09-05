@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
 
 from Utils.settings import *
 from Game.Physics import Physics

@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 import pygame
 import time
 import math

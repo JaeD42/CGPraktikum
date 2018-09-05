@@ -1,5 +1,7 @@
-
 #!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
 from settings import *
 import random, os.path
 

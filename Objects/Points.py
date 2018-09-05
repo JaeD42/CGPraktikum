@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
 
 import pygame
 import numpy as np

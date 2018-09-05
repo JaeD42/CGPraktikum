@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 from Utils.settings import *
 import pygame
 class Physics:

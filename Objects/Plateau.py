@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
 
 import math
 import numpy as np

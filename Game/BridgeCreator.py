@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 from Game.Physics import *
 from Utils.settings import *
 from Objects.Points import MassPoint,create_bridge

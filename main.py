@@ -1,5 +1,8 @@
-
 #!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 
 import random, os.path
 from Game.Physics import Physics

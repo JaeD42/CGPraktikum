@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 import pygame
 from Utils.load_data import load_sound
 from Utils.settings import *

@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+'''
+    Author: Jana Becker, Jan Disselhoff
+'''
+
 from Utils.load_data import load_image, antialias
 from Utils.settings import *
 
